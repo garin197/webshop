@@ -21,7 +21,7 @@ public interface CategoryMapper {
 
     int total();
 
-    Category findByName(String name);
+    List<Category> findByName(String name);
 
     List<Category> findWithLimit(Row row);
 }

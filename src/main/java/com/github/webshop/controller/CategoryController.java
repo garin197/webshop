@@ -55,17 +55,35 @@ public class CategoryController {
 
     @ResponseBody
     @PostMapping("/del")
-    public Integer del(@RequestParam(value = "id") Integer id) throws Exception {
+    public Integer del(@RequestParam(value = "id") Integer id) {
         return categoryService.deleteCategory(id);
     }
 
+    @ResponseBody
     @PostMapping("/edit")
-    public void edit(HttpServletRequest request){
-        String categoryName=request.getParameter("categoryName");
-        String categoryId=request.getParameter("categoryId");
-        Category category=new Category();
+    public Integer edit(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        String categoryName = request.getParameter("categoryName");
+        String categoryId = request.getParameter("categoryId");
+        Category category = new Category();
         category.setCategoryName(categoryName);
         category.setCategoryId(new Integer(categoryId));
-        categoryService.EditCategory(category);
+        int i = categoryService.EditCategory(category);
+        return i;
+    }
+
+    @ResponseBody
+//    @PostMapping("/search")
+    @RequestMapping("/search")
+    public Map<String,Object> search(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        String statement = request.getParameter("statement");
+        Map<String,Object> result=new HashMap<>();
+        result.put("code",0);
+        result.put("message","");
+        List list=categoryService.FindCategory(statement);
+        result.put("count",list.size());
+        result.put("data",list);
+        return result;
     }
 }

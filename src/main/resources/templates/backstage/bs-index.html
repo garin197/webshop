@@ -8,12 +8,12 @@
     <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/static/js/bs-index.js}"></script><!--自定义js函数-->
     <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
-    <title th:text="@{网页后台管理}">页面标题</title>
+    <title th:text="@{'网页后台管理'}">页面标题</title>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo" th:text="@{后台管理系统}">左标题</div>
+        <div class="layui-logo" th:text="@{'后台管理系统'}">左标题</div>
         <!-- 头部导航菜单 -->
         <ul class="layui-nav layui-layout-left topLevelMenus">
             <li class="layui-nav-item"><a href="javascript:showOp1()">商品管理</a></li>
@@ -74,8 +74,18 @@
         </div>
     </script>
     <script type="text/html" id="toolbar2">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" type="text" name="SearchCategory" id="SearchCategory" autocomplete="off" placeholder="搜索分类" required>
+            </div>
+            <!--data-type 表示该操作类型，识别id-->
+            <button class="layui-btn" data-type="SearchCategory">搜索</button>
+        </div>
+        <!--黑色分割线-->
+        <hr class="layui-bg-black">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm" lay-event="addData2" lay-filter="addCategory">添加</button>
+            <button class="layui-btn layui-btn-sm" lay-event="reloadOnTable2" lay-filter="addCategory">reload</button>
             <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
             <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
         </div>
@@ -152,6 +162,7 @@
             </div>
         </form>
     </div>
+
 </div>
 <!--<script type="text/javascript" th:inline="none">-->
 

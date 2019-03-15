@@ -27,8 +27,8 @@
         select * from t_category limit #{start},#{limit}
     </select>
 
-    <select id="findByName" parameterType="string" resultType="category">
-        select * from t_category where categoryName=#{categoryName}
+    <select id="findByName" parameterType="string" resultMap="categoryList">
+        select * from t_category where categoryName like #{categoryName}
     </select>
 
     <insert id="add" parameterType="category">

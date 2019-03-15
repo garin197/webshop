@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface CategoryService {
 
-    Category FindCategory(Category category);
+    List<Category> FindCategory(String statement);
 
     int AddCategory(HttpServletRequest request);
 

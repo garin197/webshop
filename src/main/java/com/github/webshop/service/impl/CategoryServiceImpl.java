@@ -20,8 +20,9 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
-    public Category FindCategory(Category category) {
-        return null;
+    public List<Category> FindCategory(String statement) {
+        statement="%"+statement+"%";
+        return categoryMapper.findByName(statement);
     }
 
     @Override

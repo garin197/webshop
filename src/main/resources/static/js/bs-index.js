@@ -106,11 +106,17 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
                     }
                 });
                 break;
+            case 'reloadOnTable2'://table2重载事件
+                table2.reload('datagrid2',{
+                    page:1,
+                    url:'/category/list'
+                });
+                break;
         }
         ;
     });
 
-    //监听工具条
+    //监听 表格内工具条
     table1.on('tool', function (obj) {
         var data = obj.data;
         // var id=obj.config.id;
@@ -124,7 +130,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
         }
     });
 
-    //监听工具条
+    //监听 表格内工具条
     table2.on('tool', function (obj) {
         // var data = obj.data;
         //删除
@@ -133,14 +139,14 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
                 obj.del();
                 $.ajax({
                     type: 'POST',
-                    url: '/category/del?id='+obj.data.categoryId,
-                    success: function(count){//数据重载
-                        if (count>0){
+                    url: '/category/del?id=' + obj.data.categoryId,
+                    success: function (count) {//数据重载
+                        if (count > 0) {
                             table2.reload('datagrid2', {
                                 url: '/category/list'
                                 , where: {} //设定异步数据接口的额外参数
                             })
-                        }else{
+                        } else {
                             layer.msg("操作失败");
                         }
                     },
@@ -167,16 +173,19 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
     });
 
     // 单元格编辑
-    table2.on('edit', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+    table2.on('edit', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
         console.log(obj.value); //得到修改后的值
         console.log(obj.field); //当前编辑的字段名
         console.log(obj.data); //所在行的所有相关数据
         $.ajax({
             type: 'POST',
-            url:'/category/edit',
+            url: '/category/edit',
             data: obj.data,
-            success: function(){
+            success: function (flag) {
                 //回调函数
+                if (flag > 0) {
+                    layer.msg("修改成功|success ")
+                }
             },
             dataType: 'json'
         });
@@ -190,7 +199,22 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
 
     $('.demoTable .layui-btn').on('click', function () {
         var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
+        if (type == 'SearchCategory') {//table2表格 搜索分类
+            layer.msg("SearchCategory");
+            if ($('#SearchCategory').val() == '') {
+                return;
+            } else {
+                table2.reload('datagrid2', {
+                    page: 1,
+                    url: '/category/search',
+                    where: {
+                        statement: $('#SearchCategory').val()
+                    }
+                })
+            }
+        }
+
+        // active[type] ? active[type].call(this) : '';
     });
 
     //提交
@@ -220,7 +244,6 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
 
         }, 'json');
     }
-
 
 
 });
