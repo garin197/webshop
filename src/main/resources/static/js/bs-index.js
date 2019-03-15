@@ -139,7 +139,6 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
                             table2.reload('datagrid2', {
                                 url: '/category/list'
                                 , where: {} //设定异步数据接口的额外参数
-                                //,height: 300);
                             })
                         }else{
                             layer.msg("操作失败");
@@ -149,16 +148,38 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
                 });
                 layer.closeAll();
             });
-        } else if (obj.event === 'edit2') {//编辑
-            // var v=$('#categoryName').val();
-            layer.open({
-                type: 1
-                , area: ['400px', '200px']
-                , content: $('#add-form-div2').html()
-                , anim: 4
-
-            });
         }
+        // else if (obj.event === 'edit2') {//编辑
+        //
+        //     layer.open({
+        //         type: 1
+        //         , area: ['400px', '200px']
+        //         , content: $('#add-form-div2').html()
+        //         , anim: 4
+        //         ,success: function(layero, index){
+        //             // layero.$('#categoryName').val('dfdf');
+        //             // layer.msg($('#categoryName').val());
+        //             $('#categoryName').val("@{fdsfsdf}");
+        //         }
+        //     });
+        //
+        // }
+    });
+
+    // 单元格编辑
+    table2.on('edit', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+        console.log(obj.value); //得到修改后的值
+        console.log(obj.field); //当前编辑的字段名
+        console.log(obj.data); //所在行的所有相关数据
+        $.ajax({
+            type: 'POST',
+            url:'/category/edit',
+            data: obj.data,
+            success: function(){
+                //回调函数
+            },
+            dataType: 'json'
+        });
     });
 
     //监听表格复选框选择
@@ -191,7 +212,6 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage'], function () {
                     table.reload('datagrid2', {
                         url: '/page/data'
                         , where: {} //设定异步数据接口的额外参数
-                        //,height: 300
                     });
                 });
                 layer.closeAll(); //关闭信息框

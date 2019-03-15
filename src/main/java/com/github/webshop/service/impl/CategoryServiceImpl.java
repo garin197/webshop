@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public int EditCategory(Category category) {
-        return 0;
+        return categoryMapper.update(category);
     }
 
     @Override

@@ -58,4 +58,14 @@ public class CategoryController {
     public Integer del(@RequestParam(value = "id") Integer id) throws Exception {
         return categoryService.deleteCategory(id);
     }
+
+    @PostMapping("/edit")
+    public void edit(HttpServletRequest request){
+        String categoryName=request.getParameter("categoryName");
+        String categoryId=request.getParameter("categoryId");
+        Category category=new Category();
+        category.setCategoryName(categoryName);
+        category.setCategoryId(new Integer(categoryId));
+        categoryService.EditCategory(category);
+    }
 }
