@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--指定包空间-->
+<mapper namespace="com.github.webshop.dao.CategoryMapper">
+
+    <select id="total" resultType="int">
+        select count(*) from t_category
+    </select>
+
+    <select id="findById" parameterType="category" resultType="category">
+        select * from t_category where categoryId=#{categoryId}
+    </select>
+
+    <resultMap id="categoryList" type="category">
+        <id property="categoryId" column="categoryId"></id>
+        <result property="categoryName" column="categoryName"></result>
+    </resultMap>
+
+    <select id="findAll" parameterType="category" resultMap="categoryList">
+        select * from t_category
+    </select>
+
+    <select id="findWithLimit" parameterType="row" resultMap="categoryList">
+        select * from t_category limit #{start},#{limit}
+    </select>
+
+    <select id="findByName" parameterType="string" resultType="category">
+        select * from t_category where categoryName=#{categoryName}
+    </select>
+
+    <insert id="add" parameterType="category">
+        insert into t_category values (null,#{categoryName}  )
+    </insert>
+
+    <update id="update" parameterType="category">
+        update t_category
+        <set>
+            <if test="categoryName != null">
+                categoryName=#{categoryName},
+            </if>
+        </set>
+        where categoryId=#{categoryId}
+    </update>
+
+    <delete id="delete" parameterType="integer">
+        delete from t_category where categoryId=#{categoryId}
+    </delete>
+
+</mapper>

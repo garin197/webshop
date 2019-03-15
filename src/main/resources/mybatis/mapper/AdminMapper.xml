@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--指定包空间-->
+<mapper namespace="com.github.webshop.dao.AdminMapper">
+    <select id="FindByNameAndPassword" parameterType="admin">
+        select * from t_admin where adminName=#{adminName} and password=#{password}
+    </select>
+
+    <select id="findById" parameterType="admin" resultType="admin">
+        select * from t_admin where id=#{id}
+    </select>
+
+    <resultMap id="AdminListResult" type="admin">
+        <id property="id" column="id"/>
+        <result property="adminName" column="adminName"/>
+        <result property="password" column="password"/>
+    </resultMap>
+    <select id="findAll" parameterType="admin" resultMap="AdminListResult">
+        select * from t_admin
+    </select>
+
+    <select id="findByName" parameterType="string" resultType="admin">
+        select * from t_admin where id=#{name}
+    </select>
+
+    <insert id="add" parameterType="admin">
+        insert into t_admin values (null,#{adminName} ,#{password} )
+    </insert>
+
+    <update id="update" parameterType="admin">
+        update t_admin
+        <set>
+            <if test="adminName != null">
+                adminName=#{adminName},
+            </if>
+            <if test="password != null">
+                password=#{password},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="integer">
+        delete from t_admin where id=#{id}
+    </delete>
+
+</mapper>

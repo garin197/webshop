@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/static/js/bs-index.js}"></script><!--自定义js函数-->
+    <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
+    <title th:text="@{网页后台管理}">页面标题</title>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" th:text="@{后台管理系统}">左标题</div>
+        <!-- 头部导航菜单 -->
+        <ul class="layui-nav layui-layout-left topLevelMenus">
+            <li class="layui-nav-item"><a href="javascript:showOp1()">商品管理</a></li>
+            <li class="layui-nav-item"><a href="javascript:showOp2()">分类管理</a></li>
+            <li class="layui-nav-item"><a href="javascript:showOp3()">用户管理</a></li>
+            <li class="layui-nav-item"><a href="javascript:showOp4()">订单管理</a></li>
+        </ul>
+        <a id="tooption1" style="display: none"></a>
+        <a id="tooption2" style="display: none"></a>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/static/images/adminHead.jpg" class="layui-nav-img" th:text="${session.currentAdmin}">
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="#">基本资料</a></dd>
+                    <dd><a href="#">扩展</a></dd>
+                    <dd><a href="#">扩展</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="layui-btn layui-btn layui-btn-danger" href="#">登出 OUT</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 内容主体区域 -->
+    <div class="" style="padding: 15px;">
+        <!-- 内容主体区域 -->
+
+        <!--商品管理-->
+        <div id="option1" style="">
+            <table class="layui-hide" id="datagrid1" lay-filter="datagrid"></table>
+        </div>
+
+        <!--分类管理-->
+        <div id="option2" style="display: none">
+            <table class="layui-hide" id="datagrid2" lay-filter="datagrid"></table>
+        </div>
+        <!--用户管理-->
+        <div id="option3" style="display: none">
+
+
+        </div>
+        <!--订单管理-->
+        <div id="option4" style="display: none">
+
+
+        </div>
+    </div>
+    <!---->
+    <!--数据表格头部工具栏-->
+    <script type="text/html" id="toolbar1">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="addData1" >添加</button>
+            <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
+            <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
+        </div>
+    </script>
+    <script type="text/html" id="toolbar2">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="addData2" lay-filter="addCategory">添加</button>
+            <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
+            <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
+        </div>
+    </script>
+
+    <!---->
+    <!--数据表格内部按键-->
+    <script type="text/html" id="bar1">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail1">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit1">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del1">删除</a>
+    </script>
+    <script type="text/html" id="bar2">
+        <a class="layui-btn layui-btn-xs" lay-event="edit2">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del2">删除</a>
+    </script>
+
+    <!---->
+    <!-- 底部固定区域 -->
+    <div class="layui-footer">
+        © GitHub garin197
+    </div>
+    <!---->
+    <!--弹出层表单-->
+    <div id="add-form-div1" style="display: none">
+        <form class="layui-form" id="add-form" action="#">
+            <div class="layui-form-item center">
+                <label class="layui-form-label" style="width: 100px">配置名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" required value="" style="width: 240px" lay-verify="required"
+                           placeholder="请输入配置名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">配置类型</label>
+                <div class="layui-input-block">
+                    <input type="text" name="type" required style="width: 240px" lay-verify="required"
+                           placeholder="请输入配置类型"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">配置值 </label>
+                <div class="layui-input-block">
+                    <input type="text" name="value" required style="width: 240px" lay-verify="required"
+                           placeholder="请输入配置值"
+                           autocomplete="off" class="layui-input">
+                    <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!---->
+    <div id="add-form-div2" style="display: none">
+        <form class="layui-form" id="add-form2" action="" method="post" autocomplete="on">
+            <div class="layui-form-item center">
+                <label class="layui-form-label" style="width: 100px">配置名称</label>
+                <div class="layui-input-block">
+                    <input type="text" id="categoryName" name="categoryName" required value="" style="width: 240px" lay-verify="required"
+                           placeholder="请输入类型名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--<script type="text/javascript" th:inline="none">-->
+
+<!--</script>-->
+</body>
+</html>
