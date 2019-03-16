@@ -55,6 +55,11 @@ public class PageController {
         return "user-login";
     }
 
+    @RequestMapping("/iframe-table1-add")
+    public String iframe_table1_add() {
+        return "backstage/bs-index-iframe-table1-add";
+    }
+
     @RequestMapping("/index")
     public String index() {
         return "index";

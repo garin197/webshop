@@ -20,9 +20,15 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
-    public List<Category> FindCategory(String statement) {
+    public int FindCategoryByName(HttpServletRequest request) {
+        String name=request.getParameter("categoryName");
+        return categoryMapper.findByName(name);
+    }
+
+    @Override
+    public List<Category> FindCategoryOnLike(String statement) {
         statement="%"+statement+"%";
-        return categoryMapper.findByName(statement);
+        return categoryMapper.findLikeName(statement);
     }
 
     @Override

@@ -26,10 +26,16 @@ public class CategoryController {
     public Map<String, Object> t(HttpServletRequest request) throws Exception {
         logger.info("后台-添加分类");
         request.setCharacterEncoding("utf-8");
-        int n = categoryService.AddCategory(request);
-        Map<String, Object> map = new HashMap<>();
         int flag = 0;
         String message = "成功";
+        Map<String, Object> map = new HashMap<>();
+        if (categoryService.FindCategoryByName(request)>0){//判断是否存在
+            message="已存在|already exist";
+            map.put("status", 1);
+            map.put("message", message);
+            return map;
+        }
+        int n = categoryService.AddCategory(request);
         if (n <= 0) {
             flag = 2;
             message = "失败";
@@ -81,7 +87,7 @@ public class CategoryController {
         Map<String,Object> result=new HashMap<>();
         result.put("code",0);
         result.put("message","");
-        List list=categoryService.FindCategory(statement);
+        List list=categoryService.FindCategoryOnLike(statement);
         result.put("count",list.size());
         result.put("data",list);
         return result;

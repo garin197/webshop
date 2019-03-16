@@ -27,7 +27,7 @@
         select * from t_category limit #{start},#{limit}
     </select>
 
-    <select id="findByName" parameterType="string" resultMap="categoryList">
+    <select id="findLikeName" parameterType="string" resultMap="categoryList">
         select * from t_category where categoryName like #{categoryName}
     </select>
 
@@ -48,5 +48,8 @@
     <delete id="delete" parameterType="integer">
         delete from t_category where categoryId=#{categoryId}
     </delete>
+    <select id="findByName" resultType="int" parameterType="string">
+        select count(*) from t_category where categoryName=#{name}
+    </select>
 
 </mapper>

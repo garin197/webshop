@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
     <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
-    <script type="text/javascript" th:src="@{/static/js/bs-index.js}"></script><!--自定义js函数-->
     <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/static/js/bs-index.js}"></script><!--自定义js函数-->
     <title th:text="@{'网页后台管理'}">页面标题</title>
 </head>
 <body class="layui-layout-body">
@@ -78,14 +78,15 @@
             <div class="layui-inline">
                 <input class="layui-input" type="text" name="SearchCategory" id="SearchCategory" autocomplete="off" placeholder="搜索分类" required>
             </div>
-            <!--data-type 表示该操作类型，识别id-->
-            <button class="layui-btn" data-type="SearchCategory">搜索</button>
+            <!--lay-event 表示该操作事件类型，识别id-->
+            <!--data-type 表示数据类型 用js获取-->
+            <button class="layui-btn" data-type="SearchCategory" lay-event="searchCategory">搜索</button>
         </div>
         <!--黑色分割线-->
         <hr class="layui-bg-black">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm" lay-event="addData2" lay-filter="addCategory">添加</button>
-            <button class="layui-btn layui-btn-sm" lay-event="reloadOnTable2" lay-filter="addCategory">reload</button>
+            <button class="layui-btn layui-btn-sm" lay-event="reloadOnTable2" lay-filter="reloadOnTable2">reload</button>
             <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
             <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
         </div>
@@ -136,10 +137,19 @@
                     <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
                 </div>
             </div>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="test1">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+
+
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn">重置</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>
                 </div>
             </div>
         </form>
@@ -156,8 +166,8 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn">重置</button>
+                    <button class="layui-btn" lay-submit lay-filter="saveCategory">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable2">重置</button>
                 </div>
             </div>
         </form>

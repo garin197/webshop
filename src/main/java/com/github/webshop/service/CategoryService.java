@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface CategoryService {
 
-    List<Category> FindCategory(String statement);
+    List<Category> FindCategoryOnLike(String statement);
+
+    int FindCategoryByName(HttpServletRequest request);
 
     int AddCategory(HttpServletRequest request);
 
