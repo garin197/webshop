@@ -1,8 +1,8 @@
-layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function () {
+layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function () {
     var table = layui.table;
-    // var table2 = layui.table;
     var form = layui.form;
-    var upload=layui.upload;
+    var upload = layui.upload;
+    var imgLimit = 0;
 
     //表格初始化
     table.render({
@@ -13,8 +13,8 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
         , cols: [[
             {type: 'checkbox', fixed: 'left'}
             , {field: 'categoryId', title: '类型ID', width: 120, fixed: 'left', unresize: true, sort: true}
-            , {field: 'categoryName', title: '类型', width: 200, edit: 'text'}
-            , {fixed: 'right', title: '操作', toolbar: '#bar2', width: 250}
+            , {field: 'categoryName', title: '类型', width: 300, edit: 'text'}
+            , {fixed: 'right', title: '操作', toolbar: '#categoryBar', width: 480}
         ]]
         , page: true
         , height: 530
@@ -77,15 +77,16 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
     table.on('toolbar', function (obj) {
         switch (obj.event) {//匹配lay-event
             case 'addData1':
-                var clientheight=document.documentElement.clientHeight;//获取浏览器页面高度
-                var frameHeight=clientheight+'px';
-                var index=layer.open({
+                var clientheight = document.documentElement.clientHeight;//获取浏览器页面高度
+                var frameHeight = clientheight + 'px';
+                var index = layer.open({
                     type: 2
-                    , area: [frameHeight,frameHeight]
+                    , area: [frameHeight, frameHeight]
                     , content: '/page/iframe-table1-add'
                     , anim: 4
-                    ,title: '添加商品'
-                    ,maxmin: true
+                    , title: '添加商品'
+                    , maxmin: true
+                    , scrollbar: true
                     , yes: function (index, layuio) {
                         layer.msg(index);
                     }
@@ -128,6 +129,8 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
                     })
                     break;
                 }
+
+
         }
     });
 
@@ -135,6 +138,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
     table.on('tool', function (obj) {
         var data = obj.data;
         // var id=obj.config.id;
+        //商品管理第一层表格
         if (obj.event === 'del1') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del();
@@ -143,6 +147,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
         } else if (obj.event === 'edit1') {
             layer.alert('编辑行：<br>' + JSON.stringify(data))
         }
+        //分类管理第一层表格
         if (obj.event === 'del2') {
             layer.confirm('真的删除行么', function (index) {//删除
                 obj.del();
@@ -163,6 +168,15 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
                     dataType: "json"
                 });
                 layer.closeAll();
+            });
+        }else if (obj.event=='manage'){
+        //属性管理
+            layer.open({
+                type:  2,
+                area: ['1000px','700px'],
+                anim:4,
+                scrollbar: true,
+                content: '/page/iframe-table2-category-manage'
             });
         }
     });
@@ -202,6 +216,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
         submit($, params);
         return false;
     });
+
     //提交
     function submit($, params) {
         $.post('/category/add', params, function (res) {
@@ -210,7 +225,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
             } else if (res.status == 2) {
                 layer.closeAll(); //关闭信息框
                 window.location.href = '/err';
-                layer.msg(res.message,{icon:2});
+                layer.msg(res.message, {icon: 2});
             } else {
 
                 layer.msg(res.message, function () {
@@ -231,43 +246,110 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage','upload'], function ()
     //普通图片上传
     upload.render({
         elem: '#singleImgBtn' //绑定前端的上传按钮
-        ,url: ''        //上传的地址
-        ,before: function(obj){
+        , url: ''        //上传的地址
+        , auto: false
+        , choose: function (obj) {
             //预读本地文件示例，不支持ie8
-            obj.preview(function(index, file, result){
+            obj.preview(function (index, file, result) {
+                $('#singleImg').attr('src', result); //图片链接（base64）
+            });
+            //演示失败状态，并实现重传
+            var singleImgText = $('#singleImgText');
+            singleImgText.html('<span style="color: #FF5722;"></span> <a class="layui-btn layui-btn-xs demo-reload">确认上传</a>');
+            singleImgText.find('.demo-reload').on('click', function () {
+                uploadInst.upload();
+            });
+        }
+        , before: function (obj) {
+            //预读本地文件示例，不支持ie8
+            obj.preview(function (index, file, result) {
                 $('#singleImg').attr('src', result); //图片链接（base64）
             });
         }
-        ,done: function(res){
+        , done: function (res) {
             //如果上传失败
-            if(res.code > 0){
+            if (res.code > 0) {
                 return layer.msg('上传失败');
             }
             //上传成功
         }
-        ,error: function(){
+        , error: function () {
             //演示失败状态，并实现重传
             var singleImgText = $('#singleImgText');
             singleImgText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-            singleImgText.find('.demo-reload').on('click', function(){
+            singleImgText.find('.demo-reload').on('click', function () {
                 uploadInst.upload();
             });
         }
     });
 
-    //多图片上传
-    upload.render({
+    //多文件列表
+    var demoListView = $('#multiImgList')
+        , uploadListIns = upload.render({
         elem: '#multiImgBtn'
-        ,url: '/page'
-        ,multiple: true
-        ,before: function(obj){
-            //预读本地文件示例，不支持ie8
-            obj.preview(function(index, file, result){
-                $('#mutiImg').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
+        , url: '/upload/'
+        , accept: 'file'
+        , multiple: true
+        , auto: false
+        , bindAction: '#testListAction'
+        , choose: function (obj) {
+            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+            //读取本地文件
+            obj.preview(function (index, file, result) {
+                if ((imgLimit) >= 5) {
+                    layer.msg("最多5个图", {icon: 4});
+                    $('#multiImgBtn').attr("disabled","disabled");
+                    delete files[index];
+                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    return;
+                }
+                imgLimit++;
+
+                var tr = $(['<tr id="upload-' + index + '">'
+                    , '<td>' + file.name + '</td>'
+                    , '<td><img style="width:100px;height: 100px" src="' + result + '"/></td>'
+                    , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                    , '<td>等待上传</td>'
+                    , '<td>'
+                    , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                    , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                    , '</td>'
+                    , '</tr>'].join(''));
+
+                //单个重传
+                tr.find('.demo-reload').on('click', function () {
+                    obj.upload(index, file);
+                });
+
+                //删除
+                tr.find('.demo-delete').on('click', function () {
+                    imgLimit--;
+                    $('#multiImgBtn').removeAttr("disabled");
+                    delete files[index]; //删除对应的文件
+                    tr.remove();
+                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                });
+
+                demoListView.append(tr);
+
+                layer.tips("lklk",'#imgLimitBtm');
             });
         }
-        ,done: function(res){
-            //上传完毕
+        , done: function (res, index, upload) {
+            if (res.code == 0) { //上传成功
+                var tr = demoListView.find('tr#upload-' + index)
+                    , tds = tr.children();
+                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                tds.eq(3).html(''); //清空操作
+                return delete this.files[index]; //删除文件队列已经上传成功的文件
+            }
+            this.error(index, upload);
+        }
+        , error: function (index, upload) {
+            var tr = demoListView.find('tr#upload-' + index)
+                , tds = tr.children();
+            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
         }
     });
 

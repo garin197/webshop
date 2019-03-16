@@ -99,10 +99,11 @@
         <a class="layui-btn layui-btn-xs" lay-event="edit1">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del1">删除</a>
     </script>
-    <script type="text/html" id="bar2">
-        <!--<a class="layui-btn layui-btn-xs" lay-event="edit2">编辑</a>-->
+    <script type="text/html" id="categoryBar">
+        <a class="layui-btn layui-btn-xs" lay-event="manage">属性管理</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del2">删除</a>
     </script>
+
 
     <!---->
     <!-- 底部固定区域 -->
@@ -111,49 +112,49 @@
     </div>
     <!---->
     <!--弹出层表单-->
-    <div id="add-form-div1" style="display: none">
-        <form class="layui-form" id="add-form" action="#">
-            <div class="layui-form-item center">
-                <label class="layui-form-label" style="width: 100px">配置名称</label>
-                <div class="layui-input-block">
-                    <input type="text" name="name" required value="" style="width: 240px" lay-verify="required"
-                           placeholder="请输入配置名称" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 100px">配置类型</label>
-                <div class="layui-input-block">
-                    <input type="text" name="type" required style="width: 240px" lay-verify="required"
-                           placeholder="请输入配置类型"
-                           autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width: 100px">配置值 </label>
-                <div class="layui-input-block">
-                    <input type="text" name="value" required style="width: 240px" lay-verify="required"
-                           placeholder="请输入配置值"
-                           autocomplete="off" class="layui-input">
-                    <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
-                </div>
-            </div>
-            <div class="layui-upload">
-                <button type="button" class="layui-btn" id="test1">上传图片</button>
-                <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="demo1">
-                    <p id="demoText"></p>
-                </div>
-            </div>
+    <!--<div id="add-form-div1" style="display: none">-->
+        <!--<form class="layui-form" id="add-form" action="#">-->
+            <!--<div class="layui-form-item center">-->
+                <!--<label class="layui-form-label" style="width: 100px">配置名称</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" name="name" required value="" style="width: 240px" lay-verify="required"-->
+                           <!--placeholder="请输入配置名称" autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label" style="width: 100px">配置类型</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" name="type" required style="width: 240px" lay-verify="required"-->
+                           <!--placeholder="请输入配置类型"-->
+                           <!--autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label" style="width: 100px">配置值 </label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" name="value" required style="width: 240px" lay-verify="required"-->
+                           <!--placeholder="请输入配置值"-->
+                           <!--autocomplete="off" class="layui-input">-->
+                    <!--&lt;!&ndash; <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> &ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-upload">-->
+                <!--<button type="button" class="layui-btn" id="test1">上传图片</button>-->
+                <!--<div class="layui-upload-list">-->
+                    <!--<img class="layui-upload-img" id="demo1">-->
+                    <!--<p id="demoText"></p>-->
+                <!--</div>-->
+            <!--</div>-->
 
 
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>
-                </div>
-            </div>
-        </form>
-    </div>
+            <!--<div class="layui-form-item">-->
+                <!--<div class="layui-input-block">-->
+                    <!--<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>-->
+                    <!--<button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
     <!---->
     <div id="add-form-div2" style="display: none">
         <form class="layui-form" id="add-form2" action="" method="post" autocomplete="on">

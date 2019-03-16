@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("page")
+@RequestMapping("/page")
 public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
@@ -58,6 +58,11 @@ public class PageController {
     @RequestMapping("/iframe-table1-add")
     public String iframe_table1_add() {
         return "backstage/bs-index-iframe-table1-add";
+    }
+
+    @RequestMapping("/iframe-table2-category-manage")
+    public String iframe_table2_category_manage() {
+        return "backstage/bs-index-iframe-table2-category-manage";
     }
 
     @RequestMapping("/index")
