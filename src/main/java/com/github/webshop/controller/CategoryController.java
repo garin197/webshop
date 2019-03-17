@@ -2,6 +2,7 @@ package com.github.webshop.controller;
 
 import com.github.webshop.pojo.Category;
 import com.github.webshop.service.CategoryService;
+import com.github.webshop.util.HashMapUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,9 +47,9 @@ public class CategoryController {
     }
 
     @ResponseBody
-    @RequestMapping("/list")
+    @RequestMapping("/list")//分页式
     public Map<String, Object> list(HttpServletRequest request) throws Exception {
-        logger.info("后台-添加分类");
+        logger.info("后台-分页获取分类列表");
         request.setCharacterEncoding("utf-8");
         List<Category> list = categoryService.getCategoryList(request);
         Map categoryResult = new HashMap<String, Object>();
@@ -57,6 +58,17 @@ public class CategoryController {
         categoryResult.put("count", categoryService.getRowCount());
         categoryResult.put("data", list);
         return categoryResult;
+    }
+
+    @ResponseBody
+    @RequestMapping("/all")//分页式
+    public Map<String, Object> all(HttpServletRequest request) throws Exception {
+        logger.info("后台-获取所有分类");
+        request.setCharacterEncoding("utf-8");
+        List<Category> list = categoryService.getCategoryListWithoutLimit(request);
+        Map result = HashMapUtil.getFormatMap(categoryService.getRowCount());
+        result.put("data", list);
+        return result;
     }
 
     @ResponseBody

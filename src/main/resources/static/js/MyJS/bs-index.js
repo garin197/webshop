@@ -3,6 +3,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
     var form = layui.form;
     var upload = layui.upload;
     var imgLimit = 0;
+    var imgUploaded=0;
 
     //表格初始化
     table.render({
@@ -42,7 +43,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
 
     table.render({
         elem: '#datagrid1'
-        , url: '/page/data'//数据请求url
+        , url: '/category/list'//数据请求url
         , toolbar: '#toolbar1'
         , title: '商品管理'
         , cols: [[
@@ -60,7 +61,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
             , {field: 'experience', title: '积分', width: 80, sort: true}
             , {field: 'ip', title: 'IP', width: 120}
             , {field: 'logins', title: '登入次数', width: 100, sort: true}
-
+            // , {field: 'categoryName',}
             , {fixed: 'right', title: '操作', toolbar: '#bar1', width: 250}
         ]]
         , page: true
@@ -87,8 +88,9 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                     , title: '添加商品'
                     , maxmin: true
                     , scrollbar: true
-                    , yes: function (index, layuio) {
-                        layer.msg(index);
+                    , success: function (layero, index) {
+                        //载入分类信息到选择框
+                        //不知道为什么写在这里不行，所有载入信息写到页面里了
                     }
                 });
                 break;
@@ -169,22 +171,19 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 });
                 layer.closeAll();
             });
-        }else if (obj.event=='manage'){
-        //属性管理
+        } else if (obj.event == 'manage') {
+            //属性管理
             layer.open({
-                type:  2,
-                area: ['1000px','700px'],
-                anim:4,
+                type: 2,
+                area: ['1000px', '700px'],
+                anim: 4,
                 scrollbar: true,
-                content: '/page/iframe-table2-category-manage'
+                title: obj.data.categoryName,
+                content: '/page/iframe-table2-property-manage?id=' + obj.data.categoryId
             });
         }
     });
 
-    // //监听 表格内工具条
-    // table.on('tool', function (obj) {
-    //
-    // });
 
     // 单元格编辑
     table.on('edit', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
@@ -217,6 +216,20 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         return false;
     });
 
+    //提交图片的表单
+    form.on('submit(saveImg)',function(data){
+        if (imgLimit==0){
+            layer.tips('来几张图片','#multiImgBtn',{
+                anim:6,tips:3
+            });
+            return false
+        }
+        if (imgLimit>imgUploaded){
+            layer.msg("先上传图片",{anim:6});
+            return false;
+        }
+    });
+
     //提交
     function submit($, params) {
         $.post('/category/add', params, function (res) {
@@ -244,44 +257,44 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
     }
 
     //普通图片上传
-    upload.render({
-        elem: '#singleImgBtn' //绑定前端的上传按钮
-        , url: ''        //上传的地址
-        , auto: false
-        , choose: function (obj) {
-            //预读本地文件示例，不支持ie8
-            obj.preview(function (index, file, result) {
-                $('#singleImg').attr('src', result); //图片链接（base64）
-            });
-            //演示失败状态，并实现重传
-            var singleImgText = $('#singleImgText');
-            singleImgText.html('<span style="color: #FF5722;"></span> <a class="layui-btn layui-btn-xs demo-reload">确认上传</a>');
-            singleImgText.find('.demo-reload').on('click', function () {
-                uploadInst.upload();
-            });
-        }
-        , before: function (obj) {
-            //预读本地文件示例，不支持ie8
-            obj.preview(function (index, file, result) {
-                $('#singleImg').attr('src', result); //图片链接（base64）
-            });
-        }
-        , done: function (res) {
-            //如果上传失败
-            if (res.code > 0) {
-                return layer.msg('上传失败');
-            }
-            //上传成功
-        }
-        , error: function () {
-            //演示失败状态，并实现重传
-            var singleImgText = $('#singleImgText');
-            singleImgText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-            singleImgText.find('.demo-reload').on('click', function () {
-                uploadInst.upload();
-            });
-        }
-    });
+    // upload.render({
+    //     elem: '#singleImgBtn' //绑定前端的上传按钮
+    //     , url: ''        //上传的地址
+    //     , auto: false
+    //     , choose: function (obj) {
+    //         //预读本地文件示例，不支持ie8
+    //         obj.preview(function (index, file, result) {
+    //             $('#singleImg').attr('src', result); //图片链接（base64）
+    //         });
+    //         //演示失败状态，并实现重传
+    //         var singleImgText = $('#singleImgText');
+    //         singleImgText.html('<span style="color: #FF5722;"></span> <a class="layui-btn layui-btn-xs demo-reload">确认上传</a>');
+    //         singleImgText.find('.demo-reload').on('click', function () {
+    //             uploadInst.upload();
+    //         });
+    //     }
+    //     , before: function (obj) {
+    //         //预读本地文件示例，不支持ie8
+    //         obj.preview(function (index, file, result) {
+    //             $('#singleImg').attr('src', result); //图片链接（base64）
+    //         });
+    //     }
+    //     , done: function (res) {
+    //         //如果上传失败
+    //         if (res.code > 0) {
+    //             return layer.msg('上传失败');
+    //         }
+    //         //上传成功
+    //     }
+    //     , error: function () {
+    //         //演示失败状态，并实现重传
+    //         var singleImgText = $('#singleImgText');
+    //         singleImgText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+    //         singleImgText.find('.demo-reload').on('click', function () {
+    //             uploadInst.upload();
+    //         });
+    //     }
+    // });
 
     //多文件列表
     var demoListView = $('#multiImgList')
@@ -293,12 +306,13 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         , auto: false
         , bindAction: '#testListAction'
         , choose: function (obj) {
+            hasUploadImgs=false;
             var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
             //读取本地文件
             obj.preview(function (index, file, result) {
                 if ((imgLimit) >= 5) {
                     layer.msg("最多5个图", {icon: 4});
-                    $('#multiImgBtn').attr("disabled","disabled");
+                    $('#multiImgBtn').attr("disabled", "disabled");
                     delete files[index];
                     uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
                     return;
@@ -307,7 +321,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
 
                 var tr = $(['<tr id="upload-' + index + '">'
                     , '<td>' + file.name + '</td>'
-                    , '<td><img style="width:100px;height: 100px" src="' + result + '"/></td>'
+                    , '<td><img id="td' + imgLimit + '" onmouseover="showImgTips(' + imgLimit + ')" style="width:100px;height: 100px" src="' + result + '"/></td>'
                     , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
                     , '<td>等待上传</td>'
                     , '<td>'
@@ -331,8 +345,6 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 });
 
                 demoListView.append(tr);
-
-                layer.tips("lklk",'#imgLimitBtm');
             });
         }
         , done: function (res, index, upload) {
@@ -341,6 +353,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                     , tds = tr.children();
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                 tds.eq(3).html(''); //清空操作
+                imgUploaded++;
                 return delete this.files[index]; //删除文件队列已经上传成功的文件
             }
             this.error(index, upload);
@@ -381,5 +394,31 @@ function showOp4() {
     document.getElementById("option2").style.display = "none";
     document.getElementById("option3").style.display = "none";
     document.getElementById("option1").style.display = "none";
+}
+
+function showImgTips(id) {
+    /**
+     * 只想图用tips放大，响应onmouseover
+     */
+    var tipsi;
+    var src = $('#td' + id).attr("src");
+    $("#td" + id).hover(function () {
+        tipsi = layer.tips('<div><img style="width:300px;height: 200px" src="' + src + '"/></div>', this
+            , {tips: 2, time: 0, area: ['325px', '220px'], anim: -1});
+    }, function () {
+        layer.close(tipsi);
+    });
+}
+
+/**
+ * 提示5张图片的tips
+ */
+function showAddImgBtnTips() {
+    var tip;
+    $('#multiImgBtn').hover(function () {
+        tip = layer.tips("第1个默认为封面", this, {tips: [1], icon: 6, anim: -1});
+    }, function () {
+        layer.close(tip);
+    });
 }
 

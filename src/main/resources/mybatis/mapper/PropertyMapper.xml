@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--指定包空间-->
+<mapper namespace="com.github.webshop.dao.PropertyMapper">
+
+    <select id="total" resultType="int">
+        select count(*) from t_property
+    </select>
+
+    <select id="findById" parameterType="property" resultType="property">
+        select * from t_property where propertyId=#{propertyId}
+    </select>
+
+    <resultMap id="propertyList" type="property">
+        <id property="propertyId" column="propertyId"></id>
+        <result property="propertyName" column="propertyName"></result>
+        <result property="categoryId" column="categoryId"></result>
+    </resultMap>
+
+    <resultMap id="propertyListWithCategory" type="property">
+        <id property="propertyId" column="propertyId"></id>
+        <result property="propertyName" column="propertyName"></result>
+        <result property="categoryId" column="cid"></result>
+        <association property="category" select="com.github.webshop.dao.CategoryMapper.findById" javaType="category" column="categoryId"></association>
+    </resultMap>
+
+    <select id="findAllWithCategory" parameterType="property" resultMap="propertyListWithCategory">
+        select * from t_property where cid=#{integer}
+    </select>
+
+    <select id="findWithLimit" parameterType="row" resultMap="propertyList">
+        select * from t_property limit #{start},#{limit}
+    </select>
+
+    <select id="findLikeName" parameterType="string" resultMap="propertyList">
+        select * from t_property where propertyName like #{propertyName}
+    </select>
+
+    <insert id="add" parameterType="property">
+        insert into t_property values (null,#{categoryId},#{propertyName})
+    </insert>
+
+    <update id="update" parameterType="property">
+        update t_property
+        <set>
+            <if test="categoryName != null">
+                propertyName=#{propertyName},
+            </if>
+        </set>
+        where propertyId=#{propertyId}
+    </update>
+
+    <delete id="delete" parameterType="integer">
+        delete from t_property where propertyId=#{propertyId}
+    </delete>
+    <select id="findByName" resultType="int" parameterType="string">
+        select count(*) from t_property where propertyName=#{name}
+    </select>
+
+</mapper>

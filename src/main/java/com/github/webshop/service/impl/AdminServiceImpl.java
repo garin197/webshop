@@ -4,7 +4,9 @@ import com.github.webshop.dao.AdminMapper;
 import com.github.webshop.pojo.Admin;
 import com.github.webshop.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AdminServiceImpl implements AdminService {
 
     @Autowired

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
+    <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/MyJS/bs-index-property-manage.js"></script>
+    <!--<script type="text/javascript" th:src="@{/static/js/bs-index.js}"></script>&lt;!&ndash;自定义js函数&ndash;&gt;-->
+</head>
+<body class="">
+<header>
+    <!--橙色分割线-->
+    <hr class="layui-bg-orange">
+</header>
+<!--弹出层表单-->
+<div id="property-manage-div" style="display: block">
+    <table class="layui-hide" id="datagridProperty" lay-filter="datagrid3"></table>
+</div>
+<script type="text/html" id="toolbar-property">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="addProperty" >添加</button>
+    </div>
+</script>
+<script type="text/html" id="propertyBar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delProperty">删除</a>
+</script>
+<div id="add-property-div" style="display: none">
+    <form class="layui-form" id="add-form" action="" method="post" autocomplete="on">
+        <div class="layui-form-item center">
+            <label class="layui-form-label" style="width: 100px">属性名称</label>
+            <div class="layui-input-block">
+                <input type="text" lay-data="{id: 'propertyName'}" id="propertyName" name="propertyName" required
+                       value="" style="width: 240px" lay-verify="required"
+                       placeholder="请输入属性名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" >
+                <button class="layui-btn" lay-submit lay-filter="saveProperty">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable2">重置</button>
+            </div>
+        </div>
+    </form>
+    <input id="cid" type="hidden" th:value="${category}"/>
+</div>
+</body>
+</html>

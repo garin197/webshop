@@ -20,6 +20,11 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
+    public List<Category> getCategoryListWithoutLimit(HttpServletRequest request) {
+        return categoryMapper.findAll();
+    }
+
+    @Override
     public int FindCategoryByName(HttpServletRequest request) {
         String name=request.getParameter("categoryName");
         return categoryMapper.findByName(name);

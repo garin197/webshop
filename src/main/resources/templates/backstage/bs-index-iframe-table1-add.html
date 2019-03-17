@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
     <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
     <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
-    <script type="text/javascript" th:src="@{/static/js/bs-index.js}"></script><!--自定义js函数-->
+    <script type="text/javascript" th:src="@{/static/js/MyJS/bs-index.js}"></script><!--自定义js函数-->
 </head>
 <body class="">
 <header>
@@ -16,45 +16,64 @@
 </header>
 <!--弹出层表单-->
 <div id="add-form-div1" style="display: block">
-    <form class="layui-form" id="add-form" action="#">
+    <form class="layui-form" id="add-form" action="" lay-filter="test2">
         <div class="layui-form-item center">
-            <label class="layui-form-label" style="width: 100px">配置名称</label>
+            <label class="layui-form-label" style="width: 100px">产品名称</label>
             <div class="layui-input-block">
-                <input type="text" name="name" required value="" style="width: 240px" lay-verify="required"
-                       placeholder="请输入配置名称" autocomplete="off" class="layui-input">
+                <input type="text" id="prodictName" name="prodictName" required value="" style="width: 240px" lay-verify="required"
+                       placeholder="产品名称" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="width: 100px">产品副标题</label>
+            <div class="layui-input-block">
+                <input type="text" id="prodictSubTitle" name="prodictSubTitle" required value="" style="width: 240px" lay-verify="required"
+                       placeholder="产品副标题" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">配置类型</label>
+            <label class="layui-form-label" style="width: 100px">产品原价</label>
             <div class="layui-input-block">
-                <input type="text" name="type" required style="width: 240px" lay-verify="required"
-                       placeholder="请输入配置类型"
+                <input type="text" id="originalPrice" name="originalPrice" required style="width: 240px" lay-verify="required"
+                       placeholder="产品原价"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label" style="width: 100px">优惠价格</label>
+            <div class="layui-input-block">
+                <input type="text" id="promotePrice" name="promotePrice" required style="width: 240px" lay-verify="required"
+                       placeholder="优惠价格"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">配置值 </label>
+            <label class="layui-form-label" style="width: 100px">库存 </label>
             <div class="layui-input-block">
-                <input type="text" name="value" required style="width: 240px" lay-verify="required"
-                       placeholder="请输入配置值"
+                <input type="text" id="stock" name="stock" required style="width: 240px" lay-verify="required"
+                       placeholder="库存"
                        autocomplete="off" class="layui-input">
                 <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">分类</label>
+            <div class="layui-input-inline">
+                <select id="category" name="category" lay-verify="required">
+                    <option value="">请选择..</option>
+                </select>
+                <!--&lt;!&ndash; <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> &ndash;&gt;-->
+            </div>
+        </div>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>预览图片上传</legend>
+            <legend id="yulanLab">预览图片上传</legend>
         </fieldset>
         <div class="layui-upload" style="padding:10px">
-            <hr class=""/>
-            <button type="button" class="layui-btn layui-btn-radius ayui-btn-normal" id="multiImgBtn">添加预览图片</button>
+
+            <button type="button" class="layui-btn layui-btn-radius ayui-btn-normal" id="multiImgBtn" onmouseover="showAddImgBtnTips()">添加预览图片</button>
             <button type="button" class="layui-btn layui-btn-radius" id="testListAction">开始上传</button>
             <div class="layui-upload-list">
-                <table class="layui-table">
+                <table class="layui-table" id="table-add-image">
                     <thead>
                     <tr>
-                        <th>封面</th>
-                        <th>文件名</th>
+                        <th id="th1">文件名</th>
                         <th>预览</th>
                         <th>大小</th>
                         <th>状态</th>
@@ -69,12 +88,28 @@
         <hr class="layui-bg-orange"/>
         <div class="layui-form-item" align="right" style="padding-top: 20px;padding-right: 20px">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn-warm" lay-submit lay-filter="saveImg">立即提交</button>
+                <button class="layui-btn layui-btn-warm" lay-submit lay-filter="saveImg" lay-event="saveImg">立即提交</button>
                 <!--<button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>-->
             </div>
         </div>
     </form>
 </div>
 <!---->
+<script type="text/javascript">
+    layui.use(['form'],function () {
+        var form = layui.form;
+        $.ajax({
+            type: 'post',
+            url: '/category/all',
+            success: function (res) {
+                var select = $('#category');
+                for (var i=0;i<res.data.length;i++) {
+                    select.append('<option value="'+res.data[i].categoryId+'">'+res.data[i].categoryName+'</option>');
+                }
+                form.render();
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import net.minidev.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -60,9 +61,11 @@ public class PageController {
         return "backstage/bs-index-iframe-table1-add";
     }
 
-    @RequestMapping("/iframe-table2-category-manage")
-    public String iframe_table2_category_manage() {
-        return "backstage/bs-index-iframe-table2-category-manage";
+//    @ResponseBody
+    @RequestMapping("/iframe-table2-property-manage")
+    public String iframe_table2_category_manage(@RequestParam(value = "id") Integer category,Map map) {
+        map.put("category",category);
+        return "backstage/bs-index-iframe-table2-property-manage";
     }
 
     @RequestMapping("/index")

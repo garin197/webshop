@@ -19,6 +19,8 @@ public interface CategoryService {
 
     List<Category> getCategoryList(HttpServletRequest request);
 
+    List<Category> getCategoryListWithoutLimit(HttpServletRequest request);
+
     int getRowCount();
 
     int deleteCategory(Integer id);

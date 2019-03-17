@@ -1,9 +1,9 @@
 package com.github.webshop.service;
 
 import com.github.webshop.pojo.Admin;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository
 public interface AdminService {
 
     Admin FindAdmin(Admin admin);
