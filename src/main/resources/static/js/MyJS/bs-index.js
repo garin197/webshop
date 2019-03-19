@@ -55,8 +55,8 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 field: 'productId', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true
             }
             , {
-                fixed: 'image', title: '封面', width: 80, templet: function (data) {//'+data.imgUrl.toString()+'
-                    return '<img src="" style="width:50px;height: 40px"/>';
+                fixed: 'image', title: '封面', width: 80, templet: function (data) {//
+                    return '<img src="'+data.imgUrl.toString()+'" style="width:50px;height: 40px"/>';
                 }
             }
             , {

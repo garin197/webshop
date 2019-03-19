@@ -1,19 +1,13 @@
 package com.github.webshop.conf;
 
 import com.github.webshop.Interceptor.BaseInterceptor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.servlet.MultipartConfigElement;
-
 @Configuration
-@PropertySource("upload-config.properties")
+//@PropertySource("classpath:upload-config.properties")
 public class WebStaticResourceConfig implements WebMvcConfigurer {
 
     /**
@@ -25,10 +19,10 @@ public class WebStaticResourceConfig implements WebMvcConfigurer {
         //让拦截器放行
     }
 
-    @Value("${file.virtualPath}")
-    private String virtualPath;
-    @Value("${file.uploadFolder}")
-    private String uploadFolder;
+//    @Value("${file.virtualPath}")
+//    private String virtualPath;
+//    @Value("${file.uploadFolder}")
+//    private String uploadFolder;
     /**
      * 添加静态资源文件，外部可以直接访问地址
      *
@@ -42,16 +36,15 @@ public class WebStaticResourceConfig implements WebMvcConfigurer {
           registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/");
           registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
           registry.addResourceHandler("/layui/static/**").addResourceLocations("classpath:/static/layui/");
-          registry.addResourceHandler(virtualPath).addResourceLocations(uploadFolder);//创建虚拟路径映射
-
+//          registry.addResourceHandler(virtualPath).addResourceLocations(uploadFolder);//创建虚拟路径映射
     }
 
-    @Bean
-    MultipartConfigElement multipartConfigElement(){
-        MultipartConfigFactory factory=new MultipartConfigFactory();
-        factory.setLocation(uploadFolder);
-        return factory.createMultipartConfig();
-    }
+//    @Bean
+//    MultipartConfigElement multipartConfigElement(){
+//        MultipartConfigFactory factory=new MultipartConfigFactory();
+//        factory.setLocation(uploadFolder);
+//        return factory.createMultipartConfig();
+//    }
 
     private BaseInterceptor getBaseInterceptor(){
         return new BaseInterceptor();

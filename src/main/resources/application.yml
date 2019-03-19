@@ -3,8 +3,9 @@ server:
   servlet:
     context-path: /
 
-#jdbc
+
 spring:
+  #jdbc
   datasource:
     url: jdbc:mysql://localhost:3306/db_webshop?useSSL=false
     username: root
@@ -27,13 +28,19 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-  #关缓存
+  #关模板引擎缓存
   thymeleaf:
     cache: false
+#  设置multipartfile的上传文件大小和request请求的大小
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
+#  设置虚拟路径：：匹配所有项目路径下的虚拟路径，增加文件的虚拟映射
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${file.uploadFolder}
 
 #别名
 mybatis:
@@ -42,3 +49,4 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   # 指定sql映射文件位置
   mapper-locations: classpath:mybatis/mapper/*.xml
+
