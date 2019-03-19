@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.webshop.dao.ImageMapper">
+    <insert id="add" parameterType="prdtimage">
+        insert into t_productimage values(null,#{productId} ,#{imgType} ,#{imgUrl} )
+    </insert>
+
+    <delete id="deleteOne" parameterType="integer">
+        delete from t_productimage where imgId=#{prdtImageId}
+    </delete>
+    <delete id="deleteAll" parameterType="integer">
+        delete from t_productimage where pid=#{productId}
+    </delete>
+
+    <update id="update" parameterType="prdtimage">
+        update t_productimage
+        <set>
+            <if test="imgUrl != null and imgUrl != ''">
+                imgUrl=#{imgUrl}
+            </if>
+        </set>
+          where imgId=#{imgId}
+    </update>
+
+    <select id="findById" parameterType="integer">
+        select * from t_productimage where imgId=#{prdtImageId}
+    </select>
+    <select id="findByType" parameterType="integer">
+        select * from t_productimage where imgType=#{imgType}
+    </select>
+    <select id="findByProductId" parameterType="integer" resultType="list">
+        select * from t_productimage where pid=#{productId}
+    </select>
+
+    <resultMap id="img_product_category_list" type="prdtimage">
+        <id property="imgId" column="imgId"></id>
+        <result property="productId" column="pid"></result>
+        <result property="imgType" column="imgType"></result>
+        <result property="imgUrl" column="imgUrl"></result>
+        <association property="product" column="pid" select="com.github.webshop.dao.ProductMapper.findAllWithCategoryByProductId" javaType="product"></association>
+    </resultMap>
+    <select id="get_img_product_category_list" resultMap="img_product_category_list" parameterType="row">
+        select * from t_productimage where imgType=1 limit #{start},#{limit}
+    </select>
+</mapper>

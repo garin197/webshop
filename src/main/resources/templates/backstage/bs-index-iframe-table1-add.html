@@ -20,25 +20,25 @@
         <div class="layui-form-item center">
             <label class="layui-form-label" style="width: 100px">产品名称</label>
             <div class="layui-input-block">
-                <input type="text" id="prodictName" name="prodictName" required value="" style="width: 240px" lay-verify="required"
+                <input type="text" id="productName" name="productName" required value="" style="width: 240px" lay-verify="required"
                        placeholder="产品名称" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label" style="width: 100px">产品副标题</label>
             <div class="layui-input-block">
-                <input type="text" id="prodictSubTitle" name="prodictSubTitle" required value="" style="width: 240px" lay-verify="required"
+                <input type="text" id="productSubTitle" name="productSubTitle" required value="" style="width: 240px" lay-verify="required"
                        placeholder="产品副标题" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">产品原价</label>
             <div class="layui-input-block">
-                <input type="text" id="originalPrice" name="originalPrice" required style="width: 240px" lay-verify="required"
+                <input type="number" id="originalPrice" name="originalPrice" required style="width: 240px" lay-verify="required|number"
                        placeholder="产品原价"
                        autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label" style="width: 100px">优惠价格</label>
             <div class="layui-input-block">
-                <input type="text" id="promotePrice" name="promotePrice" required style="width: 240px" lay-verify="required"
+                <input type="number" id="promotePrice" name="promotePrice" required style="width: 240px" lay-verify="required|number"
                        placeholder="优惠价格"
                        autocomplete="off" class="layui-input">
             </div>
@@ -46,7 +46,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">库存 </label>
             <div class="layui-input-block">
-                <input type="text" id="stock" name="stock" required style="width: 240px" lay-verify="required"
+                <input type="number" id="stock" name="stock" required style="width: 240px" lay-verify="required|number"
                        placeholder="库存"
                        autocomplete="off" class="layui-input">
                 <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
@@ -62,37 +62,44 @@
                 <!--&lt;!&ndash; <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> &ndash;&gt;-->
             </div>
         </div>
-        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend id="yulanLab">预览图片上传</legend>
-        </fieldset>
-        <div class="layui-upload" style="padding:10px">
 
-            <button type="button" class="layui-btn layui-btn-radius ayui-btn-normal" id="multiImgBtn" onmouseover="showAddImgBtnTips()">添加预览图片</button>
-            <button type="button" class="layui-btn layui-btn-radius" id="testListAction">开始上传</button>
-            <div class="layui-upload-list">
-                <table class="layui-table" id="table-add-image">
-                    <thead>
-                    <tr>
-                        <th id="th1">文件名</th>
-                        <th>预览</th>
-                        <th>大小</th>
-                        <th>状态</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody id="multiImgList"></tbody>
-
-                </table>
-            </div>
-        </div>
         <hr class="layui-bg-orange"/>
-        <div class="layui-form-item" align="right" style="padding-top: 20px;padding-right: 20px">
-            <div class="layui-input-block">
-                <button class="layui-btn layui-btn-warm" lay-submit lay-filter="saveImg" lay-event="saveImg">立即提交</button>
-                <!--<button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>-->
-            </div>
-        </div>
+        <!--<div class="layui-form-item" align="right" style="padding-top: 20px;padding-right: 20px">-->
+            <!--<div class="layui-input-block">-->
+                <!--&lt;!&ndash;<button  id="uploadAction" class="layui-btn layui-btn-warm" lay-submit lay-filter="saveImg" lay-event="saveImg">上传并提交</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;<button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>&ndash;&gt;-->
+            <!--</div>-->
+        <!--</div>-->
     </form>
+    <div class="layui-form-item" align="right" style="padding-top: 20px;padding-right: 20px">
+        <div class="layui-input-block">
+            <button  id="uploadAction" class="layui-btn layui-btn-warm" lay-submit lay-filter="saveImg" lay-event="saveImg">上传并提交</button>
+            <!--<button type="reset" class="layui-btn layui-btn-primary" id="resetBtnOnTable1">重置</button>-->
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend id="yulanLab">预览图片上传</legend>
+    </fieldset>
+    <div class="layui-upload" style="padding:10px">
+
+        <button type="button" class="layui-btn layui-btn-radius ayui-btn-normal" id="multiImgBtn" onmouseover="showAddImgBtnTips()">添加预览图片</button>
+        <!--<button type="button" class="layui-btn layui-btn-radius" id="testListAction">开始上传</button>-->
+        <div class="layui-upload-list">
+            <table class="layui-table" id="table-add-image">
+                <thead>
+                <tr>
+                    <th id="th1">文件名</th>
+                    <th>预览</th>
+                    <th>大小</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="multiImgList"></tbody>
+
+            </table>
+        </div>
+    </div>
 </div>
 <!---->
 <script type="text/javascript">

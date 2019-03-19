@@ -3,10 +3,14 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
     var form = layui.form;
     var upload = layui.upload;
     var imgLimit = 0;
-    var imgUploaded=0;
+    var imgUploaded = 0;
+    var hasCreateProduct = false;
+    var proId = -1;
+    var myIndex;
+    var myFileNametype = "iNdeX_";
 
     //表格初始化
-    table.render({
+    table.render({//属性管理表
         elem: '#datagrid2'
         , url: '/category/list'//数据请求url
         , toolbar: '#toolbar2'
@@ -43,26 +47,63 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
 
     table.render({
         elem: '#datagrid1'
-        , url: '/category/list'//数据请求url
+        , url: '/product/list'//数据请求url
         , toolbar: '#toolbar1'
         , title: '商品管理'
-        , cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
-            , {field: 'username', title: '用户名', width: 120, edit: 'text'}
+        , cols: [[//templet之定义数据模板
+            {
+                field: 'productId', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true
+            }
             , {
-                field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
-                    return '<em>' + res.email + '</em>'
+                fixed: 'image', title: '封面', width: 80, templet: function (data) {//'+data.imgUrl.toString()+'
+                    return '<img src="" style="width:50px;height: 40px"/>';
                 }
             }
-            , {field: 'sex', title: '性别', width: 80, edit: 'text', sort: true}
-            , {field: 'city', title: '城市', width: 180}
-            , {field: 'sign', title: '签名', width: 180}
-            , {field: 'experience', title: '积分', width: 80, sort: true}
-            , {field: 'ip', title: 'IP', width: 120}
-            , {field: 'logins', title: '登入次数', width: 100, sort: true}
-            // , {field: 'categoryName',}
-            , {fixed: 'right', title: '操作', toolbar: '#bar1', width: 250}
+            , {
+                field: 'productName', title: '商品名称', width: 250, edit: 'text', templet: function (data) {
+                    return data.product.productName.toString();
+                }
+            }
+            , {
+                field: 'subTitle', title: '小标题', width: 250, edit: 'text', sort: true, templet: function (data) {
+                    return data.product.subTitle.toString();
+                }
+            }
+            , {
+                field: 'categoryName', title: '分类', width: 80, sort: true, templet: function (data) {
+                    return data.product.category.categoryName.toString();
+                }
+            }
+            , {
+                field: 'originalPrice', title: '原价', width: 80, edit: 'text', templet: function (data) {
+                    return data.product.originalPrice.toString();
+                }
+            }
+            , {
+                field: 'promotePrice', title: '现价', width: 80, edit: 'text', templet: function (data) {
+                    return data.product.promotePrice.toString();
+                }
+            }
+            , {
+                field: 'stock', title: '库存', width: 80, sort: true, edit: 'text', templet: function (data) {
+                    return data.product.stock.toString();
+                }
+            }
+            , {
+                field: 'createDate', title: '创建日', width: 172, unresize: true, templet: function (data) {
+                    return data.product.createDate.toString();
+                }
+            }
+            , {
+                fixed: 'right', title: '操作', toolbar: '#bar1', width: 240, templet: function (data) {
+                }
+            }
+            // , {field: 'logins', title: '登入次数', width: 100, sort: true,}
+            // , {
+            //     field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
+            //         return '<em>' + res.email + '</em>'
+            //     }
+            // }
         ]]
         , page: true
         , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
@@ -91,6 +132,9 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                     , success: function (layero, index) {
                         //载入分类信息到选择框
                         //不知道为什么写在这里不行，所有载入信息写到页面里了
+                    }
+                    ,end:function(){
+                        table.reload('datagrid1');
                     }
                 });
                 break;
@@ -217,18 +261,27 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
     });
 
     //提交图片的表单
-    form.on('submit(saveImg)',function(data){
-        if (imgLimit==0){
-            layer.tips('来几张图片','#multiImgBtn',{
-                anim:6,tips:3
-            });
-            return false
-        }
-        if (imgLimit>imgUploaded){
-            layer.msg("先上传图片",{anim:6});
-            return false;
-        }
-    });
+    // form.on('submit(saveImg)',function(data){
+    //     if (imgLimit==0){
+    //         layer.tips('来几张图片','#multiImgBtn',{
+    //             anim:6,tips:3
+    //         });
+    //         return false
+    //     }
+    //     $.ajax({
+    //         type:'post',
+    //         url: '/product/add',
+    //         data: data.field,
+    //         success: function(res){
+    //             idOnImg=res.productId;
+    //             ImguploadList.data={'id':idOnImg};
+    //             layer.load(); //上传loading
+    //             ImguploadList.upload();
+    //         }
+    //     });
+    //
+    //
+    // });
 
     //提交
     function submit($, params) {
@@ -256,57 +309,30 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         $('#categoryName').val('');
     }
 
-    //普通图片上传
-    // upload.render({
-    //     elem: '#singleImgBtn' //绑定前端的上传按钮
-    //     , url: ''        //上传的地址
-    //     , auto: false
-    //     , choose: function (obj) {
-    //         //预读本地文件示例，不支持ie8
-    //         obj.preview(function (index, file, result) {
-    //             $('#singleImg').attr('src', result); //图片链接（base64）
-    //         });
-    //         //演示失败状态，并实现重传
-    //         var singleImgText = $('#singleImgText');
-    //         singleImgText.html('<span style="color: #FF5722;"></span> <a class="layui-btn layui-btn-xs demo-reload">确认上传</a>');
-    //         singleImgText.find('.demo-reload').on('click', function () {
-    //             uploadInst.upload();
-    //         });
-    //     }
-    //     , before: function (obj) {
-    //         //预读本地文件示例，不支持ie8
-    //         obj.preview(function (index, file, result) {
-    //             $('#singleImg').attr('src', result); //图片链接（base64）
-    //         });
-    //     }
-    //     , done: function (res) {
-    //         //如果上传失败
-    //         if (res.code > 0) {
-    //             return layer.msg('上传失败');
-    //         }
-    //         //上传成功
-    //     }
-    //     , error: function () {
-    //         //演示失败状态，并实现重传
-    //         var singleImgText = $('#singleImgText');
-    //         singleImgText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-    //         singleImgText.find('.demo-reload').on('click', function () {
-    //             uploadInst.upload();
-    //         });
-    //     }
-    // });
+    $('#uploadAction').click(function(){
+        if (imgLimit == 0) {
+            layer.tips('来几张图片', '#multiImgBtn', {
+                anim: 6, tips: 3
+            });
+            return false
+        }
+    });
 
-    //多文件列表
-    var demoListView = $('#multiImgList')
-        , uploadListIns = upload.render({
-        elem: '#multiImgBtn'
-        , url: '/upload/'
+    var ImgListView = $('#multiImgList')//创建列表对象
+        , ImguploadList = upload.render({
+        elem: '#multiImgBtn'//选择图片
+        , url: '/product/addImg'
         , accept: 'file'
         , multiple: true
         , auto: false
-        , bindAction: '#testListAction'
+        , bindAction: '#uploadAction'//上传触发
+        , data: {
+            type: function () {
+                return $('#tr1').id;
+            }
+        }
         , choose: function (obj) {
-            hasUploadImgs=false;
+            hasCreateProduct = false;
             var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
             //读取本地文件
             obj.preview(function (index, file, result) {
@@ -314,11 +340,14 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                     layer.msg("最多5个图", {icon: 4});
                     $('#multiImgBtn').attr("disabled", "disabled");
                     delete files[index];
-                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    ImguploadList.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
                     return;
                 }
                 imgLimit++;
-
+                if (imgLimit == 1) {
+                    myIndex = index;
+                    obj.resetFile(index, file, myFileNametype + file.name);
+                }
                 var tr = $(['<tr id="upload-' + index + '">'
                     , '<td>' + file.name + '</td>'
                     , '<td><img id="td' + imgLimit + '" onmouseover="showImgTips(' + imgLimit + ')" style="width:100px;height: 100px" src="' + result + '"/></td>'
@@ -341,28 +370,83 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                     $('#multiImgBtn').removeAttr("disabled");
                     delete files[index]; //删除对应的文件
                     tr.remove();
-                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    ImguploadList.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
                 });
 
-                demoListView.append(tr);
+                ImgListView.append(tr);
             });
         }
         , done: function (res, index, upload) {
             if (res.code == 0) { //上传成功
-                var tr = demoListView.find('tr#upload-' + index)
+                var tr = ImgListView.find('tr#upload-' + index)
                     , tds = tr.children();
                 tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                 tds.eq(3).html(''); //清空操作
-                imgUploaded++;
+                imgUploaded++;//已上传加一
+                if (imgUploaded >= imgLimit) {
+                    imgUploaded = 0;
+                    imgLimit = 0;
+                }
                 return delete this.files[index]; //删除文件队列已经上传成功的文件
             }
             this.error(index, upload);
         }
+        , before: function (obj) {
+            if (imgLimit == 0) {
+                layer.tips('来几张图片', '#multiImgBtn', {
+                    anim: 6, tips: 3
+                });
+                return false
+            }
+            //上传之前先提交其他信息并获取新增productId
+
+            if (!hasCreateProduct) {
+
+                $.ajax({
+                    type: 'post',
+                    url: '/product/add',
+                    async: false,//设置是否异步执行，false为非异步
+                    data: {
+                        "productName": $('#productName').val(),
+                        "productSubTitle": $('#productSubTitle').val(),
+                        "originalPrice": $('#originalPrice').val(),
+                        "promotePrice": $('#promotePrice').val(),
+                        "stock": $('#stock').val(),
+                        "category": $('#category').val()
+                    },
+                    success: function (res) {
+                        proId = res.productId;
+                        hasCreateProduct = true;
+                    },
+                    error: function (res) {
+                        alert('error');
+                    }
+                });
+
+            }
+
+            this.data = {'id': proId, 'type': myFileNametype};
+        }
         , error: function (index, upload) {
-            var tr = demoListView.find('tr#upload-' + index)
+            var tr = ImgListView.find('tr#upload-' + index)
                 , tds = tr.children();
             tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
             tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+
+            ImguploadList.upload();
+        }
+        , allDone: function (obj) {
+            layer.confirm(
+                '要不要再来一发？',//提示信息
+                {btn: ['干', '我拒绝']},//按钮的文本
+                function () {//响应第一个按钮
+                    window.location.reload();
+                }
+                , function () {//响应第二个按钮
+                    layer.closeAll();
+                    var index_ = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index_); //再执行关闭
+                });
         }
     });
 
@@ -422,3 +506,44 @@ function showAddImgBtnTips() {
     });
 }
 
+//普通图片上传
+// upload.render({
+//     elem: '#singleImgBtn' //绑定前端的上传按钮
+//     , url: ''        //上传的地址
+//     , auto: false
+//     , choose: function (obj) {
+//         //预读本地文件示例，不支持ie8
+//         obj.preview(function (index, file, result) {
+//             $('#singleImg').attr('src', result); //图片链接（base64）
+//         });
+//         //演示失败状态，并实现重传
+//         var singleImgText = $('#singleImgText');
+//         singleImgText.html('<span style="color: #FF5722;"></span> <a class="layui-btn layui-btn-xs demo-reload">确认上传</a>');
+//         singleImgText.find('.demo-reload').on('click', function () {
+//             uploadInst.upload();
+//         });
+//     }
+//     , before: function (obj) {
+//         //预读本地文件示例，不支持ie8
+//         obj.preview(function (index, file, result) {
+//             $('#singleImg').attr('src', result); //图片链接（base64）
+//         });
+//     }
+//     , done: function (res) {
+//         //如果上传失败
+//         if (res.code > 0) {
+//             return layer.msg('上传失败');
+//         }
+//         //上传成功
+//     }
+//     , error: function () {
+//         //演示失败状态，并实现重传
+//         var singleImgText = $('#singleImgText');
+//         singleImgText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+//         singleImgText.find('.demo-reload').on('click', function () {
+//             uploadInst.upload();
+//         });
+//     }
+// });
+// ImgListView.upload
+//多文件列表

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.webshop.dao.ProductMapper">
+    <!--插入一条记录，返回主键值-->
+    <insert id="add" parameterType="product" useGeneratedKeys="true">
+        insert into t_product(productName,subTitle,originalPrice,promotePrice,stock,cid,createDate) values(#{productName} ,#{subTitle} ,#{originalPrice},#{promotePrice} ,#{stock} ,#{categoryId} ,#{createDate})
+        <selectKey keyColumn="productId" keyProperty="productId" resultType="java.lang.Integer" order="AFTER" statementType="PREPARED">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterType="product">
+        delete from t_product where productId=#{productId}
+    </delete>
+
+    <update id="update" parameterType="product">
+        update t_product
+        <set>
+            <if test="productName!=null and productName!=''">
+                productName=#{productName} ,
+            </if>
+            <if test="subTitle!=null and subTitle!=''">
+                subTitle=#{subTitle} ,
+            </if>
+            <if test="originalPrice!=null and originalPrice!=''">
+                originalPrice=#{originalPrice} ,
+            </if>
+            <if test="promotePrice!=null and promotePrice!=''">
+                promotePrice=#{promotePrice} ,
+            </if>
+            <if test="stock!=null and stock!=''">
+                stock=#{stock} ,
+            </if>
+            <if test="category!=null">
+                cid=#{category.categoryId} ,
+            </if>
+        </set>
+        where productId=#{productId}
+    </update>
+
+    <resultMap id="listWithLimit" type="product">
+        <id property="productId" column="productId"></id>
+        <result property="productName" column="productName"></result>
+        <result property="subTitle" column="subTitle"></result>
+        <result property="originalPrice" column="originalPrice"></result>
+        <result property="promotePrice" column="promotePrice"></result>
+        <result property="stock" column="stock"></result>
+        <result property="categoryId" column="categoryId"></result>
+        <result property="createDate" column="createDate"></result>
+        <association javaType="category" column="cid" property="category"
+                     select="com.github.webshop.dao.CategoryMapper.findById"></association>
+    </resultMap>
+    <select id="findAllWithLimit" parameterType="row" resultMap="listWithLimit">
+        select * from t_product limit #{start},#{limit}
+    </select>
+
+    <select id="findAllWithCategoryByProductId" resultMap="listWithLimit" parameterType="integer">
+        select * from t_product where productId=#{productId}
+    </select>
+
+    <select id="findById" parameterType="integer">
+        select * from t_product where productId=#{productId}
+    </select>
+
+    <select id="findAllByStatements" parameterType="product">
+        select * from t_product
+        <where>
+            <if test="productName!=null and productName!=''">
+                productName like #{productName}
+            </if>
+            <if test="beginDate!=null and beginDate!=''"><!--小于等于-->
+                and beginDate &gt;= #{beginDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and endDate &lt;= #{endDate}
+            </if>
+        </where>
+
+
+    </select>
+</mapper>
