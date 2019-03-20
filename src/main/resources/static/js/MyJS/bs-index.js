@@ -56,7 +56,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
             }
             , {
                 fixed: 'image', title: '封面', width: 80, templet: function (data) {//
-                    return '<img src="'+data.imgUrl.toString()+'" style="width:50px;height: 40px"/>';
+                    return '<img id="img' + data.imgId.toString() + '" onmouseout="closeImgTips()" onmouseover="showImgTipsOnTable1(' + data.imgId.toString() + ')" src="' + data.imgUrl.toString() + '" style="width:50px;height: 40px"/>';
                 }
             }
             , {
@@ -133,7 +133,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                         //载入分类信息到选择框
                         //不知道为什么写在这里不行，所有载入信息写到页面里了
                     }
-                    ,end:function(){
+                    , end: function () {
                         table.reload('datagrid1');
                     }
                 });
@@ -186,10 +186,24 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         // var id=obj.config.id;
         //商品管理第一层表格
         if (obj.event === 'del1') {
-            layer.confirm('真的删除行么', function (index) {
-                obj.del();
-                layer.close(index);
-            });
+            layer.confirm('真的么?',
+                {btn: ['果断下架', '容我三思']},
+                function (index) {
+                    obj.del();
+                    //删除商品
+                    $.ajax({
+                        type:"post",
+                        url:'/product/del',
+                        data: data,
+                        success:function(){
+
+                        }
+                    });
+                    layer.close(index);
+                },
+                function () {
+
+                });
         } else if (obj.event === 'edit1') {
             layer.alert('编辑行：<br>' + JSON.stringify(data))
         }
@@ -309,7 +323,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         $('#categoryName').val('');
     }
 
-    $('#uploadAction').click(function(){
+    $('#uploadAction').click(function () {
         if (imgLimit == 0) {
             layer.tips('来几张图片', '#multiImgBtn', {
                 anim: 6, tips: 3
@@ -350,7 +364,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 }
                 var tr = $(['<tr id="upload-' + index + '">'
                     , '<td>' + file.name + '</td>'
-                    , '<td><img id="td' + imgLimit + '" onmouseover="showImgTips(' + imgLimit + ')" style="width:100px;height: 100px" src="' + result + '"/></td>'
+                    , '<td><img id="td' + imgLimit + '" onmouseout="closeImgTips()" onmouseover="showImgTips(' + imgLimit + ')" style="width:100px;height: 100px" src="' + result + '"/></td>'
                     , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
                     , '<td>等待上传</td>'
                     , '<td>'
@@ -486,13 +500,24 @@ function showImgTips(id) {
      */
     var tipsi;
     var src = $('#td' + id).attr("src");
-    $("#td" + id).hover(function () {
-        tipsi = layer.tips('<div><img style="width:300px;height: 200px" src="' + src + '"/></div>', this
-            , {tips: 2, time: 0, area: ['325px', '220px'], anim: -1});
-    }, function () {
-        layer.close(tipsi);
-    });
+    tipsi = layer.tips('<div><img style="width:300px;height: 200px" src="' + src + '"/></div>', '#td' + id
+        , {tips: 2, time: 0, area: ['325px', '220px'], anim: -1});
 }
+
+function showImgTipsOnTable1(id) {
+    /**
+     * 只想图用tips放大，响应onmouseover
+     */
+    var tips2;
+    var src = $('#img' + id).attr("src");
+    tips2 = layer.tips('<div><img style="width:300px;height: 203px" src="/' + src + '"/></div>', '#img' + id
+        , {tips: 2, time: 0, area: ['325px', '220px'], anim: -1});
+}
+
+function closeImgTips() {
+    layer.closeAll();
+}
+
 
 /**
  * 提示5张图片的tips

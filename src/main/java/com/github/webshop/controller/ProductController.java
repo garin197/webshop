@@ -31,6 +31,14 @@ public class ProductController {
     private String uploadFolder;
 
     @ResponseBody
+    @RequestMapping("/del")
+    public Map<String, Object> del(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        Map result = MyUtil.successOrfailed(productService.delProduct(request));
+        return result;
+    }
+
+    @ResponseBody
     @RequestMapping("/list")
     public Map<String, Object> list(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
@@ -68,41 +76,36 @@ public class ProductController {
     @RequestMapping("/addImg")
     public Map<String, Object> addImg(@RequestParam("file") MultipartFile file, @RequestParam("id") Integer id, @RequestParam("type") String regex, HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
-        int flag = 0;
-        Integer imgType = 0;
+        Integer imgType = 0;        //图片是否为封面的标记
+        String fileName=null;       //传过来原文件名
+        File newFile=null;          //实际保存的文件路径
+        String realFileName=null;   //实际保存的文件名，做uuid处理
         if (!file.isEmpty()) {
             //tomcat中的‘/upload’文件夹的目录  //有坑 启用
             //String realUploadPath = request.getSession().getServletContext().getRealPath("/upload");//获取servlet容器里/upload文件夹的路径
 
-            //获取文件名
-            String fileName = file.getOriginalFilename();
+            //获取原文件名
+            fileName = file.getOriginalFilename();
 
             //创建完整路径的文件，判断完整目录下的其父目录是否存在
-            File newFile = new File(uploadFolder + "/", fileName);
-
             //判断路径是否存在,不存在则创建一个目录 mkdirs建立多级目录
+            newFile = new File(uploadFolder + "/", fileName);
             if (!newFile.getParentFile().exists()) {
                 newFile.getParentFile().mkdirs();
             }
 
             //将上传的文件保存在目录中
-            String realFile = MyUtil.getUUID() + '_' + fileName;
-            file.transferTo(new File(uploadFolder + realFile));
-            logger.info("上传文件的路径：" + realFile);
-            logger.info("上传文件的名称：" + fileName);
+            realFileName = MyUtil.getUUID() + '_' + fileName;
+            file.transferTo(new File(uploadFolder + realFileName));
+            logger.info("上传文件信息：" + uploadFolder+realFileName);
 
             //同步到数据库
             if (MyUtil.isIndexImg(fileName, regex)) {
                 imgType = 1;
             }
-            flag = productService.addImage(id, imgType, realFile);//只存加uuid的文件名.具体路径配置文件中file.uploadFolder配置了
+
         }
-        Map<String, Object> result = null;
-        if (flag > 0) {
-            result = HashMapUtil.getFormatMap("success");
-        } else {
-            result = HashMapUtil.getFormatMap("failed");
-        }
-        return result;//返回productId
+        Map<String, Object> result = MyUtil.successOrfailed(productService.addImage(id, imgType, realFileName));//只存加uuid的文件名.具体路径配置文件中file.uploadFolder配置了
+        return result;//返回productIdsy
     }
 }

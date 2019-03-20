@@ -26,14 +26,28 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+    /**
+     * 获取所有分页内商品分类封面
+     *
+     * @param request
+     * @return
+     */
     @Override
     public List<PrdtImage> get_img_product_category_list(HttpServletRequest request) {
         return imageMapper.get_img_product_category_list(RowUtil.getRow(request));
     }
 
+    /**
+     * 添加商品、图片、指定封面type=1
+     *
+     * @param productId
+     * @param type
+     * @param imgUrl
+     * @return
+     */
     @Override
-    public int addImage(Integer productId,Integer type,String imgUrl) {
-        PrdtImage image=new PrdtImage();
+    public int addImage(Integer productId, Integer type, String imgUrl) {
+        PrdtImage image = new PrdtImage();
         image.setProductId(productId);
         image.setImgType(type);
         image.setImgUrl(imgUrl);
@@ -81,9 +95,17 @@ public class ProductServiceImpl implements ProductService {
         return product.getProductId();
     }
 
+    /**
+     * 删除商品、连带所有图片
+     *
+     * @param request
+     * @return
+     */
     @Override
     public int delProduct(HttpServletRequest request) {
-        return 0;
+        Integer productId = new Integer(request.getParameter("productId"));
+        imageMapper.deleteAll(productId);
+        return productMapper.delete(productId);
     }
 
     @Override

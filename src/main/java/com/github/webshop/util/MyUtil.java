@@ -5,6 +5,7 @@ import com.github.webshop.pojo.User;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 public class MyUtil {
@@ -58,5 +59,18 @@ public class MyUtil {
     public static String getUUID() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();
+    }
+
+    /**
+     * 判断操作是否成功，返回相依的信息
+     * @param flag
+     * @return
+     */
+    public static Map successOrfailed(int flag){
+        if (flag>0){
+            return HashMapUtil.getFormatMap("success");
+        }else {
+            return HashMapUtil.getFormatMap("failed");
+        }
     }
 }
