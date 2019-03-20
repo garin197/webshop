@@ -3,7 +3,6 @@ layui.use(['layer', 'form'], function () {
         var table = layui.table;
         var form=layui.form;
         var cid=$("#cid").val();
-        layer.msg(cid);
         table.render({
             elem: '#datagridProperty'
             , url: '/property/list?cid='+cid
@@ -18,6 +17,26 @@ layui.use(['layer', 'form'], function () {
                 ]]
             , page: true
         });
+
+
+        //单元格编辑****属性管理表格
+        table.on('edit(datagrid3)',function(obj){
+            $.ajax({
+                type:'post',
+                url:'/property/edit',
+                data: obj.data,
+                sussess: function (flag) {
+                    //回调函数
+                    if (flag > 0) {
+                        layer.msg("修改成功|success ");
+                    }else{
+                        layer.msg("修改失败|failed ");
+                    }
+                    table.reload('datagrid1');
+                }
+            });
+        });
+
 
         form.on('submit(saveProperty)',function(data){
             layer.msg(data.field.propertyName);

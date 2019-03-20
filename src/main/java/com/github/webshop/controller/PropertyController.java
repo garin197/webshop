@@ -25,8 +25,15 @@ public class PropertyController {
         Map<String, Object> result = HashMapUtil.getFormatMap();
         List list = propertyService.getPropertyListByCategoryId(categoryId);
         result.put("data", list);
-
         return result;
+    }
+
+    @ResponseBody
+    @RequestMapping("/edit")
+    public Integer edit(HttpServletRequest request) throws Exception{
+        request.setCharacterEncoding("utf-8");
+        int flag=propertyService.EditProperty(request);
+        return flag;
     }
 
     @RequestMapping("/add")

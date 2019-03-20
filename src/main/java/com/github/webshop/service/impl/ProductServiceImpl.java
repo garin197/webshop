@@ -54,9 +54,15 @@ public class ProductServiceImpl implements ProductService {
         return imageMapper.add(image);
     }
 
+    /**
+     * 通过产品id(productId) 查找所有的图片信息
+     *
+     * @param request
+     * @return
+     */
     @Override
     public List<PrdtImage> getImgList(HttpServletRequest request) {
-        return null;
+        return imageMapper.findByProductId(new Integer(request.getParameter("productId")));
     }
 
     @Override
@@ -67,6 +73,34 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int delAllImage(HttpServletRequest request) {
         return 0;
+    }
+
+    @Override
+    public int updateProduct(HttpServletRequest request) throws Exception{
+        String productName = request.getParameter("productName");
+        String subTitle = request.getParameter("subTitle");
+        String originalPrice = request.getParameter("originalPrice");
+        String promotePrice = request.getParameter("promotePrice");
+        String stock = request.getParameter("stock");
+        String productId=request.getParameter("productId");
+        Product product = new Product();
+        product.setProductId(new Integer(productId));
+        if (subTitle != null && subTitle != "") {
+            product.setSubTitle(subTitle);
+        }
+        if (productName != null && productName != "") {
+            product.setProductName(productName);
+        }
+        if (stock != null && stock != "") {
+            product.setStock(new Integer(stock));
+        }
+        if (promotePrice != null && promotePrice != "") {
+            product.setPromotePrice(new Float(promotePrice));
+        }
+        if (originalPrice != null && originalPrice != "") {
+            product.setOriginalPrice(new Float(originalPrice));
+        }
+        return productMapper.update(product);
     }
 
     /**
@@ -95,8 +129,14 @@ public class ProductServiceImpl implements ProductService {
         return product.getProductId();
     }
 
+    @Override
+    public Integer getRowCount() {
+        return productMapper.getRowCount();
+    }
+
     /**
      * 删除商品、连带所有图片
+     * 删除本地文件
      *
      * @param request
      * @return
@@ -104,7 +144,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int delProduct(HttpServletRequest request) {
         Integer productId = new Integer(request.getParameter("productId"));
-        imageMapper.deleteAll(productId);
+        MyUtil.delUploadFile(imageMapper.findByProductId(productId));//删除本地文件
+        imageMapper.deleteAll(productId);//删除数据库中记录
         return productMapper.delete(productId);
     }
 

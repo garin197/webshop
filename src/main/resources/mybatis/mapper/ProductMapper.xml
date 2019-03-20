@@ -34,9 +34,7 @@
             <if test="stock!=null and stock!=''">
                 stock=#{stock} ,
             </if>
-            <if test="category!=null">
-                cid=#{category.categoryId} ,
-            </if>
+
         </set>
         where productId=#{productId}
     </update>
@@ -78,7 +76,9 @@
                 and endDate &lt;= #{endDate}
             </if>
         </where>
+    </select>
 
-
+    <select id="getRowCount" resultType="integer">
+        select count(*) from t_product
     </select>
 </mapper>

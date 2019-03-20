@@ -25,7 +25,7 @@
         <a id="tooption2" style="display: none"></a>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
+                <a href="">
                     <img src="/static/images/adminHead.jpg" class="layui-nav-img" th:text="${session.currentAdmin}">
                 </a>
                 <dl class="layui-nav-child">
@@ -46,12 +46,12 @@
 
         <!--商品管理-->
         <div id="option1" style="">
-            <table class="layui-hide" id="datagrid1" lay-filter="datagrid"></table>
+            <table class="layui-hide" id="datagrid1" lay-filter="datagrid1"></table>
         </div>
 
         <!--分类管理-->
         <div id="option2" style="display: none">
-            <table class="layui-hide" id="datagrid2" lay-filter="datagrid"></table>
+            <table class="layui-hide" id="datagrid2" lay-filter="datagrid2"></table>
         </div>
         <!--用户管理-->
         <div id="option3" style="display: none">
@@ -95,7 +95,7 @@
     <!---->
     <!--数据表格内部按键-->
     <script type="text/html" id="bar1">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail1">查看</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="Imgdetail1">查看商品图片</a>
         <!--<a class="layui-btn layui-btn-xs" lay-event="edit1">编辑</a>-->
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del1">下架</a>
     </script>

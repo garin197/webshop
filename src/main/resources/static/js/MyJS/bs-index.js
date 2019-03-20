@@ -22,7 +22,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
             , {fixed: 'right', title: '操作', toolbar: '#categoryBar', width: 480}
         ]]
         , page: true
-        , height: 530
+        // , height: 530
         , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
             return {
                 "code": res.code, //解析接口状态
@@ -34,14 +34,6 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         , done: function (res, curr, count) {
             //如果是异步请求数据方式，res即为你接口返回的信息。
             //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-
-            console.log(res);
-
-            //得到当前页码
-            console.log(curr);
-
-            //得到数据总量
-            console.log(count);
         }
     });
 
@@ -76,17 +68,17 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
             }
             , {
                 field: 'originalPrice', title: '原价', width: 80, edit: 'text', templet: function (data) {
-                    return data.product.originalPrice.toString();
+                    return data.product.originalPrice;
                 }
             }
             , {
                 field: 'promotePrice', title: '现价', width: 80, edit: 'text', templet: function (data) {
-                    return data.product.promotePrice.toString();
+                    return data.product.promotePrice;
                 }
             }
             , {
-                field: 'stock', title: '库存', width: 80, sort: true, edit: 'text', templet: function (data) {
-                    return data.product.stock.toString();
+                field: 'stock', title: '库存', width: 80, edit: 'text', templet: function (data) {
+                    return data.product.stock;
                 }
             }
             , {
@@ -153,7 +145,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 table.reload('datagrid2', {
                     page: 1,
                     url: '/category/list'
-                    , height: 580
+                    // , height: 580
                 });
                 break;
             case 'searchCategory'://table2搜索
@@ -168,7 +160,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                         where: {
                             statement: $('#SearchCategory').val()
                         },
-                        height: 580,
+                        // height: 580,
                         success: function (res) {
                             $('#SearchCategory').val("")
                         }
@@ -192,10 +184,10 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                     obj.del();
                     //删除商品
                     $.ajax({
-                        type:"post",
-                        url:'/product/del',
+                        type: "post",
+                        url: '/product/del',
                         data: data,
-                        success:function(){
+                        success: function () {
 
                         }
                     });
@@ -206,7 +198,19 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 });
         } else if (obj.event === 'edit1') {
             layer.alert('编辑行：<br>' + JSON.stringify(data))
+        } else if (obj.event == 'Imgdetail1') {//查看图片信息
+            layer.open({
+                type: 2,
+                content: '/page/imgDetail?productId='+obj.data.productId,
+                area: ['1000px', '700px'],
+                title: '商品图片信息',
+                scrollBar: true,
+                success: function () {
+
+                }
+            });
         }
+
         //分类管理第一层表格
         if (obj.event === 'del2') {
             layer.confirm('真的删除行么', function (index) {//删除
@@ -242,9 +246,27 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         }
     });
 
+    //单元格编辑****商品管理表格
+    table.on('edit(datagrid1)',function(obj){
+        $.ajax({
+            type: 'POST',
+            url: '/product/edit',
+            data: obj.data,
+            success: function (flag) {
+                //回调函数
+                if (flag > 0) {
+                    layer.msg("修改成功|success ");
+                }else{
+                    layer.msg("修改失败|failed ");
+                }
+                table.reload('datagrid1');
+            },
+            dataType: 'json'
+        });
+    });
 
-    // 单元格编辑
-    table.on('edit', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+    // 单元格编辑*****属性管理表格
+    table.on('edit(datagrid2)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
         console.log(obj.value); //得到修改后的值
         console.log(obj.field); //当前编辑的字段名
         console.log(obj.data); //所在行的所有相关数据
@@ -274,28 +296,6 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         return false;
     });
 
-    //提交图片的表单
-    // form.on('submit(saveImg)',function(data){
-    //     if (imgLimit==0){
-    //         layer.tips('来几张图片','#multiImgBtn',{
-    //             anim:6,tips:3
-    //         });
-    //         return false
-    //     }
-    //     $.ajax({
-    //         type:'post',
-    //         url: '/product/add',
-    //         data: data.field,
-    //         success: function(res){
-    //             idOnImg=res.productId;
-    //             ImguploadList.data={'id':idOnImg};
-    //             layer.load(); //上传loading
-    //             ImguploadList.upload();
-    //         }
-    //     });
-    //
-    //
-    // });
 
     //提交
     function submit($, params) {
@@ -496,39 +496,33 @@ function showOp4() {
 
 function showImgTips(id) {
     /**
-     * 只想图用tips放大，响应onmouseover
+     * 图用tips放大，响应onmouseover
      */
     var tipsi;
     var src = $('#td' + id).attr("src");
     tipsi = layer.tips('<div><img style="width:300px;height: 200px" src="' + src + '"/></div>', '#td' + id
-        , {tips: 2, time: 0, area: ['325px', '220px'], anim: -1});
+        , {tips: 2, time: 0, area: ['0px', '0px'], anim: -1});
 }
 
 function showImgTipsOnTable1(id) {
     /**
-     * 只想图用tips放大，响应onmouseover
+     * 图用tips放大，响应onmouseover
      */
     var tips2;
     var src = $('#img' + id).attr("src");
-    tips2 = layer.tips('<div><img style="width:300px;height: 203px" src="/' + src + '"/></div>', '#img' + id
-        , {tips: 2, time: 0, area: ['325px', '220px'], anim: -1});
+    tips2 = layer.tips('<div><img style="width:500px;height: 403px" src="/' + src + '"/></div>', '#img' + id
+        , {tips: 2, time: 0, area: ['0px', '0px'], anim: -1});
 }
 
 function closeImgTips() {
     layer.closeAll();
 }
 
-
 /**
  * 提示5张图片的tips
  */
 function showAddImgBtnTips() {
-    var tip;
-    $('#multiImgBtn').hover(function () {
-        tip = layer.tips("第1个默认为封面", this, {tips: [1], icon: 6, anim: -1});
-    }, function () {
-        layer.close(tip);
-    });
+    layer.tips("第1个默认为封面", '#multiImgBtn', {tips: [1], icon: 6, anim: -1});
 }
 
 //普通图片上传

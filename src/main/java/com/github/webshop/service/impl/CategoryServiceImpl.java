@@ -52,7 +52,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getCategoryList(HttpServletRequest request) {
         Row row= RowUtil.getRow(request);
-
         return categoryMapper.findWithLimit(row);
     }
 

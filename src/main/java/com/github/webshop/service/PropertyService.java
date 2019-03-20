@@ -15,7 +15,7 @@ public interface PropertyService {
 
     int AddProperty(HttpServletRequest request);
 
-    int EditProperty(Property property);
+    int EditProperty(HttpServletRequest request);
 
     List<Property> getPropertyList(HttpServletRequest request);
 

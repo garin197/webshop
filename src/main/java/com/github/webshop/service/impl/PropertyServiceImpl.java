@@ -39,8 +39,15 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public int EditProperty(Property property) {
-        return 0;
+    public int EditProperty(HttpServletRequest request) {
+        String categoryId=request.getParameter("categoryId");
+        String propertyId=request.getParameter("propertyId");
+        String propertyName=request.getParameter("propertyName");
+        Property property=new Property();
+        property.setPropertyName(propertyName);
+        property.setCategoryId(new Integer(categoryId));
+        property.setPropertyId(new Integer(propertyId));
+        return propertyMapper.update(property);
     }
 
     @Override

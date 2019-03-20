@@ -15,11 +15,15 @@ public interface ProductService {
 
     int delProduct(HttpServletRequest request);
 
+    int updateProduct(HttpServletRequest request) throws Exception;
+
     Product findProductById(HttpServletRequest request);
 
     List<Product> getProductListByStatement(HttpServletRequest request);
 
     int addImage(Integer productId,Integer type,String imgUrl);
+
+    Integer getRowCount();
 
     List<PrdtImage> getImgList(HttpServletRequest request);
 

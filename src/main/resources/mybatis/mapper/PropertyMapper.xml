@@ -46,11 +46,11 @@
     <update id="update" parameterType="property">
         update t_property
         <set>
-            <if test="categoryName != null">
+            <if test="propertyName != null and propertyName != ''">
                 propertyName=#{propertyName},
             </if>
         </set>
-        where propertyId=#{propertyId}
+        where propertyId=#{propertyId} and cid=#{categoryId}
     </update>
 
     <delete id="delete" parameterType="integer">

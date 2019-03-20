@@ -31,7 +31,7 @@
     <select id="findByType" parameterType="integer">
         select * from t_productimage where imgType=#{imgType}
     </select>
-    <select id="findByProductId" parameterType="integer" resultType="list">
+    <select id="findByProductId" parameterType="integer" resultType="prdtimage">
         select * from t_productimage where pid=#{productId}
     </select>
 

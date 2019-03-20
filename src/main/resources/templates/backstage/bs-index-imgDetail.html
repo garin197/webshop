@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" lang="zh">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+    <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/static/js/MyJS/bs-index-imgDetail.js}" charset="UTF-8">
+    </script>
+</head>
+<body>
+<div class="layui-upload-list">
+    <table id="img-detail-table" class="layui-table">
+        <thead>
+            <th style="width: 80%">图片</th>
+            <th style="width: 20%">是否封面</th>
+        </thead>
+        <tbody id="img-detail-table-body"></tbody>
+    </table>
+    <input type="hidden" th:value="${productId}" id="input"/>
+</div>
+
+</body>
+</html>

@@ -26,6 +26,12 @@ public class PageController {
         return "/backstage/bs-index";
     }
 
+    @RequestMapping("/imgDetail")
+    public String imgDetail(Map map,@RequestParam(value = "productId",required = false) Integer productId){
+        map.put("productId",productId);
+        return "backstage/bs-index-imgDetail";
+    }
+
     @ResponseBody
     @RequestMapping("/data")
     public Map d() {
