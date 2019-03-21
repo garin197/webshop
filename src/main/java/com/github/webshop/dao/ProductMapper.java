@@ -30,7 +30,7 @@ public interface ProductMapper {
 
     Product findById(Integer productId);
 
-    List<Product> findAllByStatements(Product product, @Param("beginDate") String beginDate, @Param("endDate") String endDate);
+    List<Product> findAllByStatements(String statement);
 
-
+    List<Product> sortStock(@Param("field") String field,@Param("order") String order,@Param("row") Row row);
 }

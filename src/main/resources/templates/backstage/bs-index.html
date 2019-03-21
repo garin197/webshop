@@ -67,10 +67,22 @@
     <!---->
     <!--数据表格头部工具栏-->
     <script type="text/html" id="toolbar1">
+        <div class="demoTable">
+            <div class="layui-inline">
+                <input class="layui-input" type="text" name="SearchProduct" id="SearchProduct" autocomplete="off" placeholder="搜索商品" required>
+            </div>
+            <!--lay-event 表示该操作事件类型，识别id-->
+            <!--data-type 表示数据类型 用js获取-->
+            <button class="layui-btn" data-type="SearchProduct" lay-event="SearchProduct">搜索</button>
+
+        </div>
+        <!--黑色分割线-->
+        <hr class="layui-bg-black">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm" lay-event="addData1" >上架商品</button>
             <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>-->
             <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
+            <button class="layui-btn layui-btn-sm" lay-event="reloadOnTable1" lay-filter="reloadOnTable1">reload</button>
         </div>
     </script>
     <script type="text/html" id="toolbar2">

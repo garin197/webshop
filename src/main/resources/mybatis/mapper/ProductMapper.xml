@@ -63,22 +63,31 @@
         select * from t_product where productId=#{productId}
     </select>
 
-    <select id="findAllByStatements" parameterType="product">
-        select * from t_product
-        <where>
-            <if test="productName!=null and productName!=''">
-                productName like #{productName}
-            </if>
-            <if test="beginDate!=null and beginDate!=''"><!--小于等于-->
-                and beginDate &gt;= #{beginDate}
-            </if>
-            <if test="endDate!=null and endDate!=''">
-                and endDate &lt;= #{endDate}
-            </if>
-        </where>
+    <!--<resultMap id="res" type="prdtimage">-->
+        <!--<result property="imgId" column="img_id"></result>-->
+        <!--<result property="imgType" column="img_type"></result>-->
+        <!--<result property="imgUrl" column="img_url"></result>-->
+    <!--</resultMap>-->
+    <!--<select id="findAllByStatements" parameterType="string" resultType="string">-->
+        <!--select * from t_product where  productName like #{statement}-->
+
+    <!--</select>-->
+    <resultMap id="img_product_category_list" type="prdtimage">
+        <id property="imgId" column="imgId"></id>
+        <result property="productId" column="pid"></result>
+        <result property="imgType" column="imgType"></result>
+        <result property="imgUrl" column="imgUrl"></result>
+        <association property="product" column="pid" select="com.github.webshop.dao.ProductMapper.findAllWithCategoryByProductId" javaType="product"></association>
+    </resultMap>
+    <select id="findAllByStatements" resultMap="img_product_category_list" parameterType="string">
+        select * from t_productimage where imgType=1 and pid in (select productId from t_product where  productName like #{statement})
     </select>
 
     <select id="getRowCount" resultType="integer">
         select count(*) from t_product
+    </select>
+
+    <select id="sortStock" resultMap="img_product_category_list"><!--连续的取值只能用${}-->
+        select  * from t_productimage pi,t_product p where pi.imgType=1 and pi.pid=p.productId order by ${field} ${order} limit #{row.start},#{row.limit}
     </select>
 </mapper>

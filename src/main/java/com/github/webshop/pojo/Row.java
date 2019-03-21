@@ -5,11 +5,19 @@ public class Row {
     private int limit;
     private int start;
 
+
+    public Row() {
+    }
+
+    public Row(int page, int limit) {
+        this.page = page;
+        this.limit = limit;
+    }
+
     public int getStart() {
         start = (page - 1) * limit;
         return start;
     }
-
 
     public int getPage() {
         return page;

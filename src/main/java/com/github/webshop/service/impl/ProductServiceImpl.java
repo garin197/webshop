@@ -4,6 +4,7 @@ import com.github.webshop.dao.ImageMapper;
 import com.github.webshop.dao.ProductMapper;
 import com.github.webshop.pojo.PrdtImage;
 import com.github.webshop.pojo.Product;
+import com.github.webshop.pojo.Row;
 import com.github.webshop.service.ProductService;
 import com.github.webshop.util.MyUtil;
 import com.github.webshop.util.RowUtil;
@@ -76,13 +77,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int updateProduct(HttpServletRequest request) throws Exception{
+    public int updateProduct(HttpServletRequest request) throws Exception {
         String productName = request.getParameter("productName");
         String subTitle = request.getParameter("subTitle");
         String originalPrice = request.getParameter("originalPrice");
         String promotePrice = request.getParameter("promotePrice");
         String stock = request.getParameter("stock");
-        String productId=request.getParameter("productId");
+        String productId = request.getParameter("productId");
         Product product = new Product();
         product.setProductId(new Integer(productId));
         if (subTitle != null && subTitle != "") {
@@ -135,6 +136,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * 存货排序
+     * @param request
+     * @return
+     */
+    @Override
+    public List<Product> sort_stock(HttpServletRequest request) {
+        String field=request.getParameter("field");//排序字段
+        String order=request.getParameter("order");//排序方式
+        String page=request.getParameter("page");
+        String limit=request.getParameter("limit");
+        Row row =new Row(Integer.parseInt(page),Integer.parseInt(limit));
+
+        return productMapper.sortStock(field,order,row);
+    }
+
+    /**
      * 删除商品、连带所有图片
      * 删除本地文件
      *
@@ -156,6 +173,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductListByStatement(HttpServletRequest request) {
-        return null;
+        String statement = "%"+request.getParameter("statement")+"%";
+        return productMapper.findAllByStatements(statement);
     }
 }

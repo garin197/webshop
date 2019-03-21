@@ -42,13 +42,14 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
         , url: '/product/list'//数据请求url
         , toolbar: '#toolbar1'
         , title: '商品管理'
+        ,autoSort:false
         , cols: [[//templet之定义数据模板
             {
                 field: 'productId', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true
             }
             , {
                 fixed: 'image', title: '封面', width: 80, templet: function (data) {//
-                    return '<img id="img' + data.imgId.toString() + '" onmouseout="closeImgTips()" onmouseover="showImgTipsOnTable1(' + data.imgId.toString() + ')" src="' + data.imgUrl.toString() + '" style="width:50px;height: 40px"/>';
+                    return '<img id="img' + data.imgId + '" onmouseout="closeImgTips()" onmouseover="showImgTipsOnTable1(' + data.imgId + ')" src="' + data.imgUrl + '" style="width:50px;height: 40px"/>';
                 }
             }
             , {
@@ -57,12 +58,12 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 }
             }
             , {
-                field: 'subTitle', title: '小标题', width: 250, edit: 'text', sort: true, templet: function (data) {
+                field: 'subTitle', title: '小标题', width: 250, edit: 'text', templet: function (data) {
                     return data.product.subTitle.toString();
                 }
             }
             , {
-                field: 'categoryName', title: '分类', width: 80, sort: true, templet: function (data) {
+                field: 'categoryName', title: '分类', width: 80, templet: function (data) {
                     return data.product.category.categoryName.toString();
                 }
             }
@@ -77,7 +78,7 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                 }
             }
             , {
-                field: 'stock', title: '库存', width: 80, edit: 'text', templet: function (data) {
+                field: 'stock', title: '库存', width: 80, edit: 'text' ,sort:true, templet: function (data) {
                     return data.product.stock;
                 }
             }
@@ -165,11 +166,47 @@ layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function (
                             $('#SearchCategory').val("")
                         }
                     })
-                    break;
                 }
-
-
+                break;
+            case 'SearchProduct'://搜索商品
+                if ($('#SearchProduct').val()!=''){
+                    table.reload('datagrid1',{
+                        url:'/product/search',
+                        where:{"statement":$('#SearchProduct').val()},
+                        page: 1,
+                        success:function(res){
+                            $('#SearchProduct').val("");
+                        }
+                    });
+                } else{
+                    layer.msg("不为空", {icon: 2})
+                    return;
+                }
+                break;
+            case 'reloadOnTable1':
+                table.reload('datagrid1',{
+                    url:'/product/list'
+                });
+                break;
         }
+    });
+
+    //监听 响应排序
+    table.on('sort(datagrid1)',function(obj){
+        console.log(obj.field); //当前排序的字段名
+        console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+        console.log(this); //当前排序的 th 对象
+
+        //尽管我们的 table 自带排序功能，但并没有请求服务端。
+        //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+        table.reload('datagrid1', {
+            url:'/product/stocksort',
+            initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+            ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                field: obj.field //排序字段
+                ,order: obj.type //排序方式
+            }
+        });
     });
 
     //监听 表格内工具条
