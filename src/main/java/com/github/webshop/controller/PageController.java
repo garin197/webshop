@@ -1,15 +1,11 @@
 package com.github.webshop.controller;
 
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -19,42 +15,25 @@ public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
 
-    @RequestMapping("")
+    @RequestMapping("bs-index")
     public String t(HttpSession session) {
         logger.info("访问后台管理-页面");
         session.setAttribute("currentAdmin","jkfjd");
         return "/backstage/bs-index";
     }
 
+    @RequestMapping("")
+    public String index_(HttpSession session) {
+        logger.info("访问主页-页面");
+        session.setAttribute("currentAdmin","jkfjd");
+        return "index";
+    }
+
+
     @RequestMapping("/imgDetail")
     public String imgDetail(Map map,@RequestParam(value = "productId",required = false) Integer productId){
         map.put("productId",productId);
         return "backstage/bs-index-imgDetail";
-    }
-
-    @ResponseBody
-    @RequestMapping("/data")
-    public Map d() {
-        JSONObject map=new JSONObject();
-        map.put("id","10003");
-        map.put("username","王勃");
-        map.put("email", "xianxin@layui.com");
-        map.put("sex", "男");
-        map.put("city", "浙江杭州");
-        map.put("sign", "人生恰似一场修行");
-        map.put("experience", "65");
-        map.put("ip", "192.168.0.8");
-        map.put("logins", "106");
-        map.put("joinTime", "2016-10-14");
-        Map result=new HashMap<String,Object>();
-        result.put("code",0);
-        result.put("message","");
-        result.put("count",1000);
-        result.put("data",map);
-        JSONArray jsonArray=new JSONArray();
-        jsonArray.add(map);
-        result.put("data",jsonArray);
-        return result;
     }
 
     @RequestMapping("/login")
@@ -76,6 +55,7 @@ public class PageController {
 
     @RequestMapping("/index")
     public String index() {
+        logger.info("访问主页-页面");
         return "index";
     }
 
