@@ -27,6 +27,29 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;//配置的实际上传路径
 
+    /**
+     * 主页商品预展示
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/index_product_list")
+    public Map<String, Object> index_product_list(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        List list = productService.get_img_product_category_list(request);
+        Map result = HashMapUtil.getFormatMap(productService.getRowCount());
+        result.put("data", list);
+        return result;
+    }
+
+
+    /**
+     * 库存排序
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping("stocksort")
     public Map<String,Object> stocksort(HttpServletRequest request) throws Exception {
@@ -78,6 +101,12 @@ public class ProductController {
         return result;
     }
 
+    /**
+     * 获取封面（type=1）以及商品和属性等
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping("/list")
     public Map<String, Object> list(HttpServletRequest request) throws Exception {

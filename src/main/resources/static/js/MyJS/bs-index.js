@@ -547,7 +547,7 @@ function showImgTipsOnTable1(id) {
      */
     var tips2;
     var src = $('#img' + id).attr("src");
-    tips2 = layer.tips('<div><img style="width:500px;height: 403px" src="/' + src + '"/></div>', '#img' + id
+    tips2 = layer.tips('<div><img style="width:500px;height: 403px" src="' + src + '"/></div>', '#img' + id
         , {tips: 2, time: 0, area: ['0px', '0px'], anim: -1});
 }
 

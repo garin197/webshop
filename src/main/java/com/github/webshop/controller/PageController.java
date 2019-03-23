@@ -15,12 +15,7 @@ public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
 
-    @RequestMapping("bs-index")
-    public String t(HttpSession session) {
-        logger.info("访问后台管理-页面");
-        session.setAttribute("currentAdmin","jkfjd");
-        return "/backstage/bs-index";
-    }
+
 
     @RequestMapping("")
     public String index_(HttpSession session) {

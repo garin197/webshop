@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Copyright © github@garin197 五邑大学" />
+  <settings default="Copyright © github@garin197 五邑大学">
+    <module2copyright>
+      <element module="All" copyright="Copyright © github@garin197 五邑大学" />
+    </module2copyright>
+  </settings>
 </component>
