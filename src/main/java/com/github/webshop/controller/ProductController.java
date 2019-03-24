@@ -16,6 +16,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * 商品控制器
+ */
 @Controller
 @PropertySource("classpath:upload-config.properties")
 @RequestMapping("/product")
@@ -28,6 +32,22 @@ public class ProductController {
     private String uploadFolder;//配置的实际上传路径
 
     /**
+     * 显示商品详情
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/index_product_detail")
+    public Map<String, Object> index_product_detail(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("utf-8");
+//        List list = productService.get_product_detail(request);
+        Map result = HashMapUtil.getFormatMap(productService.getRowCount());
+//        result.put("data", list);
+        return result;
+    }
+
+    /**
      * 主页商品预展示
      * @param request
      * @return
@@ -37,7 +57,7 @@ public class ProductController {
     @RequestMapping("/index_product_list")
     public Map<String, Object> index_product_list(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
-        List list = productService.get_img_product_category_list(request);
+        List list = productService.get_product_detail(request);
         Map result = HashMapUtil.getFormatMap(productService.getRowCount());
         result.put("data", list);
         return result;
@@ -60,6 +80,12 @@ public class ProductController {
         return result;
     }
 
+    /**
+     * 搜索功能-后台板块
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @GetMapping("/search")
     public Map<String, Object> search(HttpServletRequest request) throws Exception {
@@ -70,7 +96,11 @@ public class ProductController {
         return result;
     }
 
-
+    /**
+     * 修改功能-后台板块
+     * @param request
+     * @return
+     */
     @ResponseBody
     @PostMapping("/edit")
     public Integer edit(HttpServletRequest request) {
@@ -84,6 +114,12 @@ public class ProductController {
         return result;
     }
 
+    /**
+     * 查看所有图片信息-后台板块
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @PostMapping("/imgList")
     public Map<String, Object> imgList(HttpServletRequest request) throws Exception {
@@ -93,6 +129,12 @@ public class ProductController {
         return result;
     }
 
+    /**
+     * 删除功能--后台板块
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping("/del")
     public Map<String, Object> del(HttpServletRequest request) throws Exception {
@@ -134,6 +176,7 @@ public class ProductController {
     }
 
     /**
+     * 添加图片-图片上传至服务器（或指定路径）-后台板块
      * @param file    传过来的文件信息
      * @param id      productId
      * @param regex   封面的标志

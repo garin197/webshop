@@ -34,4 +34,7 @@ public interface ProductService {
     int delAllImage(HttpServletRequest request);
 
     List<Product> sort_stock(HttpServletRequest request);
+
+    List get_product_detail(HttpServletRequest request);
+
 }

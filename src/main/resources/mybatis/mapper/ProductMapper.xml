@@ -88,6 +88,15 @@
     </select>
 
     <select id="sortStock" resultMap="img_product_category_list"><!--连续的取值只能用${}-->
-        select  * from t_productimage pi,t_product p where pi.imgType=1 and pi.pid=p.productId order by ${field} ${order} limit #{row.start},#{row.limit}
+        select * from t_productimage pi,t_product p where pi.imgType=1 and pi.pid=p.productId order by ${field} ${order} limit #{row.start},#{row.limit}
+    </select>
+
+    <select id="get_product_detail" resultMap="img_product_category_list">
+        select * from
+        t_productimage pi,t_product p,t_category c
+        where pi.pid=p.productId
+        and pi.imgType=1
+        and p.cid in (select categoryId from t_category where categoryName=#{categoryName})
+        limit #{row.start},#{row.limit}
     </select>
 </mapper>

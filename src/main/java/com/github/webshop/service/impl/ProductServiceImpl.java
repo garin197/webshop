@@ -27,27 +27,27 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    /**
-     * 获取所有分页内商品分类封面
-     *
-     * @param request
-     * @return
-     */
     @Override
     public List<PrdtImage> get_img_product_category_list(HttpServletRequest request) {
+        /**
+         * 获取所有分页内商品分类封面
+         *
+         * @param request
+         * @return
+         */
         return imageMapper.get_img_product_category_list(RowUtil.getRow(request));
     }
 
-    /**
-     * 添加商品、图片、指定封面type=1
-     *
-     * @param productId
-     * @param type
-     * @param imgUrl
-     * @return
-     */
     @Override
     public int addImage(Integer productId, Integer type, String imgUrl) {
+        /**
+         * 添加商品、图片、指定封面type=1
+         *
+         * @param productId
+         * @param type
+         * @param imgUrl
+         * @return
+         */
         PrdtImage image = new PrdtImage();
         image.setProductId(productId);
         image.setImgType(type);
@@ -55,14 +55,14 @@ public class ProductServiceImpl implements ProductService {
         return imageMapper.add(image);
     }
 
-    /**
-     * 通过产品id(productId) 查找所有的图片信息
-     *
-     * @param request
-     * @return
-     */
     @Override
     public List<PrdtImage> getImgList(HttpServletRequest request) {
+        /**
+         * 通过产品id(productId) 查找所有的图片信息
+         *
+         * @param request
+         * @return
+         */
         return imageMapper.findByProductId(new Integer(request.getParameter("productId")));
     }
 
@@ -104,14 +104,14 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.update(product);
     }
 
-    /**
-     * 添加一个商品记录
-     *
-     * @param request
-     * @return 商品记录的主键id
-     */
     @Override
     public int addProduct(HttpServletRequest request) {
+        /**
+         * 添加一个商品记录
+         *
+         * @param request
+         * @return 商品记录的主键id
+         */
         String productName = request.getParameter("productName");
         String productSubTitle = request.getParameter("productSubTitle");
         String originalPrice = request.getParameter("originalPrice");
@@ -135,13 +135,26 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.getRowCount();
     }
 
-    /**
-     * 存货排序
-     * @param request
-     * @return
-     */
+    @Override
+    public List get_product_detail(HttpServletRequest request) {
+        /**
+         * 获取封面的商品信息
+         * 填充封面
+         */
+        String categoryName=request.getParameter("categoryName");
+        Integer page=new Integer(request.getParameter("page"));
+        Integer limit=new Integer(request.getParameter("limit"));
+        Row row=new Row(page,limit);
+        return productMapper.get_product_detail(row,categoryName);
+    }
+
     @Override
     public List<Product> sort_stock(HttpServletRequest request) {
+        /**
+         * 存货排序
+         * @param request
+         * @return
+         */
         String field=request.getParameter("field");//排序字段
         String order=request.getParameter("order");//排序方式
         String page=request.getParameter("page");

@@ -30,7 +30,7 @@ public class MyUtil {
     }
 
     /**
-     * 获得用户id
+     * 获得session中用户id
      */
     public static Integer getUserId(HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
