@@ -136,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List get_product_detail(HttpServletRequest request) {
+    public List get_index_product(HttpServletRequest request) {
         /**
          * 获取封面的商品信息
          * 填充封面
@@ -145,7 +145,13 @@ public class ProductServiceImpl implements ProductService {
         Integer page=new Integer(request.getParameter("page"));
         Integer limit=new Integer(request.getParameter("limit"));
         Row row=new Row(page,limit);
-        return productMapper.get_product_detail(row,categoryName);
+        return productMapper.get_index_product(row,categoryName);
+    }
+
+    @Override
+    public Product get_product_detail(HttpServletRequest request) {
+        String productId=request.getParameter("pid");
+        return productMapper.findById(new Integer(productId));
     }
 
     @Override

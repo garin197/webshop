@@ -1,5 +1,6 @@
 package com.github.webshop.controller;
 
+import com.github.webshop.pojo.Product;
 import com.github.webshop.service.ProductService;
 import com.github.webshop.util.HashMapUtil;
 import com.github.webshop.util.MyUtil;
@@ -32,13 +33,13 @@ public class ProductController {
     private String uploadFolder;//配置的实际上传路径
 
     /**
-     * 显示商品详情
+     * 显示商品详情--前台
      * @param request
      * @return
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping("/index_product_detail")
+    @PostMapping("/index_product_detail")
     public Map<String, Object> index_product_detail(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
 //        List list = productService.get_product_detail(request);
@@ -48,7 +49,22 @@ public class ProductController {
     }
 
     /**
-     * 主页商品预展示
+     * 显示商品详情页面--前台
+     * @param request
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/index_product_detail")
+    public String get_index_product(HttpServletRequest request,Map map) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        Product product = productService.get_product_detail(request);
+        map.put("product", product);
+        return "product-detail";
+    }
+
+    /**
+     * 主页商品预展示--前台
      * @param request
      * @return
      * @throws Exception
@@ -57,7 +73,7 @@ public class ProductController {
     @RequestMapping("/index_product_list")
     public Map<String, Object> index_product_list(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
-        List list = productService.get_product_detail(request);
+        List list = productService.get_index_product(request);
         Map result = HashMapUtil.getFormatMap(productService.getRowCount());
         result.put("data", list);
         return result;
@@ -65,7 +81,7 @@ public class ProductController {
 
 
     /**
-     * 库存排序
+     * 库存排序--后台模块
      * @param request
      * @return
      * @throws Exception
@@ -115,7 +131,7 @@ public class ProductController {
     }
 
     /**
-     * 查看所有图片信息-后台板块
+     * 查看所有图片信息---后台+前台
      * @param request
      * @return
      * @throws Exception

@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>一点购物-更多好货尽在一点购物</title>
     <link rel="stylesheet" type="text/css" th:href="@{/static/layui/css/layui.css}" charset="UTF-8"/>
     <script type="text/javascript" th:src="@{/static/js/jquery-2.1.1.js}" charset="UTF-8"></script>
     <script type="text/javascript" th:src="@{/static/layui/layui.js}" charset="UTF-8"></script>
@@ -20,23 +20,31 @@
     <script type="text/javascript" th:src="@{/static/js/MyJS/index.js}" charset="UTF-8"></script>
 </head>
 <body>
-<div>
-    <span>head</span>
+<nav class="">
+    <span style="padding: 5px 10px 5px 0"><a th:href="@{/page}">一点购物首页</a></span>
+    <span style="padding: 5px 10px 5px 0">欢迎来到一点购物</span>
+    <span style="padding: 5px 10px 5px 10px"><a href="/user/login#tologin" th:value="${currentUserName}">请登录</a></span>
+    <span style="padding: 5px 10px 5px 10px"><a href="/user/register#toregister">免费注册</a></span>
+    <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的购物车</a>&LT;&gt;</span>
+    <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的订单</a></span>
+</nav>
+<!--<div>-->
 
-
-    <div class="header-wrap">
-        <div class="navwrap">
-            <div id="nav">
-                <div class="navbar clearfix">
-                    <!--<a class="navbt" href="#"><span>团购地图</span></a>-->
-                    <a class="current" href="#">首页</a>
-                    <a href="#">--</a>
-                    <a href="#">--</a>
-                    <a href="#">--</a>
-                    <a href="#">--</a>
-                    <a href="#">--</a>
-                    <a href="#">--</a>
-                </div>
+<div class="header-wrap">
+    <div class="navwrap">
+        <div id="nav">
+            <div class="navbar clearfix">
+                <!--<a class="navbt" href="#"><span></span></a>-->
+                <a href="#dianqi">电器</a>
+                <a href="#fuzhuang">服装</a>
+                <a href="#shipinyinliao">食品饮料</a>
+                <a href="#xiexue">鞋靴</a>
+                <a href="#shoujishuma">手机数码</a>
+                <!--<a href="#">&#45;&#45;</a>-->
+                <!--<a href="#">&#45;&#45;</a>-->
+                <input class="" type="text" placeholder="输入商品名称搜索商品" autocomplete="off"
+                       style="width: 240px;height:30px">
+                <button class="layui-icon layui-icon-search" style="font-size: 26px; color: #1e9fff;"></button>
                 <div class="pros subpage">
                     <h2><i class="layui-icon layui-icon-more-vertical" style="font-size: 18px; color: #fff5fa;"></i>
                         全部分类</h2>
@@ -237,7 +245,7 @@
             <a th:href="@{http://www.wyu.edu.cn/}" target="_blank">五邑大学</a>
         </span>
 </div>
-</div>
+<!--</div>-->
 
 <script type="text/javascript">
     // 匿名js函数
@@ -935,7 +943,7 @@
     }
 
     .navbar {
-        height: 36px;
+        height: 40px;
         padding-left: 210px;
         position: relative
     }

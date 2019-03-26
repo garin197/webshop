@@ -20,6 +20,7 @@ public class AdminController {
         logger.info("访问后台管理-页面");
         session.setAttribute("currentAdmin","jkfjd");
         return "/backstage/bs-index";
+//        return "product-detail";
     }
 
     /**

@@ -25,6 +25,7 @@ public interface ImageMapper {
 
     List<PrdtImage> get_img_product_category_list(Row row);//获取type为1的图片连带产品和分类
 
+
 //    List<PrdtImage> findAllByStatements(PrdtImage prdtImage, @Param("beginDate") String beginDate, @Param("endDate") String endDate);
 //    List<PrdtImage> findAllWithLimit(Row row);
 }

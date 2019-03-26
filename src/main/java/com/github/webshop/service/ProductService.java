@@ -35,6 +35,7 @@ public interface ProductService {
 
     List<Product> sort_stock(HttpServletRequest request);
 
-    List get_product_detail(HttpServletRequest request);
+    List get_index_product(HttpServletRequest request);
 
+    Product get_product_detail(HttpServletRequest request);
 }

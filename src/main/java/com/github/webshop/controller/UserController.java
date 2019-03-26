@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String GetLogin(Model model){
-        return "redirect:/page/login";
+        return "user-login";
     }
 
     @PostMapping("/login")
@@ -31,6 +31,12 @@ public class UserController {
 
         session.setAttribute("currentUser",new User());
         return modelAndView;
+    }
+
+    @GetMapping("/register")
+    public String toregister() throws Exception {
+
+        return "user-login";
     }
 
     /**

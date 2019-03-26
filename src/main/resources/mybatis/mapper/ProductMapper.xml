@@ -59,7 +59,7 @@
         select * from t_product where productId=#{productId}
     </select>
 
-    <select id="findById" parameterType="integer">
+    <select id="findById" parameterType="integer" resultType="product">
         select * from t_product where productId=#{productId}
     </select>
 
@@ -91,12 +91,15 @@
         select * from t_productimage pi,t_product p where pi.imgType=1 and pi.pid=p.productId order by ${field} ${order} limit #{row.start},#{row.limit}
     </select>
 
-    <select id="get_product_detail" resultMap="img_product_category_list">
+    <select id="get_index_product" resultMap="img_product_category_list">
         select * from
         t_productimage pi,t_product p,t_category c
         where pi.pid=p.productId
         and pi.imgType=1
+        and c.categoryId=p.cid
         and p.cid in (select categoryId from t_category where categoryName=#{categoryName})
         limit #{row.start},#{row.limit}
     </select>
+    
+    <!--<select id=""-->
 </mapper>
