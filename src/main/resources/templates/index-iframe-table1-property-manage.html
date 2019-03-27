@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
+    <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/MyJS/index-property-manage.js"></script>
+</head>
+<body class="">
+<header>
+    <!--橙色分割线-->
+    <hr class="layui-bg-orange">
+</header>
+<!--弹出层表单-->
+<div id="property-manage-div" style="display: block">
+    <table class="layui-hide" id="datagridPropertymanage" lay-filter="datagridPropertymanage"></table>
+</div>
+<div>
+    <input id="product-property-id" type="hidden" th:value="${pid}">
+    <input id="product-category-property-id" type="hidden" th:value="${cid}">
+</div>
+
+</body>
+</html>

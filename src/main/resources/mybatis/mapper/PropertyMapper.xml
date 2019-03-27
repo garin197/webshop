@@ -6,8 +6,8 @@
 <!--指定包空间-->
 <mapper namespace="com.github.webshop.dao.PropertyMapper">
 
-    <select id="total" resultType="int">
-        select count(*) from t_property
+    <select id="get_row_count_byCategoryId" resultType="int">
+        select count(*) from t_property where cid=#{categoryId}
     </select>
 
     <select id="findById" parameterType="property" resultType="property">

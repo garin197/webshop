@@ -101,5 +101,7 @@
         limit #{row.start},#{row.limit}
     </select>
     
-    <!--<select id=""-->
+    <select id="findNameById" resultType="string" parameterType="integer">
+        select productName from t_product where productId=#{productId}
+    </select>
 </mapper>

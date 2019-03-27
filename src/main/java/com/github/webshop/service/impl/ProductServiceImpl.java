@@ -27,27 +27,27 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+    /**
+     * 获取所有分页内商品分类封面
+     *
+     * @param request
+     * @return
+     */
     @Override
     public List<PrdtImage> get_img_product_category_list(HttpServletRequest request) {
-        /**
-         * 获取所有分页内商品分类封面
-         *
-         * @param request
-         * @return
-         */
         return imageMapper.get_img_product_category_list(RowUtil.getRow(request));
     }
 
+    /**
+     * 添加商品、图片、指定封面type=1
+     *
+     * @param productId
+     * @param type
+     * @param imgUrl
+     * @return
+     */
     @Override
     public int addImage(Integer productId, Integer type, String imgUrl) {
-        /**
-         * 添加商品、图片、指定封面type=1
-         *
-         * @param productId
-         * @param type
-         * @param imgUrl
-         * @return
-         */
         PrdtImage image = new PrdtImage();
         image.setProductId(productId);
         image.setImgType(type);
@@ -55,14 +55,14 @@ public class ProductServiceImpl implements ProductService {
         return imageMapper.add(image);
     }
 
+    /**
+     * 通过产品id(productId) 查找所有的图片信息
+     *
+     * @param request
+     * @return
+     */
     @Override
     public List<PrdtImage> getImgList(HttpServletRequest request) {
-        /**
-         * 通过产品id(productId) 查找所有的图片信息
-         *
-         * @param request
-         * @return
-         */
         return imageMapper.findByProductId(new Integer(request.getParameter("productId")));
     }
 
@@ -135,39 +135,39 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.getRowCount();
     }
 
+    /**
+     * 获取封面的商品信息
+     * 填充封面
+     */
     @Override
     public List get_index_product(HttpServletRequest request) {
-        /**
-         * 获取封面的商品信息
-         * 填充封面
-         */
-        String categoryName=request.getParameter("categoryName");
-        Integer page=new Integer(request.getParameter("page"));
-        Integer limit=new Integer(request.getParameter("limit"));
-        Row row=new Row(page,limit);
-        return productMapper.get_index_product(row,categoryName);
+        String categoryName = request.getParameter("categoryName");
+        Integer page = new Integer(request.getParameter("page"));
+        Integer limit = new Integer(request.getParameter("limit"));
+        Row row = new Row(page, limit);
+        return productMapper.get_index_product(row, categoryName);
     }
 
     @Override
     public Product get_product_detail(HttpServletRequest request) {
-        String productId=request.getParameter("pid");
+        String productId = request.getParameter("pid");
         return productMapper.findById(new Integer(productId));
     }
 
-    @Override
-    public List<Product> sort_stock(HttpServletRequest request) {
         /**
          * 存货排序
          * @param request
          * @return
          */
-        String field=request.getParameter("field");//排序字段
-        String order=request.getParameter("order");//排序方式
-        String page=request.getParameter("page");
-        String limit=request.getParameter("limit");
-        Row row =new Row(Integer.parseInt(page),Integer.parseInt(limit));
+    @Override
+    public List<Product> sort_stock(HttpServletRequest request) {
+        String field = request.getParameter("field");//排序字段
+        String order = request.getParameter("order");//排序方式
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        Row row = new Row(Integer.parseInt(page), Integer.parseInt(limit));
 
-        return productMapper.sortStock(field,order,row);
+        return productMapper.sortStock(field, order, row);
     }
 
     /**
@@ -185,14 +185,30 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.delete(productId);
     }
 
+    /**
+     * 通过pid查找商品
+     * @param request
+     * @return
+     */
     @Override
     public Product findProductById(HttpServletRequest request) {
         return null;
     }
 
+    /**
+     * 根据商品id获取商品的名称
+     * @param request
+     * @return
+     */
+    @Override
+    public String getProductNameById(HttpServletRequest request) {
+        return productMapper.findNameById(new Integer(request.getParameter("pid")));
+    }
+
+
     @Override
     public List<Product> getProductListByStatement(HttpServletRequest request) {
-        String statement = "%"+request.getParameter("statement")+"%";
+        String statement = "%" + request.getParameter("statement") + "%";
         return productMapper.findAllByStatements(statement);
     }
 }

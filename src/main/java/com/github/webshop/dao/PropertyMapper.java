@@ -17,7 +17,7 @@ public interface PropertyMapper {
 
     List<Property> findAllWithCategory(Integer integer);
 
-    int total();
+    int get_row_count_byCategoryId(Integer categoryId);
 
     Property findById(Integer id);
 

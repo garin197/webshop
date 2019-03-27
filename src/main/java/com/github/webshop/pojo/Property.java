@@ -5,6 +5,15 @@ public class Property {
     private String propertyName;
     private Integer categoryId;
     private Category category;
+    private String propertyValue;
+
+    public String getPropertyValue() {
+        return propertyValue;
+    }
+
+    public void setPropertyValue(String propertyValue) {
+        this.propertyValue = propertyValue;
+    }
 
     public Integer getCategoryId() {
         return categoryId;

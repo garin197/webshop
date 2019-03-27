@@ -38,4 +38,6 @@ public interface ProductService {
     List get_index_product(HttpServletRequest request);
 
     Product get_product_detail(HttpServletRequest request);
+
+    String getProductNameById(HttpServletRequest request);
 }

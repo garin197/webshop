@@ -60,9 +60,15 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyMapper.findAllWithCategory(cid);
     }
 
+
+    /**
+     * 获取指定的分类的属性总数
+     * @param request
+     * @return 指定的分类的属性总数
+     */
     @Override
-    public int getRowCount() {
-        return 0;
+    public Integer getRowCountByCategoryId(HttpServletRequest request) {
+        return propertyMapper.get_row_count_byCategoryId(new Integer(request.getParameter("cid")));
     }
 
     @Override

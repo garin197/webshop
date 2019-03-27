@@ -26,7 +26,8 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="">
-                    <img src="/static/images/adminHead.jpg" class="layui-nav-img" th:text="${session.currentAdmin}">
+                    <img src="/static/images/adminHead.jpg" class="layui-nav-img">
+                    <span th:text="${#httpSession.getAttribute('currentAdmin')}">admin</span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="#">基本资料</a></dd>
@@ -107,8 +108,8 @@
     <!---->
     <!--数据表格内部按键-->
     <script type="text/html" id="bar1">
+        <a class="layui-btn layui-btn-xs" lay-event="edit-properties">编辑属性</a>
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="Imgdetail1">查看商品图片</a>
-        <!--<a class="layui-btn layui-btn-xs" lay-event="edit1">编辑</a>-->
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del1">下架</a>
     </script>
     <script type="text/html" id="categoryBar">

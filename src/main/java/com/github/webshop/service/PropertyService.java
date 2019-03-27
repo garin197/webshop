@@ -21,7 +21,7 @@ public interface PropertyService {
 
     List<Property> getPropertyListByCategoryId(Integer cid);
 
-    int getRowCount();
+    Integer getRowCountByCategoryId(HttpServletRequest request);
 
     int deleteProperty(Integer id);
 }

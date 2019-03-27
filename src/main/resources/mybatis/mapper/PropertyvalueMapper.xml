@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.webshop.dao.PropertyvalueMapper">
+    <update id="modify_property_value">
+        update t_propertyvalue set propertyValue=#{propertyValue} where pid=#{productId}  and ptid=#{propertyId}
+    </update>
+
+    <insert id="add_property_value">
+        insert into t_propertyvalue(pid,ptid,propertyValue) values(#{productId} ,#{propertyId}  ,#{propertyValue} )
+    </insert>
+
+
+    <!--<resultMap id="property_value" type="map">-->
+        <!--<id property="propertyId" column="property_id"></id>-->
+        <!--<result property="propertyName" column="property_name"></result>-->
+        <!--<result property="categoryId" column="cid"></result>-->
+        <!--<result property="propertyValue" column="property_value"></result>-->
+        <!--<result property="productId" column="pid"></result>-->
+    <!--</resultMap>-->
+    <select id="select_property_value" resultType="map">
+        SELECT
+	      p.propertyId ,
+	      p.propertyName,
+	      p.cid,
+	      pt.propertyValue,
+	      pt.pid
+          FROM
+	      t_property p
+	      left JOIN
+	      (select * from t_propertyvalue where pid=#{productId} ) pt
+	      ON p.propertyId = ptid
+          WHERE
+	      p.cid = #{categoryId}
+     </select>
+</mapper>

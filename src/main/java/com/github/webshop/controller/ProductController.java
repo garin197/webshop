@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class ProductController {
     private String uploadFolder;//配置的实际上传路径
 
     /**
-     * 显示商品详情--前台
+     * 显示商品详情__前台
      * @param request
      * @return
      * @throws Exception
@@ -49,7 +50,7 @@ public class ProductController {
     }
 
     /**
-     * 显示商品详情页面--前台
+     * 显示商品详情页面__前台
      * @param request
      * @param map
      * @return
@@ -64,7 +65,7 @@ public class ProductController {
     }
 
     /**
-     * 主页商品预展示--前台
+     * 主页商品预展示__前台
      * @param request
      * @return
      * @throws Exception
@@ -79,9 +80,17 @@ public class ProductController {
         return result;
     }
 
+    @ResponseBody
+    @PostMapping("/bs-index-product-property-manage-getpName")
+    public Map<String, Object> bs_index_product_property_manage_getpName(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        Map result=new HashMap();
+        result.put("productName",productService.getProductNameById(request));
+        return result;
+    }
 
     /**
-     * 库存排序--后台模块
+     * 库存排序__后台模块
      * @param request
      * @return
      * @throws Exception
@@ -97,7 +106,7 @@ public class ProductController {
     }
 
     /**
-     * 搜索功能-后台板块
+     * 搜索功能_后台板块
      * @param request
      * @return
      * @throws Exception
@@ -113,7 +122,7 @@ public class ProductController {
     }
 
     /**
-     * 修改功能-后台板块
+     * 修改功能_后台板块
      * @param request
      * @return
      */
@@ -131,7 +140,7 @@ public class ProductController {
     }
 
     /**
-     * 查看所有图片信息---后台+前台
+     * 查看所有图片信息___后台+前台
      * @param request
      * @return
      * @throws Exception
@@ -146,7 +155,7 @@ public class ProductController {
     }
 
     /**
-     * 删除功能--后台板块
+     * 删除功能__后台板块
      * @param request
      * @return
      * @throws Exception
@@ -192,7 +201,7 @@ public class ProductController {
     }
 
     /**
-     * 添加图片-图片上传至服务器（或指定路径）-后台板块
+     * 添加图片_图片上传至服务器（或指定路径）_后台板块
      * @param file    传过来的文件信息
      * @param id      productId
      * @param regex   封面的标志

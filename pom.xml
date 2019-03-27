@@ -107,6 +107,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--configuration指定主类   必须  -->
+                <configuration>
+                    <mainClass>com.github.webshop.WebshopApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
 

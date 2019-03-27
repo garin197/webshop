@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
+    <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
+    <script th:src="@{/static/js/MyJS/bs-login.js}" charset="UTF-8"></script>
+</head>
+<body>
+<div class="layui-input-block">
+    <form class="layui-form" action="checkValid()">
+        <div class="layui-form-item">
+            <div class="layui-input-inline" style="padding:8px 0 8px 0">
+                <input id="admin-input-username" name="admin-input-username" class=" divinput" type="text" autocomplete="off"
+                       placeholder="please enter you id" lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+
+            <div class="layui-input-inline">
+                <input id="admin-input-password" name="admin-input-password" class=" divinput" type="password" autocomplete="off"
+                       placeholder="please enter you password" lay-verify="required">
+            </div>
+        </div>
+        <div>
+            <button type="button" lay-submit class="layui-btn" lay-filter="admin-form-submit-btn">
+                <span>打开新世界的大门</span>
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+<style type="text/css">
+    body {
+        background-image: url("/static/images/img_11552.jpg");
+    }
+
+    .divinput {
+        padding: 8px 0 8px 0;
+    }
+</style>
