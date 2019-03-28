@@ -35,12 +35,13 @@ public class ProductController {
 
     /**
      * 显示商品详情__前台
+     *
      * @param request
      * @return
      * @throws Exception
      */
     @ResponseBody
-    @PostMapping("/index_product_detail")
+    @PostMapping("/index_product_detail")//????
     public Map<String, Object> index_product_detail(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
 //        List list = productService.get_product_detail(request);
@@ -51,13 +52,14 @@ public class ProductController {
 
     /**
      * 显示商品详情页面__前台
+     *
      * @param request
      * @param map
      * @return
      * @throws Exception
      */
-    @GetMapping("/index_product_detail")
-    public String get_index_product(HttpServletRequest request,Map map) throws Exception {
+    @GetMapping("/index_product_detail")//????
+    public String get_index_product(HttpServletRequest request, Map map) throws Exception {
         request.setCharacterEncoding("utf-8");
         Product product = productService.get_product_detail(request);
         map.put("product", product);
@@ -66,6 +68,7 @@ public class ProductController {
 
     /**
      * 主页商品预展示__前台
+     *
      * @param request
      * @return
      * @throws Exception
@@ -84,29 +87,31 @@ public class ProductController {
     @PostMapping("/bs-index-product-property-manage-getpName")
     public Map<String, Object> bs_index_product_property_manage_getpName(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
-        Map result=new HashMap();
-        result.put("productName",productService.getProductNameById(request));
+        Map result = new HashMap();
+        result.put("productName", productService.getProductNameById(request));
         return result;
     }
 
     /**
      * 库存排序__后台模块
+     *
      * @param request
      * @return
      * @throws Exception
      */
     @ResponseBody
     @RequestMapping("stocksort")
-    public Map<String,Object> stocksort(HttpServletRequest request) throws Exception {
+    public Map<String, Object> stocksort(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
-        List list=productService.sort_stock(request);
+        List list = productService.sort_stock(request);
         Map result = HashMapUtil.getFormatMap(list.size());
-        result.put("data",list);
+        result.put("data", list);
         return result;
     }
 
     /**
      * 搜索功能_后台板块
+     *
      * @param request
      * @return
      * @throws Exception
@@ -115,14 +120,15 @@ public class ProductController {
     @GetMapping("/search")
     public Map<String, Object> search(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
-        List list=productService.getProductListByStatement(request);
+        List list = productService.getProductListByStatement(request);
         Map result = HashMapUtil.getFormatMap(list.size());
-        result.put("data",list);
+        result.put("data", list);
         return result;
     }
 
     /**
      * 修改功能_后台板块
+     *
      * @param request
      * @return
      */
@@ -141,6 +147,7 @@ public class ProductController {
 
     /**
      * 查看所有图片信息___后台+前台
+     *
      * @param request
      * @return
      * @throws Exception
@@ -156,6 +163,7 @@ public class ProductController {
 
     /**
      * 删除功能__后台板块
+     *
      * @param request
      * @return
      * @throws Exception
@@ -170,6 +178,7 @@ public class ProductController {
 
     /**
      * 获取封面（type=1）以及商品和属性等
+     *
      * @param request
      * @return
      * @throws Exception
@@ -202,6 +211,7 @@ public class ProductController {
 
     /**
      * 添加图片_图片上传至服务器（或指定路径）_后台板块
+     *
      * @param file    传过来的文件信息
      * @param id      productId
      * @param regex   封面的标志
@@ -236,7 +246,7 @@ public class ProductController {
             file.transferTo(new File(uploadFolder + realFileName));
             logger.info("上传文件信息：" + uploadFolder + realFileName);
 
-            //同步到数据库
+            //检查是不是封面图片，并且同步到数据库
             if (MyUtil.isIndexImg(fileName, regex)) {
                 imgType = 1;
             }

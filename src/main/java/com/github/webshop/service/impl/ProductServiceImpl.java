@@ -145,7 +145,8 @@ public class ProductServiceImpl implements ProductService {
         Integer page = new Integer(request.getParameter("page"));
         Integer limit = new Integer(request.getParameter("limit"));
         Row row = new Row(page, limit);
-        return productMapper.get_index_product(row, categoryName);
+
+        return  productMapper.get_index_product(row.getStart(),row.getLimit(), categoryName);
     }
 
     @Override

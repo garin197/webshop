@@ -30,7 +30,7 @@ public interface ProductMapper {
 
     List<Product> sortStock(@Param("field") String field, @Param("order") String order, @Param("row") Row row);
 
-    List get_index_product(Row row, @Param("categoryName") String categoryName);
+    List get_index_product(@Param("start") Integer start,@Param("limit") Integer limit, @Param("categoryName") String categoryName);
 
 //    List get_product_detail(@Param("productId") Integer productId);
 

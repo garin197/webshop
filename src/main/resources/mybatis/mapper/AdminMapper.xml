@@ -5,8 +5,8 @@
 
 <!--指定包空间-->
 <mapper namespace="com.github.webshop.dao.AdminMapper">
-    <select id="FindByNameAndPassword" parameterType="admin">
-        select * from t_admin where adminName=#{adminName} and password=#{password}
+    <select id="FindByNameAndPassword" parameterType="admin" resultType="admin">
+        select adminName,password from t_admin where adminName=#{adminName} and password=#{password}
     </select>
 
     <select id="findById" parameterType="admin" resultType="admin">

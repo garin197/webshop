@@ -6,8 +6,10 @@
 <mapper namespace="com.github.webshop.dao.ProductMapper">
     <!--插入一条记录，返回主键值-->
     <insert id="add" parameterType="product" useGeneratedKeys="true">
-        insert into t_product(productName,subTitle,originalPrice,promotePrice,stock,cid,createDate) values(#{productName} ,#{subTitle} ,#{originalPrice},#{promotePrice} ,#{stock} ,#{categoryId} ,#{createDate})
-        <selectKey keyColumn="productId" keyProperty="productId" resultType="java.lang.Integer" order="AFTER" statementType="PREPARED">
+        insert into t_product(productName,subTitle,originalPrice,promotePrice,stock,cid,createDate)
+        values(#{productName} ,#{subTitle} ,#{originalPrice},#{promotePrice} ,#{stock} ,#{categoryId} ,#{createDate})
+        <selectKey keyColumn="productId" keyProperty="productId" resultType="java.lang.Integer" order="AFTER"
+                   statementType="PREPARED">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
@@ -64,12 +66,12 @@
     </select>
 
     <!--<resultMap id="res" type="prdtimage">-->
-        <!--<result property="imgId" column="img_id"></result>-->
-        <!--<result property="imgType" column="img_type"></result>-->
-        <!--<result property="imgUrl" column="img_url"></result>-->
+    <!--<result property="imgId" column="img_id"></result>-->
+    <!--<result property="imgType" column="img_type"></result>-->
+    <!--<result property="imgUrl" column="img_url"></result>-->
     <!--</resultMap>-->
     <!--<select id="findAllByStatements" parameterType="string" resultType="string">-->
-        <!--select * from t_product where  productName like #{statement}-->
+    <!--select * from t_product where  productName like #{statement}-->
 
     <!--</select>-->
     <resultMap id="img_product_category_list" type="prdtimage">
@@ -77,7 +79,9 @@
         <result property="productId" column="pid"></result>
         <result property="imgType" column="imgType"></result>
         <result property="imgUrl" column="imgUrl"></result>
-        <association property="product" column="pid" select="com.github.webshop.dao.ProductMapper.findAllWithCategoryByProductId" javaType="product"></association>
+        <association property="product" column="pid"
+                     select="com.github.webshop.dao.ProductMapper.findAllWithCategoryByProductId"
+                     javaType="product"></association>
     </resultMap>
     <select id="findAllByStatements" resultMap="img_product_category_list" parameterType="string">
         select * from t_productimage where imgType=1 and pid in (select productId from t_product where  productName like #{statement})
@@ -91,16 +95,28 @@
         select * from t_productimage pi,t_product p where pi.imgType=1 and pi.pid=p.productId order by ${field} ${order} limit #{row.start},#{row.limit}
     </select>
 
+    <!--resultMap="img_product_category_list"-->
+    <!--<select id="get_index_product" resultMap="img_product_category_list">-->
+    <!--select * from-->
+    <!--t_productimage pi,t_product p,t_category cgy-->
+    <!--where pi.pid=p.productId-->
+    <!--and pi.imgType=1-->
+    <!--and cgy.categoryId=p.cid-->
+    <!--and p.cid in (select categoryId from t_category where categoryName=#{categoryName})-->
+    <!--limit #{start},#{limit}-->
+
+    <!--</select>-->
     <select id="get_index_product" resultMap="img_product_category_list">
         select * from
         t_productimage pi,t_product p,t_category c
         where pi.pid=p.productId
-        and pi.imgType=1
         and c.categoryId=p.cid
+        and pi.imgType=1
         and p.cid in (select categoryId from t_category where categoryName=#{categoryName})
-        limit #{row.start},#{row.limit}
+        limit #{start},#{limit}
+
     </select>
-    
+
     <select id="findNameById" resultType="string" parameterType="integer">
         select productName from t_product where productId=#{productId}
     </select>

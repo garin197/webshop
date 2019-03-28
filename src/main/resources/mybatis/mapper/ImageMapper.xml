@@ -22,7 +22,7 @@
                 imgUrl=#{imgUrl}
             </if>
         </set>
-          where imgId=#{imgId}
+        where imgId=#{imgId}
     </update>
 
     <select id="findById" parameterType="integer">
@@ -40,7 +40,9 @@
         <result property="productId" column="pid"></result>
         <result property="imgType" column="imgType"></result>
         <result property="imgUrl" column="imgUrl"></result>
-        <association property="product" column="pid" select="com.github.webshop.dao.ProductMapper.findAllWithCategoryByProductId" javaType="product"></association>
+        <association property="product" column="pid"
+                     select="com.github.webshop.dao.ProductMapper.findAllWithCategoryByProductId"
+                     javaType="product"></association>
     </resultMap>
     <select id="get_img_product_category_list" resultMap="img_product_category_list" parameterType="row">
         select * from t_productimage where imgType=1 limit #{start},#{limit}

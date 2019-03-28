@@ -6,6 +6,8 @@ import com.github.webshop.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -20,11 +22,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin FindAdmin(Admin admin) {
+    public Admin FindAdmin(HttpServletRequest request) {
+        String userName = request.getParameter("admin-input-username");
+        String password = request.getParameter("admin-input-password");
+        Admin admin = new Admin();
+        admin.setAdminName(userName);
+        admin.setPassword(password);
+        Admin currentAdmin = null;
+        try {
+            currentAdmin = adminMapper.FindByNameAndPassword(admin);
+        }catch (Exception e){
 
-//        adminMapper.InsertNewAdmin(admin);
-
-        return null;
+        }
+        return currentAdmin;
     }
 
 }

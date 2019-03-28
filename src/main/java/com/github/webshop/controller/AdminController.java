@@ -1,24 +1,46 @@
 package com.github.webshop.controller;
 
+import com.github.webshop.pojo.Admin;
+import com.github.webshop.service.AdminService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
+    @Autowired
+    private AdminService adminService;
     private Logger logger = Logger.getLogger(AdminController.class);
 
+    @ResponseBody
+    @PostMapping("/adlogin")
+    public Map<String,Object> adlogin(HttpSession session, HttpServletRequest request){
+        Map result=new HashMap();
+        Admin currentAdmin=adminService.FindAdmin(request);
+        if (currentAdmin == null) {
+            result.put("msg","账号或密码错误");
+            result.put("code","0");
+        }else {
+            result.put("code","1");
+            session.setAttribute("currentAdmin",currentAdmin.getAdminName());
+        }
+        return result;
+    }
 
     @RequestMapping("")
     public String t(HttpSession session) {
         logger.info("访问后台管理-页面");
 //        session.setAttribute("currentAdmin","jkfjd");
-        return "/backstage/bs-index";
+        return "backstage/bs-index";
 //        return "product-detail";
     }
 
@@ -30,6 +52,11 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    /**
+     * 判断是否登录
+     * @param session
+     * @return
+     */
     @ResponseBody
     @PostMapping("/islogin")
     public boolean islogin(HttpSession session){

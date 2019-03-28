@@ -8,7 +8,7 @@
     <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
     <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/static/js/MyJS/bs-index.js}"></script><!--自定义js函数-->
-    <title th:text="@{'网页后台管理'}">页面标题</title>
+    <title>网页后台管理</title>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -36,7 +36,7 @@
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a class="layui-btn layui-btn layui-btn-danger" href="#">登出 OUT</a>
+                <a id="logout" lay-filter="logout" class="layui-btn layui-btn layui-btn-danger" href="javascript:logout()">登出 OUT</a>
             </li>
         </ul>
     </div>

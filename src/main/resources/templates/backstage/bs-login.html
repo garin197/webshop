@@ -21,21 +21,21 @@
 <div class="layui-input-block">
     <form class="layui-form" action="checkValid()">
         <div class="layui-form-item">
-            <div class="layui-input-inline" style="padding:8px 0 8px 0">
-                <input id="admin-input-username" name="admin-input-username" class=" divinput" type="text" autocomplete="off"
-                       placeholder="please enter you id" lay-verify="required">
+            <div class="layui-input-inline" style="padding:20px 0 8px 0">
+                <input id="admin-input-username" name="admin-input-username" class=" divinput" type="text" autocomplete="off" onkeypress="keytologin(event)"
+                       placeholder="输入账号" lay-verify="required" autofocus="autofocus">
             </div>
         </div>
 
         <div class="layui-form-item">
 
             <div class="layui-input-inline">
-                <input id="admin-input-password" name="admin-input-password" class=" divinput" type="password" autocomplete="off"
-                       placeholder="please enter you password" lay-verify="required">
+                <input id="admin-input-password" name="admin-input-password" class=" divinput" type="password" autocomplete="off" onkeypress="keytologin(event)"
+                       placeholder="输入密码" lay-verify="required">
             </div>
         </div>
         <div>
-            <button type="button" lay-submit class="layui-btn" lay-filter="admin-form-submit-btn">
+            <button id="admin-form-submit-btn" type="button" lay-submit class="layui-btn" lay-filter="admin-form-submit-btn">
                 <span>打开新世界的大门</span>
             </button>
         </div>
