@@ -4,13 +4,15 @@ server:
     context-path: /
     session:
       cookie:
-        max-age: 3600
+
+        #        session过期
+        max-age: 60
 
 spring:
   #jdbc
   datasource:
     url: jdbc:mysql://192.168.13.105:3306/db_webshop?useSSL=true&characterEncoding=UTF-8
-#    url: jdbc:mysql://localhost:3306/db_webshop?useSSL=false&characterEncoding=UTF-8
+    #    url: jdbc:mysql://localhost:3306/db_webshop?useSSL=false&characterEncoding=UTF-8
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource

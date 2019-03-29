@@ -1,12 +1,10 @@
 package com.github.webshop.service;
 
 import com.github.webshop.pojo.Category;
-import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Repository
 public interface CategoryService {
 
     List<Category> FindCategoryOnLike(String statement);

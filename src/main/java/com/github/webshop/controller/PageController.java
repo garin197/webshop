@@ -55,20 +55,19 @@ public class PageController {
         return "index-iframe-table1-property-manage";
     }
 
-    //    @ResponseBody
     @GetMapping("/iframe-table2-property-manage")
     public String iframe_table2_category_manage(@RequestParam(value = "id") Integer category, Map map) {
         map.put("category", category);
         return "backstage/bs-index-iframe-table2-property-manage";
     }
 
-    @RequestMapping("/index")
+    @GetMapping("/index")
     public String index() {
         logger.info("访问主页-页面");
         return "index";
     }
 
-    @RequestMapping("/err")
+    @GetMapping("/err")
     public String error() {
         return "404";
     }

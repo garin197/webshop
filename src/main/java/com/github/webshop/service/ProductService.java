@@ -2,12 +2,10 @@ package com.github.webshop.service;
 
 import com.github.webshop.pojo.PrdtImage;
 import com.github.webshop.pojo.Product;
-import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Repository
 public interface ProductService {
     List<Product> getProductListWithLimit(HttpServletRequest request);
 

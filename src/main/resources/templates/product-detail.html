@@ -57,10 +57,11 @@
             });
 
             $(".addCartLink").click(function(){
-                var page = "forecheckLogin";
-                $.get(
-                    page,
-                    function(result){
+                var page = "/user/forecheckLogin";
+                $.ajax({
+                    type:'get',
+                    url:page,
+                    success:function(result){
                         if("success"==result){
                             var pid = 150;
                             var num= $(".productNumberSetting").val();
@@ -84,9 +85,13 @@
                             );
                         }
                         else{
-                            $("#loginModal").modal('show');
+                            // $("#loginModal").modal('show');
+                            // 提示登录
+                            layer.closeAll();
+                            window.location.href='/user/login';
                         }
-                    }
+                    }}
+
                 );
                 return false;
             });

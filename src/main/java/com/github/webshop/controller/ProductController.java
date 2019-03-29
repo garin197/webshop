@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,25 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;//配置的实际上传路径
 
+    @ResponseBody
+    @GetMapping("/forecheckLogin")
+    public String islogin(HttpSession session){
+
+        return "false";
+    }
+
+    /**
+     * 立即购买，前提：已登录用户
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/forebuyone")
+    public Map<String,Object> forebuyone(HttpServletRequest request){
+
+        return null;
+    }
+
     /**
      * 显示商品详情__前台
      *
@@ -41,7 +61,7 @@ public class ProductController {
      * @throws Exception
      */
     @ResponseBody
-    @PostMapping("/index_product_detail")//????
+    @PostMapping("/index_product_detail")
     public Map<String, Object> index_product_detail(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("utf-8");
 //        List list = productService.get_product_detail(request);
@@ -58,7 +78,7 @@ public class ProductController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/index_product_detail")//????
+    @GetMapping("/index_product_detail")
     public String get_index_product(HttpServletRequest request, Map map) throws Exception {
         request.setCharacterEncoding("utf-8");
         Product product = productService.get_product_detail(request);

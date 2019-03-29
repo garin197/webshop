@@ -1,3 +1,16 @@
+// var sess = $.ajax({
+//     type: 'post',
+//     datatype: 'json',
+//     url: '/admin/islogin',
+//     success: function (res) {
+//         if (!res) {
+//             window.parent.window.location.href = "/admin"
+//         }
+//         setTimeout(sess, 60);
+//     }
+//
+// });
+
 //简易的登录拦截-后台模块-开始
 $.ajax({
     type: 'post',
@@ -6,6 +19,7 @@ $.ajax({
     success: function (res) {
         //res是否登录的boolean值
         if (!res) {//进行提示登录
+
             layui.use('layer', function () {
                 layer.open({
                     type: 2,
@@ -15,9 +29,11 @@ $.ajax({
                     area: ['500px', '312px'],
                     closeBtn: false
                 });
+
             });
         } else {//登录通过
             layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function () {
+            layer.closeAll();
                 var table = layui.table;
                 var form = layui.form;
                 var upload = layui.upload;

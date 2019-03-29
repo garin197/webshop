@@ -1,12 +1,10 @@
 package com.github.webshop.service;
 
 import com.github.webshop.pojo.Property;
-import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Repository
 public interface PropertyService {
 
     List<Property> FindPropertyOnLike(String statement);

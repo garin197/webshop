@@ -95,17 +95,6 @@
         select * from t_productimage pi,t_product p where pi.imgType=1 and pi.pid=p.productId order by ${field} ${order} limit #{row.start},#{row.limit}
     </select>
 
-    <!--resultMap="img_product_category_list"-->
-    <!--<select id="get_index_product" resultMap="img_product_category_list">-->
-    <!--select * from-->
-    <!--t_productimage pi,t_product p,t_category cgy-->
-    <!--where pi.pid=p.productId-->
-    <!--and pi.imgType=1-->
-    <!--and cgy.categoryId=p.cid-->
-    <!--and p.cid in (select categoryId from t_category where categoryName=#{categoryName})-->
-    <!--limit #{start},#{limit}-->
-
-    <!--</select>-->
     <select id="get_index_product" resultMap="img_product_category_list">
         select * from
         t_productimage pi,t_product p,t_category c

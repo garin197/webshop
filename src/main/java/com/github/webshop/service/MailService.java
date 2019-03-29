@@ -8,10 +8,6 @@
 
 package com.github.webshop.service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-public interface PropertyvalueService {
-    int handlePropertyValue(HttpServletRequest request);
-    List get_propertyvalue_list_by(HttpServletRequest request);
+public interface MailService {
+    String sendValidMessage(String sender,String receiver,String title,String text);
 }

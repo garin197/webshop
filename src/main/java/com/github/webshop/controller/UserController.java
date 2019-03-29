@@ -3,10 +3,10 @@ package com.github.webshop.controller;
 import com.github.webshop.exception.UserInVaildLoginException;
 import com.github.webshop.pojo.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +19,28 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
+    /**
+     *访问登录页
+     * @return
+     */
     @GetMapping("/login")
-    public String GetLogin(Model model){
+    public String GetLogin(){
         return "user-login";
     }
 
+
+    @ResponseBody
+    @GetMapping("/forecheckLogin")
+    public String forecheckLogin(HttpSession session){
+        String currentUser= (String) session.getAttribute("currentUser");
+        if (currentUser!=null){
+            return "true";
+        }
+        return "false";
+    }
+
     @PostMapping("/login")
-    public ModelAndView login(HttpServletResponse response,HttpSession session, User user){
+    public ModelAndView login(HttpServletResponse response, HttpSession session, User user){
         ModelAndView modelAndView=new ModelAndView("redirect:/page/index");
         modelAndView.addObject("msg","hello");
 
