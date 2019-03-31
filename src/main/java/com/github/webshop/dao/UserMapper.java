@@ -6,9 +6,15 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package com.github.webshop.service;
+package com.github.webshop.dao;
 
-public interface MailService {
+import com.github.webshop.pojo.User;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-    String sendValidMessage(String sender, String receiver, String title, String text);
+@Mapper
+public interface UserMapper {
+    User findByName(String name);
+    User findByEmail(String email);
+    User findByNamePsw(@Param("name") String name, @Param("psw") String psw);
 }

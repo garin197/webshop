@@ -8,7 +8,13 @@
 
 package com.github.webshop.service;
 
-public interface MailService {
+import com.github.webshop.pojo.User;
 
-    String sendValidMessage(String sender, String receiver, String title, String text);
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+public interface UserService {
+    User check_exsist_username(HttpServletRequest request);
+    User check_exsist_email(HttpServletRequest request);
+    boolean check_vaild(HttpSession session,HttpServletRequest request);
 }
