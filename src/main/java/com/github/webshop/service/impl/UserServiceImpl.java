@@ -22,34 +22,48 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Override
+    public int addUser(HttpServletRequest request) {
+        String userName=request.getParameter("userName");
+        String email=request.getParameter("email");
+        String password=request.getParameter("password");
+        User user=new User();
+        user.setEmail(email);
+        user.setUserName(userName);
+        user.setPassword(password);
+        return userMapper.add(user);
+    }
+
     /**
      * 按名字查找用户
+     *
      * @param request
      * @return
      */
     @Override
     public User check_exsist_username(HttpServletRequest request) {
-        String type=request.getParameter("type");
-        String username=request.getParameter("username");
-        if (type.equals("username")){
-            return userMapper.findByName(username);
-        }else {
-
-        }
-        return null;
+        String type = request.getParameter("type");
+        String username = request.getParameter("userName");
+//        if (type.equals("username")){
+        return userMapper.findByName(username);
+//        }else {
+//
+//        }
+//        return null;
     }
 
     @Override
     public User check_exsist_email(HttpServletRequest request) {
-        String email=request.getParameter("email");
+        String email = request.getParameter("email");
         return userMapper.findByEmail(email);
     }
 
     @Override
-    public boolean check_vaild(HttpSession session,HttpServletRequest request) {
-        String vaild=request.getParameter("vaild");
-        String sessionvaild= (String) session.getAttribute("vaild");
-        if (vaild.equals(sessionvaild)){
+    public boolean check_vaild(HttpSession session, HttpServletRequest request) {
+        String vaild = request.getParameter("vaild");
+        String sessionvaild = (String) session.getAttribute("vaild");
+        if (vaild.equals(sessionvaild)) {
             return true;
         }
         return false;

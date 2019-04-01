@@ -17,4 +17,6 @@ public interface UserService {
     User check_exsist_username(HttpServletRequest request);
     User check_exsist_email(HttpServletRequest request);
     boolean check_vaild(HttpSession session,HttpServletRequest request);
+    int addUser(HttpServletRequest request);
+
 }

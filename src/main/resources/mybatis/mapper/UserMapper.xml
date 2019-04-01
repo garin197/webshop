@@ -22,4 +22,5 @@
         select id,name,password from t_user where name=#{name} and password=#{psw}
     </select>
 
+
 </mapper>

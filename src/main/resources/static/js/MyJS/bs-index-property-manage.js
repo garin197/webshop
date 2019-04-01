@@ -48,7 +48,10 @@ layui.use(['layer', 'form'], function () {
                 type:'post',
                 datatype: 'json',
                 url: '/property/add?cid='+cid,
-                data: {"propertyName": data.field.propertyName}
+                data: {"propertyName": data.field.propertyName},
+                success:function(){
+                    table.reload("datagridProperty");
+                }
             });
         });
 

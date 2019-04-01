@@ -34,7 +34,7 @@
             <div class="layui-input-block">
                 <input type="number" id="originalPrice" name="originalPrice" required style="width: 240px" lay-verify="required|number"
                        placeholder="产品原价"
-                       autocomplete="off" class="layui-input">
+                       autocomplete="off" class="layui-input" onblur="$('#promotePrice').val($('#originalPrice').val())">
             </div>
             <label class="layui-form-label" style="width: 100px">优惠价格</label>
             <div class="layui-input-block">

@@ -17,27 +17,40 @@ function keyenter(event) {
 }
 
 function sendvaild() {
-        layui.use(['layer'], function () {
-            $.ajax({
-                type: "post",
-                datatype: "json",
-                async: false,
-                url: '/mail/send',
-                data:{email:$('#emailsignup').val()};
-                success: function (res) {
-                    // layer.open({
-                    //     type: 1,
-                    //     closeBtn: false,
-                    //     content: '<div>' +
-                    //         '<input type="text" placeholder="验证码" id="valid" name="valid" autocomplete="off" lay-verify="required">' +
-                    //         '<input class="layui-btn-normal" autocomplete="off" onclick=""><span>ok</span></input>' +
-                    //         '</div>'
-                    // });
+    if ($('#emailsignup').val() == "") {
+
+        $('#emailsignup').focus();
+        return false;
+    }
+
+    layui.use(['layer'], function () {
+        $.ajax({
+            type: "post",
+            datatype: "json",
+            async: true,
+            url: '/mail/send',
+            data: {"email": $('#emailsignup').val()},
+            success: function (res) {
+                // layer.open({
+                //     type: 1,
+                //     closeBtn: false,
+                //     content: '<div>' +
+                //         '<input type="text" placeholder="验证码" id="valid" name="valid" autocomplete="off" lay-verify="required">' +
+                //         '<input class="layui-btn-normal" autocomplete="off" onclick=""><span>ok</span></input>' +
+                //         '</div>'
+                // });
+
+                if (res) {
+
+                    layer.tips(
+                        "已经发送验证码，请查看！", "#vaild", {}
+                    );
                 }
-            });
-
-
+            }
         });
+
+
+    });
 
 
 }
@@ -45,14 +58,14 @@ function sendvaild() {
 function checkusername() {
     if ($('#usernamesignup').val() != "") {
         $.ajax({
-            async:false,
+            async: false,
             type: 'post',
             url: '/user/isexist',
-            data:{username:$('#usernamesignup').val(),type:"username"}
-            ,success:function(res){
-                if (res){
+            data: {"username": $('#usernamesignup').val(), "type": "username"}
+            , success: function (res) {
+                if (res) {
 
-                    layui.use(['layer'],function(){
+                    layui.use(['layer'], function () {
 
                         layer.tips('用户名已存在', '#usernamesignup', {});
                     });

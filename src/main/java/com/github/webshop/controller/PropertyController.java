@@ -66,11 +66,13 @@ public class PropertyController {
         return flag;
     }
 
+    @ResponseBody
     @PostMapping("/add")
-    public void add(HttpServletRequest request, @RequestParam("cid") Integer categoryId) throws Exception {
+    public boolean add(HttpServletRequest request, @RequestParam("cid") Integer categoryId) throws Exception {
         request.setCharacterEncoding("utf-8");
         request.setAttribute("categoryId",categoryId);
         propertyService.AddProperty(request);
+        return true;
     }
 
     @PostMapping("/del")

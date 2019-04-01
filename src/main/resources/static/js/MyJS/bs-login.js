@@ -20,9 +20,9 @@ layui.use(['layer', 'form'], function () {
                 if (res.code == 0) {
                     layer.msg(res.msg, {anim: 6});
                 } else if (res.code == 1) {
-
-                    window.parent.window.location.href = '/admin';
                     layer.closeAll();
+                    window.parent.window.location.href = '/admin';
+
                 }
             }
         });

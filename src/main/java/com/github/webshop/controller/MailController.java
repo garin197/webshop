@@ -30,18 +30,16 @@ public class MailController {
 
     @ResponseBody
     @PostMapping("/send")
-    public Integer mailvaild(HttpServletRequest request){
-        String num=""+(Math.random()*10000)%10000;
-        num=num.substring(0,4);
-        num.replaceAll(".","8");
-        String email=request.getParameter("emailsignup");
+    public boolean mailvaild(HttpServletRequest request) {
+        String num = "" + (Math.random() * 10000) % 10000;
+        num = num.substring(0, 4).replace(".", "8");
+        String email = request.getParameter("email");
         try {
-        mailService.sendValidMessage(sender,email,"一点购物平台 验证码","尊敬的用户：你正在操作-一点购物平台-注册账号，操作验证码为："+num);
-        }catch (Exception e){
-            return 1;
+            mailService.sendValidMessage(sender, email, "一点购物平台 验证码", "尊敬的用户：你正在操作-一点购物平台-注册账号，操作验证码为：" + num);
+        } catch (Exception e) {
+            return false;
         }
-        request.getSession().setAttribute("vaild",num);
-
-        return 0;
+        request.getSession().setAttribute("vaild", num);
+        return true;
     }
 }

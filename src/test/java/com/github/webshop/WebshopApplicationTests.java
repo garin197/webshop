@@ -1,6 +1,5 @@
 package com.github.webshop;
 
-import com.github.webshop.util.MyUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,8 +11,8 @@ public class WebshopApplicationTests {
 
     @Test
     public void contextLoads() {
-        String s= MyUtil.getFormatDate();
-        System.out.println(s);
+        String s= "1213";
+        System.out.println(s.replace(".","8"));
     }
 
 }

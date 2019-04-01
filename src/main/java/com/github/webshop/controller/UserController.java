@@ -67,9 +67,9 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/isexist")
-    public boolean isexist(HttpServletRequest request){
-        User user=userService.check_exsist_username(request);
-        if (userService.check_exsist_username(request)!=null){
+    public boolean isexist(HttpServletRequest request) {
+        User user = userService.check_exsist_username(request);
+        if (userService.check_exsist_username(request) != null) {
             return true;
         }
         return false;
@@ -87,39 +87,46 @@ public class UserController {
     @PostMapping("/register")
     public String register(HttpServletRequest request, HttpSession session, User user, Map map) throws Exception {
 
-        String msg="";
-        boolean flag=false;
-        if(userService.check_exsist_username(request)!=null){
-            msg="用户名已存在";
-            flag=false;
-        }else if (userService.check_exsist_email(request)!=null){
-            msg="邮箱已经被注册";
-            flag=false;
-        }else if (!userService.check_vaild(session,request)){
-            msg="验证码错误";
+        String msg = "";
+        boolean flag = false;
+        if (userService.check_exsist_username(request) != null) {
+            msg = "用户名已存在";
+            flag = false;
+        } else if (userService.check_exsist_email(request) != null) {
+            msg = "邮箱已经被注册";
+            flag = false;
+        } else if (!userService.check_vaild(session, request)) {
+            msg = "验证码错误";
             session.removeAttribute("vaild");
-            flag=false;
+            flag = false;
         }
 
         if (flag) {//失败
             map.put("userName", user.getUserName());
             map.put("password", user.getPassword());
-            map.put("msg",msg);
-            return "user-login#toregister";
+            map.put("msg", "layer.msg(" + msg + ")");
+
+            return "user-login?#toregister";
         } else {
-            //
-        }
-        //插入数据库
 
+            //插入数据库
+            int succ = userService.addUser(request);
 
-        //注册成功直接登录
-        Map currentUserMap = new HashMap<String, String>();
-        currentUserMap.put("currentUserName", user.getUserName());
-        currentUserMap.put("currentUserEmail", user.getEmail());
+            if (succ>=0){
+
+                //注册成功直接登录
+                Map currentUserMap = new HashMap<String, String>();
+                currentUserMap.put("currentUserName", user.getUserName());
+                currentUserMap.put("currentUserEmail", user.getEmail());
+            }else {
+//                注册
+            }
+
 //        currentUserMap.put("valid", valid);
 
-        session.setAttribute("currentUserMap", currentUserMap);
+//            session.setAttribute("currentUserMap", currentUserMap);
 
+        }
 
         return "index";
     }

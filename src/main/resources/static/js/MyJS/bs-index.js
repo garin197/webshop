@@ -11,6 +11,7 @@
 //
 // });
 
+
 //简易的登录拦截-后台模块-开始
 $.ajax({
     type: 'post',
@@ -33,7 +34,7 @@ $.ajax({
             });
         } else {//登录通过
             layui.use(['element', 'table', 'layer', 'form', 'laypage', 'upload'], function () {
-            layer.closeAll();
+                layer.closeAll();
                 var table = layui.table;
                 var form = layui.form;
                 var upload = layui.upload;
@@ -439,6 +440,9 @@ $.ajax({
                 //创建列表对象，动态插入列
                 var ImgListView = $('#multiImgList');
 
+                // 上传失败标记
+                var failflag = false;
+
                 //多问价上传的对象
                 var ImguploadList = upload.render({
 
@@ -530,8 +534,10 @@ $.ajax({
 
                     // 上传成功后触发，上传多文件会触发多次
                     , done: function (res, index, upload) {
+                        // alert("done")
+                        failflag = false;
                         if (res.code == 0) { //上传成功
-                            var tr = ImgListView.find('tr#upload-' + index)
+                            var tr = ImgListView.find('upload-' + index)
                                 , tds = tr.children();
                             tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                             tds.eq(3).html(''); //清空操作
@@ -549,7 +555,7 @@ $.ajax({
                             //删除文件队列已经上传成功的文件
                             return delete this.files[index];
                         }
-                        this.error(index, upload);
+                        // this.error(index, upload);
                     }
                     // 上传之前调用
                     , before: function (obj) {
@@ -559,9 +565,31 @@ $.ajax({
                             layer.tips('来几张图片', '#multiImgBtn', {
                                 anim: 6, tips: 3
                             });
-                            return false
+                            return true;
                         }
 
+                        if ($('#productName').val() == "") {
+                            $('#productName').focus();
+                            return;
+                        }
+                        if ($('#productSubTitle').val() == "") {
+                            $('#productSubTitle').val("");
+                        }
+                        if ($('#originalPrice').val() == "") {
+                            $('#originalPrice').val("0");
+                        }
+                        if ($('#promotePrice').val() == "") {
+                            $('#promotePrice').val("0");
+                            $('#promotePrice').focus();
+                            return;
+                        }
+                        if ($('#stock').val() == "") {
+                            $('#stock').val(0);
+                        }
+                        if ($('#category').val() == "") {
+                            $('#category').focus();
+                            return;
+                        }
                         //上传之前先提交其他信息并获取新增productId
                         if (!hasCreateProduct) {
 
@@ -583,10 +611,9 @@ $.ajax({
                                 success: function (res) {
                                     proId = res.productId;
                                     hasCreateProduct = true;
-                                },
-                                error: function (res) {
-                                    alert('error');
+
                                 }
+
                             });
 
                         }
@@ -594,44 +621,48 @@ $.ajax({
                         this.data = {'id': proId, 'type': myFileNametype};
                     }
                     , error: function (index, upload) {
-                        var tr = ImgListView.find('tr#upload-' + index)
+                        var tr = ImgListView.find('upload-' + index)
                             , tds = tr.children();
                         tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                         tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-
-                        ImguploadList.upload();
+                        failflag = true;
+                        // ImguploadList.upload();
                     }
 
                     // 全部文件上传完成之后调用
                     , allDone: function (obj) {
+// alert("allDone")
+                        if (!failflag) {
+                            // 提示用户是否继续上传
+                            layer.confirm(
+                                //提示信息
+                                '要不要再来一发？',
 
-                        // 提示用户是否继续上传
-                        layer.confirm(
-                            //提示信息
-                            '要不要再来一发？',
+                                //按钮的文本
+                                {btn: ['干', '我拒绝']},
 
-                            //按钮的文本
-                            {btn: ['干', '我拒绝']},
+                                //响应第一个按钮
+                                function () {
+                                    window.location.reload();
+                                }
 
-                            //响应第一个按钮
-                            function () {
-                                window.location.reload();
-                            }
+                                //响应第二个按钮
+                                , function () {
 
-                            //响应第二个按钮
-                            , function () {
+                                    // 关闭当前页面对象上的所有弹出层
+                                    layer.closeAll();
 
-                                // 关闭当前页面对象上的所有弹出层
-                                layer.closeAll();
+                                    //先得到当前iframe层的索引，通过iframe的parent获取当前的layui-iframe的index值
+                                    var index_ = parent.layer.getFrameIndex(window.name);
 
-                                //先得到当前iframe层的索引，通过iframe的parent获取当前的layui-iframe的index值
-                                var index_ = parent.layer.getFrameIndex(window.name);
-
-                                //再执行关闭
-                                parent.layer.close(index_);
-                            });
+                                    //再执行关闭
+                                    parent.layer.close(index_);
+                                });
+                        }
                     }
                 });
+
+
 
                 // 图片上传前端模块--结束
 

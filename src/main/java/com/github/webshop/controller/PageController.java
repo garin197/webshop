@@ -55,7 +55,7 @@ public class PageController {
         return "index-iframe-table1-property-manage";
     }
 
-    @GetMapping("/iframe-table2-property-manage")
+    @RequestMapping("/iframe-table2-property-manage")
     public String iframe_table2_category_manage(@RequestParam(value = "id") Integer category, Map map) {
         map.put("category", category);
         return "backstage/bs-index-iframe-table2-property-manage";
