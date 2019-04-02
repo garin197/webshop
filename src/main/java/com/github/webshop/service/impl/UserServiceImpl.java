@@ -23,12 +23,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+
     @Override
     public int addUser(HttpServletRequest request) {
-        String userName=request.getParameter("userName");
-        String email=request.getParameter("email");
-        String password=request.getParameter("password");
-        User user=new User();
+        String userName = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        User user = new User();
         user.setEmail(email);
         user.setUserName(userName);
         user.setPassword(password);
@@ -44,13 +45,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User check_exsist_username(HttpServletRequest request) {
         String type = request.getParameter("type");
-        String username = request.getParameter("userName");
-//        if (type.equals("username")){
+        String username = request.getParameter("username");
         return userMapper.findByName(username);
-//        }else {
-//
-//        }
-//        return null;
     }
 
     @Override

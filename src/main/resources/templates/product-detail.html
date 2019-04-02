@@ -63,14 +63,16 @@
                     url:page,
                     success:function(result){
                         if("success"==result){
-                            var pid = 150;
+                            var pid = $('#hidden_input_productId').val();
                             var num= $(".productNumberSetting").val();
-                            var addCartpage = "foreaddCart";
-                            $.get(
+                            var addCartpage = "add_cart/"+pid;
+                            $.post(
                                 addCartpage,
-                                {"pid":pid,"num":num},
+                                {"num":num,"pname":$(".productTitle").text(),"money":$(".promotionPrice").text(),"imgUrl":$("#img-detail-0")[0].src},
                                 function(result){
+
                                     if("success"==result){
+                                        layer.msg("已加入购物车");
                                         $(".addCartButton").html("已加入购物车");
                                         $(".addCartButton").attr("disabled","disabled");
                                         $(".addCartButton").css("background-color","lightgray")

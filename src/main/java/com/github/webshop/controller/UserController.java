@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,30 +40,48 @@ public class UserController {
         return "user-login";
     }
 
+    @ResponseBody
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("currentUserId");
+        session.removeAttribute("currentUserName");
+        session.removeAttribute("currentUserEmail");
+        return "";
+    }
 
     @ResponseBody
     @GetMapping("/forecheckLogin")
     public String forecheckLogin(HttpSession session) {
-        String currentUser = (String) session.getAttribute("currentUser");
-        if (currentUser != null) {
-            return "true";
+        String currentUserName = (String) session.getAttribute("currentUserName");
+        if (currentUserName != null) {
+            return "success";
         }
-        return "false";
+        return "failed";
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(HttpServletResponse response, HttpSession session, User user) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/page/index");
-        modelAndView.addObject("msg", "hello");
+//    @ResponseBody
+//    @GetMapping("/foreaddCart")
+//    public String foreaddCart(HttpServletRequest request) {
+//        return "failed";
+//    }
 
-        session.setAttribute("currentUser", new User());
-        return modelAndView;
+    @PostMapping("/login")
+    public String login(HttpServletResponse response, HttpSession session, User user) {
+
+        Map currentUserMap = new HashMap<String, String>();
+        session.setAttribute("currentUserId",user.getUserId());
+        session.setAttribute("currentUserName", user.getUserName());
+        session.setAttribute("currentUserEmail", user.getEmail());
+//        session.setAttribute("currentUserMap",currentUserMap);
+
+        return "redirect:/";
     }
 
     @GetMapping("/register")
     public String toregister() throws Exception {
         return "user-login";
     }
+
 
     @ResponseBody
     @PostMapping("/isexist")
@@ -85,50 +103,50 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("/register")
-    public String register(HttpServletRequest request, HttpSession session, User user, Map map) throws Exception {
+    public String register(HttpServletRequest request, HttpSession session, User user, Map map, RedirectAttributes redirectAttributes) throws Exception {
 
         String msg = "";
-        boolean flag = false;
+        boolean flag = true;
         if (userService.check_exsist_username(request) != null) {
             msg = "用户名已存在";
             flag = false;
         } else if (userService.check_exsist_email(request) != null) {
             msg = "邮箱已经被注册";
-            flag = false;
+//            flag = false;
         } else if (!userService.check_vaild(session, request)) {
             msg = "验证码错误";
             session.removeAttribute("vaild");
             flag = false;
         }
 
-        if (flag) {//失败
-            map.put("userName", user.getUserName());
-            map.put("password", user.getPassword());
+        if (!flag) {//失败
+            map.put("username", user.getUserName());
+            map.put("email",user.getEmail());
             map.put("msg", "layer.msg(" + msg + ")");
-
-            return "user-login?#toregister";
+            return "user-login";
         } else {
 
             //插入数据库
             int succ = userService.addUser(request);
 
-            if (succ>=0){
+            if (succ >= 0) {
 
                 //注册成功直接登录
                 Map currentUserMap = new HashMap<String, String>();
+                currentUserMap.put("currentUserId",user.getUserId());
                 currentUserMap.put("currentUserName", user.getUserName());
                 currentUserMap.put("currentUserEmail", user.getEmail());
-            }else {
-//                注册
+                session.setAttribute("currentUserMap",currentUserMap);
+                return "index";
+            } else {
+                //注册失败
+                msg="与母星失去联系";
+                map.put("username", user.getUserName());
+                map.put("password", user.getPassword());
+                map.put("msg", "layer.msg(" + msg + ")");
+                return "user-login";
             }
-
-//        currentUserMap.put("valid", valid);
-
-//            session.setAttribute("currentUserMap", currentUserMap);
-
         }
-
-        return "index";
     }
 
     /**

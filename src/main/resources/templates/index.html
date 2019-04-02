@@ -19,14 +19,20 @@
     <script th:src="@{/static/js/jquery-3.3.1.min.js}" type="text/javascript" charset="UTF-8"></script>
     <script type="text/javascript" th:src="@{/static/js/MyJS/index.js}" charset="UTF-8"></script>
 </head>
-<body>
+<body onload="f()">
 <nav class="">
     <span style="padding: 5px 10px 5px 0"><a th:href="@{/page}">一点购物首页</a></span>
     <span style="padding: 5px 10px 5px 0">欢迎来到一点购物</span>
-    <span style="padding: 5px 10px 5px 10px"><a href="/user/login#tologin" th:value="${currentUserName}">请登录</a></span>
-    <span style="padding: 5px 10px 5px 10px"><a href="/user/register#toregister">免费注册</a></span>
+    <span style="padding: 5px 10px 5px 10px"><a id="login-username-span"
+             href="/user/login#tologin" th:text="${session.currentUserName}">请登录</a></span>
+    <span style="padding: 5px 10px 5px 10px">
+        <a id="login-username"
+           href="/user/login#tologin">请登录</a>
+        <a id="register-span" href="/user/register#toregister">免费注册</a></span>
     <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的购物车</a>&LT;&gt;</span>
     <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的订单</a></span>
+    <span style="padding: 5px 10px 5px 10px;float: right"><a id="out" style="display:none " href="" onclick="logout()">退出</a></span>
+
 </nav>
 <!--<div>-->
 

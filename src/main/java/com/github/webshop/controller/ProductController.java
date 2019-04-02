@@ -1,7 +1,9 @@
 package com.github.webshop.controller;
 
+import com.github.webshop.pojo.CartVo;
 import com.github.webshop.pojo.Product;
 import com.github.webshop.service.ProductService;
+import com.github.webshop.util.CookieUtil;
 import com.github.webshop.util.HashMapUtil;
 import com.github.webshop.util.MyUtil;
 import org.apache.log4j.Logger;
@@ -12,9 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,121 @@ public class ProductController {
     private static Logger logger = Logger.getLogger(ProductController.class);
     @Value("${file.uploadFolder}")
     private String uploadFolder;//配置的实际上传路径
+
+    /**
+     * 获取购物车列表
+     *
+     * @param request
+     * @param response
+     * @return 购物车列表
+     * @throws UnsupportedEncodingException 抛出异常
+     */
+    @PostMapping("/getCart")
+    public List<CartVo> getCart(HttpServletRequest request, HttpServletResponse response) throws
+            UnsupportedEncodingException {
+        return CookieUtil.getCartInCookie(response, request);
+    }
+
+    /**
+     * 清空购物车
+     *
+     * @param response
+     * @param request
+     * @return 成功与否
+     */
+    @ResponseBody
+    @PostMapping("/deleteAllCookie")
+    public String deleteCookie(HttpServletResponse response, HttpServletRequest request) {
+        // 获取名为"cart"的cookie
+        Cookie cookie = CookieUtil.getCookie(request,"cart");
+        // 设置寿命为0秒
+        cookie.setMaxAge(0);
+        // 设置路径
+        cookie.setPath("/");
+        // 设置cookie的value为null
+        cookie.setValue(null);
+        // 更新cookie
+        response.addCookie(cookie);
+        return "success";
+    }
+
+
+    /**
+     * 加入购物车
+     * @param request
+     * @return
+     */
+    @PostMapping("/add_cart/{pid}")
+    public String add_cart(HttpServletRequest request, @PathVariable("pid") Integer productId, HttpServletResponse response) throws UnsupportedEncodingException {
+
+            // 从cookie中获取购物车列表
+            List<CartVo> cartVos = (List<CartVo>) CookieUtil.getCartInCookie(response,request);///////
+            Cookie cookie_2st;
+            // 如果购物车列表为空
+            if (cartVos.size() <= 0) {
+                //TODO 根据商品ID获取商品信息
+                CartVo cartVo = new CartVo(); // 测试用，实际应当根据id获取
+//                String productId=request.getParameter("pid");
+                String productName=request.getParameter("pname");
+                String money=request.getParameter("money");
+                String num=request.getParameter("num");
+                String imgUrl=request.getParameter("imgUrl");
+                cartVo.setImgUrl(imgUrl);
+                cartVo.setMoney(new Float(money));
+                cartVo.setProductId(productId);
+                cartVo.setProductName(productName);
+                cartVo.setNum(new Integer(num));
+                // 将当前传来的商品添加到购物车列表
+                cartVos.add(cartVo);
+                if (CookieUtil.getCookie(request,"cart") == null) {
+                    // 制作购物车cookie数据
+                    cookie_2st = new Cookie("cart", URLEncoder.encode(CookieUtil.makeCookieValue(cartVos), "utf-8"));
+                    cookie_2st.setPath("/");//设置在该项目下都可以访问该cookie
+                    cookie_2st.setMaxAge(60 * 30);//设置cookie有效时间为30分钟
+                    response.addCookie(cookie_2st);//添加cookie
+                } else {
+                    cookie_2st = CookieUtil.getCookie(request,"cart");
+                    cookie_2st.setPath("/");//设置在该项目下都可以访问该cookie
+                    cookie_2st.setMaxAge(60 * 30);//设置cookie有效时间为30分钟
+                    cookie_2st.setValue(URLEncoder.encode(CookieUtil.makeCookieValue(cartVos)));
+                    response.addCookie(cookie_2st);//添加cookie
+                }
+            }
+            // 当获取的购物车列表不为空时
+            else {
+                int bj = 0;
+                for (CartVo cart : cartVos) {
+                    // 如果购物车中存在该商品则数量+1
+                    if (cart.getProductId() == productId) {
+                        cart.setNum(cart.getNum() + 1);
+                        bj = 1;
+                        break;
+                    }
+                }
+                if (bj == 0) {
+                    //TODO 根据商品ID获取商品信息
+                    CartVo cartVo = new CartVo(); // 测试用，实际应当根据id获取
+                    String productName=request.getParameter("pname");
+                    String money=request.getParameter("money");
+                    String num=request.getParameter("num");
+                    String imgUrl=request.getParameter("imgUrl");
+                    cartVo.setImgUrl(imgUrl);
+                    cartVo.setMoney(new Float(money));
+                    cartVo.setProductId(productId);
+                    cartVo.setProductName(productName);
+                    cartVo.setNum(new Integer(num));
+                    // 将当前传来的商品添加到购物车列表
+                    cartVos.add(cartVo);
+                }
+                // 获取名为"cart"的cookie
+                cookie_2st = CookieUtil.getCookie(request,"cart");
+                cookie_2st.setPath("/");//设置在该项目下都可以访问该cookie
+                cookie_2st.setMaxAge(60 * 30);//设置cookie有效时间为30分钟
+                cookie_2st.setValue(URLEncoder.encode(CookieUtil.makeCookieValue(cartVos))); // 设置value
+                response.addCookie(cookie_2st);//添加cookie
+            }
+        return "failed";
+    }
 
     @ResponseBody
     @GetMapping("/forecheckLogin")

@@ -36,7 +36,7 @@
                         <p>
                             <label for="username" class="uname" data-icon="u"> 邮箱 或 用户名 </label>
                             <input id="username" name="userName" required="required" type="text"
-                                   placeholder="myusername or mymail@mail.com" th:value="${userName}"/>
+                                   placeholder="myusername or mymail@mail.com" th:value="${username}"/>
                         </p>
                         <p>
                             <label for="password" class="youpasswd" data-icon="p"> Your password </label>
@@ -62,19 +62,19 @@
                         <h1> 注册 </h1>
                         <p>
                             <label for="usernamesignup" class="uname" data-icon="u">用户名</label>
-                            <input id="usernamesignup" name="userName" required="required" type="text"
-                                   placeholder="mysuperusername690" autofocus="autofocus" onkeypress="keyenter(event)" />
+                            <input id="usernamesignup" name="username" required="required" type="text"
+                                   placeholder="mysuperusername690" autofocus="autofocus" onkeypress="keyenter(event)" th:value="${username}"/>
                             <button class="layui-btn-warm" onblur="checkusername()">检查重复</button>
                         </p>
                         <p>
                             <label for="emailsignup" class="youmail" data-icon="e">邮箱</label>
                             <input id="emailsignup" name="email" required="required" type="email"
-                                   placeholder="mysupermail@mail.com" onkeypress="keyenter(event)"/>
+                                   th:value="${#request.getAttribute('email')}" placeholder="mysupermail@mail.com" onkeypress="keyenter(event)"/>
                         </p>
                         <p>
                             <label for="passwordsignup" class="youpasswd" data-icon="p">密码 </label>
                             <input id="passwordsignup" name="password" required="required" type="password"
-                                   placeholder="eg. X8df!90EO" onkeypress="keyenter(event)"/>
+                                   th:value="${password}" placeholder="eg. X8df!90EO" onkeypress="keyenter(event)"/>
                         </p>
 
                         <p>
@@ -88,6 +88,7 @@
                                    placeholder="验证码 "/>
                             <input id="get-vaild-btn" class="button signin layui-btn-warm" value="获取验证码" type="button" onclick="sendvaild()">
                         </p>
+                        <label class="" data-icon="p" th:text="${msg}"></label>
                         <p class="signin button">
                             <input id="register-btn" type="submit" onclick="submit_register()" value="注 册"/>
                         </p>

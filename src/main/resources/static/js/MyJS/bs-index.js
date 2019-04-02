@@ -537,7 +537,7 @@ $.ajax({
                         // alert("done")
                         failflag = false;
                         if (res.code == 0) { //上传成功
-                            var tr = ImgListView.find('upload-' + index)
+                            var tr = ImgListView.find('tr#upload-' + index)
                                 , tds = tr.children();
                             tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                             tds.eq(3).html(''); //清空操作
@@ -621,7 +621,7 @@ $.ajax({
                         this.data = {'id': proId, 'type': myFileNametype};
                     }
                     , error: function (index, upload) {
-                        var tr = ImgListView.find('upload-' + index)
+                        var tr = ImgListView.find('tr#upload-' + index)
                             , tds = tr.children();
                         tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                         tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传

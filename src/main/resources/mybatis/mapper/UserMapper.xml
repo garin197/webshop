@@ -16,11 +16,14 @@
         select * from t_user where name=#{name}
     </select>
     <select id="findByEmail" parameterType="string" resultType="user">
-        select name from t_user where name=#{email}
+        select * from t_user where email=#{email}
     </select>
     <select id="findByNamePsw" parameterType="string" resultType="user">
         select id,name,password from t_user where name=#{name} and password=#{psw}
     </select>
 
+    <insert id="add" parameterType="user">
+        insert into t_user(name,password,email) values(#{userName} , #{password} , #{email} )
+    </insert>
 
 </mapper>

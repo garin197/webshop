@@ -1,8 +1,17 @@
 // 主页js
 
+function f() {
+    if ($('#login-username-span').text() != '') {
+        document.getElementById("out").style.display='block';
+        document.getElementById("register-span").style.display='none';
+        document.getElementById("login-username").style.display='none';
+    }
+}
 
 //加载layui组件--开始
 layui.use(['carousel', 'layer'], function () {
+
+
     var carousel = layui.carousel;//轮播组件
     carousel.render({
         elem: '#carousel'
@@ -25,21 +34,21 @@ layui.use(['carousel', 'layer'], function () {
     var categoryName;
 
     // 加载电器-开始
-    categoryName='电器';
+    categoryName = '电器';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -52,7 +61,7 @@ layui.use(['carousel', 'layer'], function () {
                 $('#dianqi').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
@@ -61,23 +70,23 @@ layui.use(['carousel', 'layer'], function () {
 
 
     // 加载服装--开始
-    categoryName='服装';
+    categoryName = '服装';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
-                        res.data[i].product.productName +
+                    res.data[i].product.productName +
                     '</span>' +
                     '</a>' +
                     '<span class="productPrice">' +
@@ -88,28 +97,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#fuzhuang').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
-            
+        error: function () {
+
         }
     });
     // 加载服装--结束
 
     // 加载食品饮料--开始
-    categoryName='食品饮料';
+    categoryName = '食品饮料';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -122,28 +131,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#shipinyinliao').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载食品饮料--结束
 
     // 加载鞋靴-开始
-    categoryName='鞋靴';
+    categoryName = '鞋靴';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -156,28 +165,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#xiexue').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载鞋靴-结束
 
     // 加载手机数码-开始
-    categoryName='手机数码';
+    categoryName = '手机数码';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -190,28 +199,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#shoujishuma').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载手机数码-结束
 
     // 加载生活家居-开始
-    categoryName='生活家居';
+    categoryName = '生活家居';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -224,28 +233,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#shenghuojiaju').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载生活家居-结束
 
     // 加载手表-开始
-    categoryName='手表';
+    categoryName = '手表';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -258,28 +267,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#shoubiao').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载手表-结束
 
     // 加载化妆品-开始
-    categoryName='化妆品';
+    categoryName = '化妆品';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -292,28 +301,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#huazhuangpin').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载化妆品-结束
 
     // 加载箱包-开始
-    categoryName='箱包';
+    categoryName = '箱包';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -326,28 +335,28 @@ layui.use(['carousel', 'layer'], function () {
                 $('#xiangbao').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
     // 加载箱包-结束
 
     // 加载饰品-开始
-    categoryName='饰品';
+    categoryName = '饰品';
     $.ajax({
-        type:'post',//以post的方法发送请求
-        datatype:'json',//接受json数据
-        data:{"page":1,"limit":5,"categoryName":categoryName},//每页响应的分类加载5个商品
-        url:'/product/index_product_list',//请求数据的地址
-        ascyn:true,//采用异步请求方式
-        success:function (res) {//请求成功回调函数
+        type: 'post',//以post的方法发送请求
+        datatype: 'json',//接受json数据
+        data: {"page": 1, "limit": 5, "categoryName": categoryName},//每页响应的分类加载5个商品
+        url: '/product/index_product_list',//请求数据的地址
+        ascyn: true,//采用异步请求方式
+        success: function (res) {//请求成功回调函数
             var row;
             // 动态拼接
             for (var i = 0; i < res.data.length; i++) {
                 row =//自定义商品展示块
                     '<div class="productItem layui-col-md3">' +
-                    '<a href="/product/index_product_detail?pid='+res.data[i].productId+'"><img width="100px" src="'+res.data[i].imgUrl+'"></a>' +
-                    '<a class="productItemDescLink" href="/product/index_product_detail?pid='+res.data[i].productId+'">' +
+                    '<a href="/product/index_product_detail?pid=' + res.data[i].productId + '"><img width="100px" src="' + res.data[i].imgUrl + '"></a>' +
+                    '<a class="productItemDescLink" href="/product/index_product_detail?pid=' + res.data[i].productId + '">' +
                     '<span class="productItemDesc">' +
                     res.data[i].product.productName +
                     '</span>' +
@@ -360,7 +369,7 @@ layui.use(['carousel', 'layer'], function () {
                 $('#shipin').append(row);//想服装栏添加数据
             }
         },
-        error:function () {
+        error: function () {
 
         }
     });
@@ -371,3 +380,16 @@ layui.use(['carousel', 'layer'], function () {
 
 });
 //加载layui组件--结束
+
+function logout(){
+    $.ajax({
+        type:'post',
+        url:'/user/logout',
+        success:function(res){
+            document.getElementById("out").style.display='none';
+            document.getElementById("register-span").style.display='block';
+            window.location.reload();
+            $('#login-username-span').text("请登录");
+        }
+    });
+}
