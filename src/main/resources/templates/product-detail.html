@@ -11,102 +11,108 @@
     <script type="text/javascript" th:src="@{/static/js/MyJS/product-detail.js}"></script>
     <title th:text="${product.getProductName()}">一点购物-更多好货尽在一点购物</title>
 </head>
-<body>
+<body onload="ff()">
 <nav class="">
     <span style="padding: 5px 10px 5px 0"><a th:href="@{/page}">一点购物首页</a></span>
     <span style="padding: 5px 10px 5px 0">欢迎来到一点购物</span>
-    <span style="padding: 5px 10px 5px 10px"><a href="/user/login#tologin" th:value="${session.currentUser}">请登录</a></span>
-    <span style="padding: 5px 10px 5px 10px"><a href="/user/register#toregister">免费注册</a></span>
-    <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的购物车</a>&LT;&gt;</span>
+    <span style="padding: 5px 10px 5px 10px"><a id="login-username-span1"
+                                                href="/user/login#tologin" th:text="${session.currentUserName}">请登录</a></span>
+    <span style="padding: 5px 10px 5px 10px">
+        <a id="login-username1"
+           href="/user/login#tologin">请登录</a>
+        <a id="register-span1" href="/user/register#toregister">免费注册</a></span>
+    <span style="padding: 5px 10px 5px 10px;float: right"><a href="#" onclick="showshoppingcart1()">我的购物车</a>&LT;&gt;</span>
     <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的订单</a></span>
+    <span style="padding: 5px 10px 5px 10px;float: right"><a id="out1" style="display:none " href="" onclick="logout()">退出</a></span>
+
 </nav>
 <div class="productPageDiv">
 
 
-
-
     <script>
 
-        $(function(){
+        $(function () {
             var stock = $('#Stock').text();
-            $(".productNumberSetting").keyup(function(){
-                var num= $(".productNumberSetting").val();
+            $(".productNumberSetting").keyup(function () {
+                var num = $(".productNumberSetting").val();
                 num = parseInt(num);
-                if(isNaN(num))
-                    num= 1;
-                if(num<=0)
+                if (isNaN(num))
                     num = 1;
-                if(num>stock)
+                if (num <= 0)
+                    num = 1;
+                if (num > stock)
                     num = stock;
                 $(".productNumberSetting").val(num);
             });
 
-            $(".increaseNumber").click(function(){
-                var num= $(".productNumberSetting").val();
+            $(".increaseNumber").click(function () {
+                var num = $(".productNumberSetting").val();
                 num++;
-                if(num>stock)
+                if (num > stock)
                     num = stock;
                 $(".productNumberSetting").val(num);
             });
-            $(".decreaseNumber").click(function(){
-                var num= $(".productNumberSetting").val();
+            $(".decreaseNumber").click(function () {
+                var num = $(".productNumberSetting").val();
                 --num;
-                if(num<=0)
-                    num=1;
+                if (num <= 0)
+                    num = 1;
                 $(".productNumberSetting").val(num);
             });
 
-            $(".addCartLink").click(function(){
+            // 加入购物车----
+            $(".addCartLink").click(function () {
                 var page = "/user/forecheckLogin";
                 $.ajax({
-                    type:'get',
-                    url:page,
-                    success:function(result){
-                        if("success"==result){
-                            var pid = $('#hidden_input_productId').val();
-                            var num= $(".productNumberSetting").val();
-                            var addCartpage = "add_cart/"+pid;
-                            $.post(
-                                addCartpage,
-                                {"num":num,"pname":$(".productTitle").text(),"money":$(".promotionPrice").text(),"imgUrl":$("#img-detail-0")[0].src},
-                                function(result){
+                        type: 'get',
+                        url: page,
+                        success: function (result) {
+                            if ("success" == result) {
+                                var pid = $('#hidden_input_productId').val();
+                                var num = $(".productNumberSetting").val();
+                                var addCartpage = "add_cart/" + pid;
+                                $.post(
+                                    addCartpage,
+                                    {
+                                        "num": num,
+                                        "pname": $(".productTitle").text(),
+                                        "money": $(".promotionPrice").text(),
+                                        "imgUrl": $("#img-detail-0")[0].src
+                                    },
+                                    function (result) {
 
-                                    if("success"==result){
-                                        layer.msg("已加入购物车");
-                                        $(".addCartButton").html("已加入购物车");
-                                        $(".addCartButton").attr("disabled","disabled");
-                                        $(".addCartButton").css("background-color","lightgray")
-                                        $(".addCartButton").css("border-color","lightgray")
-                                        $(".addCartButton").css("color","black")
+                                        if ("success" == result) {
+                                            layer.msg("已加入购物车");
+                                            $(".addCartButton").html("加入购物车");
+                                            // $(".addCartButton").attr("disabled", "disabled");
+                                            // $(".addCartButton").css("background-color", "lightgray")
+                                            // $(".addCartButton").css("border-color", "lightgray")
+                                            // $(".addCartButton").css("color", "black")
+                                        } else {
 
+                                        }
                                     }
-                                    else{
-
-                                    }
-                                }
-                            );
+                                );
+                            } else {
+                                // $("#loginModal").modal('show');
+                                // 提示登录
+                                layer.closeAll();
+                                window.location.href = '/user/login';
+                            }
                         }
-                        else{
-                            // $("#loginModal").modal('show');
-                            // 提示登录
-                            layer.closeAll();
-                            window.location.href='/user/login';
-                        }
-                    }}
-
+                    }
                 );
                 return false;
             });
-            $(".buyLink").click(function(){
+            $(".buyLink").click(function () {
                 var page = "forecheckLogin";
                 $.get(
                     page,
-                    function(result){
-                        if("success"==result){
+                    function (result) {
+                        if ("success" == result) {
                             var num = $(".productNumberSetting").val();
-                            location.href= $(".buyLink").attr("href")+"&num="+num;
-                        }
-                        else{
+                            location.href = $(".buyLink").attr("href") + "&num=" + num;
+                        } else {
                             $("#loginModal").modal('show');
                         }
                     }
@@ -114,37 +120,36 @@
                 return false;
             });
 
-            $("button.loginSubmitButton").click(function(){
-                var name = $("#name").val();
-                var password = $("#password").val();
+            // $("button.loginSubmitButton").click(function () {
+            //     var name = $("#name").val();
+            //     var password = $("#password").val();
+            //
+            //     if (0 == name.length || 0 == password.length) {
+            //         $("span.errorMessage").html("请输入账号密码");
+            //         $("div.loginErrorMessageDiv").show();
+            //         return false;
+            //     }
+            //
+            //     var page = "foreloginAjax";
+            //     $.get(
+            //         page,
+            //         {"name": name, "password": password},
+            //         function (result) {
+            //             if ("success" == result) {
+            //                 location.reload();
+            //             } else {
+            //                 $("span.errorMessage").html("账号密码错误");
+            //                 $("div.loginErrorMessageDiv").show();
+            //             }
+            //         }
+            //     );
+            //
+            //     return true;
+            // });
 
-                if(0==name.length||0==password.length){
-                    $("span.errorMessage").html("请输入账号密码");
-                    $("div.loginErrorMessageDiv").show();
-                    return false;
-                }
-
-                var page = "foreloginAjax";
-                $.get(
-                    page,
-                    {"name":name,"password":password},
-                    function(result){
-                        if("success"==result){
-                            location.reload();
-                        }
-                        else{
-                            $("span.errorMessage").html("账号密码错误");
-                            $("div.loginErrorMessageDiv").show();
-                        }
-                    }
-                );
-
-                return true;
-            });
-
-            $("img.smallImage").mouseenter(function(){
+            $("img.smallImage").mouseenter(function () {
                 var bigImageURL = $(this).attr("bigImageURL");
-                $("img.bigImg").attr("src",bigImageURL);
+                $("img.bigImg").attr("src", bigImageURL);
             });
 
             // $("img.bigImg").load(
@@ -172,18 +177,23 @@
             <img id="img-detail-max" src="/static/images/ha_ha.jpg" class="bigImg">
             <div class="smallImageDiv" id="product-img-div">
 
-                <img id="img-detail-0" onmouseover="Magnify_img('static/images/ha_ha.jpg')" src="/static/images/ha_ha.jpg" class="smallImage">
+                <img id="img-detail-0" onmouseover="Magnify_img('static/images/ha_ha.jpg')"
+                     src="/static/images/ha_ha.jpg" class="smallImage">
 
-                <img id="img-detail-1" onmouseover="Magnify_img('static/images/ha_ha.jpg')" src="/static/images/ha_ha.jpg" class="smallImage">
+                <img id="img-detail-1" onmouseover="Magnify_img('static/images/ha_ha.jpg')"
+                     src="/static/images/ha_ha.jpg" class="smallImage">
 
-                <img id="img-detail-2" onmouseover="Magnify_img('static/images/ha_ha.jpg')" src="/static/images/ha_ha.jpg" class="smallImage">
+                <img id="img-detail-2" onmouseover="Magnify_img('static/images/ha_ha.jpg')"
+                     src="/static/images/ha_ha.jpg" class="smallImage">
 
-                <img id="img-detail-3" onmouseover="Magnify_img('static/images/ha_ha.jpg')" src="/static/images/ha_ha.jpg" class="smallImage">
+                <img id="img-detail-3" onmouseover="Magnify_img('static/images/ha_ha.jpg')"
+                     src="/static/images/ha_ha.jpg" class="smallImage">
 
-                <img id="img-detail-4" onmouseover="Magnify_img('static/images/ha_ha.jpg')" src="/static/images/ha_ha.jpg" class="smallImage">
+                <img id="img-detail-4" onmouseover="Magnify_img('static/images/ha_ha.jpg')"
+                     src="/static/images/ha_ha.jpg" class="smallImage">
 
             </div>
-            <div class="img4load hidden" ></div>
+            <div class="img4load hidden"></div>
         </div>
 
         <div class="infoInimgAndInfo">
@@ -197,12 +207,12 @@
 
             <div class="productPrice">
                 <!--<div class="juhuasuan">-->
-                    <!--<span class="juhuasuanBig" >聚划算</span>-->
-                    <!--<span>此商品即将参加聚划算，<span class="juhuasuanTime">1天19小时</span>后开始，</span>-->
+                <!--<span class="juhuasuanBig" >聚划算</span>-->
+                <!--<span>此商品即将参加聚划算，<span class="juhuasuanTime">1天19小时</span>后开始，</span>-->
                 <!--</div>-->
                 <div class="productPriceDiv">
                     <!--<div class="gouwujuanDiv"><img height="16px" src="img/site/gouwujuan.png">-->
-                        <!--<span> 全天猫实物商品通用</span>-->
+                    <!--<span> 全天猫实物商品通用</span>-->
 
                     <!--</div>-->
                     <div class="originalDiv">
@@ -223,7 +233,7 @@
                 </div>
             </div>
             <div class="productSaleAndReviewNumber">
-                <div>销量 <span class="redColor boldWord" > (销量)</span></div>
+                <div>销量 <span class="redColor boldWord"> (销量)</span></div>
                 <div>累计评价 <span class="redColor boldWord"> (评论数)</span></div>
             </div>
             <div class="productNumber">
@@ -240,7 +250,7 @@
 					</a>
 
 					<span class="updownMiddle"> </span>
-					<a href="#nowhere"  class="decreaseNumber">
+					<a href="#nowhere" class="decreaseNumber">
 					<span class="updown">
 							<img src="/static/images/my_decrease.png">
 					</span>
@@ -263,8 +273,14 @@
             </div>
 
             <div class="buyDiv">
-                <a class="buyLink" href="forebuyone?pid=150"><button id="suddenlyBuy" class="buyButton">立即购买</button></a>
-                <a href="#nowhere" class="addCartLink"><button id="addToBuyCar" class="addCartButton"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</button></a>
+                <a class="buyLink" href="forebuyone?pid=150">
+                    <button id="suddenlyBuy" class="buyButton">立即购买</button>
+                </a>
+                <a href="#nowhere" class="addCartLink">
+                    <button id="addToBuyCar" class="addCartButton"><span
+                            class="glyphicon glyphicon-shopping-cart"></span>加入购物车
+                    </button>
+                </a>
             </div>
         </div>
 
@@ -276,25 +292,30 @@
     body {
         font-size: 12px;
         font-family: Arial;
-        min-width:1024px;
+        min-width: 1024px;
         /* 	width:1920px; */
     }
+
     div.productPageDiv {
         max-width: 1013px;
         margin: 10px auto;
     }
+
     div.imgAndInfo {
         margin: 40px 20px;
     }
+
     div.imgInimgAndInfo {
         width: 600px;
         float: left;
         padding: 0 40px;
     }
+
     div.imgAndInfo div.smallImageDiv {
         width: 80%;
         margin: 20px auto;
     }
+
     div.infoInimgAndInfo {
         padding: 0px 20px;
         overflow: hidden;
@@ -306,9 +327,11 @@
         font-weight: bold;
         margin: 0px 10px;
     }
+
     .glyphicon-menu-down:before {
         content: "\e259";
     }
+
     div.infoInimgAndInfo div.juhuasuan {
         /* 	height:40px; */
         background-color: #2DA77A;
@@ -317,18 +340,22 @@
         line-height: 40px;
         margin-top: 10px;
     }
+
     div.infoInimgAndInfo div.productPriceDiv {
         /*background-image: url(../../img/site/priceBackground.png);*/
         height: 102px;
         padding: 10px;
         color: #666666;
     }
+
     div.infoInimgAndInfo div.originalDiv {
         margin-top: 5px;
     }
+
     div.infoInimgAndInfo div.promotionDiv {
         margin-top: 0px;
     }
+
     div.infoInimgAndInfo div.productSaleAndReviewNumber {
         margin: 20px 0px;
         border-top-style: dotted;
@@ -339,9 +366,11 @@
         border-bottom-width: 1px;
         padding: 10px;
     }
+
     div.infoInimgAndInfo div.productNumber {
         color: #999999;
     }
+
     div.infoInimgAndInfo span.productNumberSettingSpan {
         border: 1px solid #999;
         display: inline-block;
@@ -349,41 +378,49 @@
         height: 32px;
         padding: 7px 0;
     }
+
     div.infoInimgAndInfo input.productNumberSetting {
         border: 0px;
         height: 80%;
         width: 80%;
     }
+
     div.productNumber span.arrow {
         display: inline-block;
         width: 22px;
         height: 32px;
-        vertical-align:top;
+        vertical-align: top;
     }
+
     a {
         color: #999;
     }
+
     div.productNumber span.updown {
         border: 1px solid #999;
         display: block;
         width: 20px;
         height: 14px;
         text-align: center;
-        padding-top:4px;
+        padding-top: 4px;
     }
+
     div.serviceCommitment {
         margin: 20px 0px;
     }
+
     div.buyDiv {
         margin: 20px auto;
         text-align: center;
     }
+
     div.infoInimgAndInfo span.originalPrice {
         font-family: Arial;
         font-size: 12px;
         color: #333333;
         text-decoration: line-through;
     }
+
     div.infoInimgAndInfo span.promotionPrice {
         color: #c40000;
         font-family: Arial;
@@ -399,6 +436,7 @@
         padding: 20px;
         border: 1px solid #F2F2F2;
     }
+
     div.imgAndInfo img.smallImage {
         width: 60px;
         height: 60px;

@@ -17,6 +17,12 @@ public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
 
+    @GetMapping("/shopingcart")
+    public String shopingcart(HttpServletRequest request){
+
+        // TODO: 2019/4/3 登录检查 
+        return "shoppingCart";
+    }
 
     @GetMapping("")
     public String index_(HttpSession session) {

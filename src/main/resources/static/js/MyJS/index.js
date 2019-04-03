@@ -393,3 +393,13 @@ function logout(){
         }
     });
 }
+
+function showshoppingcart(){
+    var width=window.
+    layer.open({
+        type:2
+        ,content:'/page/shopingcart'
+        ,area:[document.documentElement.clientWidth+"px",document.documentElement.clientHeight+'px']
+        ,maxmin:true
+    });
+}

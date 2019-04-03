@@ -66,9 +66,6 @@ public class CookieUtil {
                     item.setProductName(arr_2st[1]); //商品名
                     item.setMoney(Float.parseFloat(arr_2st[2]));
                     item.setImgUrl(arr_2st[3]);
-//                    item.setGoodsDiscount(Integer.parseInt(arr_2st[4]));//商品折后价格
-//                    item.setGoodsNum(Integer.parseInt(arr_2st[5]));//商品月销量
-//                    item.setGoodsInfo(arr_2st[6]);//商品详情
                     item.setNum(Integer.parseInt(arr_2st[4]));//加入购物车数量
                     items.add(item);
                 }
@@ -90,7 +87,7 @@ public class CookieUtil {
         StringBuffer buffer_2st = new StringBuffer();
         for (CartVo item : cartVos) {
             buffer_2st.append(item.getProductId() + "=" + item.getProductName() + "="
-                    + item.getMoney() + "=" +item.getImgUrl() + "=" + item.getNum() + "=" + "=" + item.getNum() + "==");
+                    + item.getMoney() + "=" +item.getImgUrl() + "=" + item.getNum() + "==");
         }
         return buffer_2st.toString().substring(0, buffer_2st.toString().length() - 2);
     }

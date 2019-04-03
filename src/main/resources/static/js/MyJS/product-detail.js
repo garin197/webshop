@@ -5,6 +5,35 @@
  * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
+function ff() {
+    if ($('#login-username-span1').text() != '') {
+        document.getElementById("out1").style.display='block';
+        document.getElementById("register-span1").style.display='none';
+        document.getElementById("login-username1").style.display='none';
+    }
+}
+
+function showshoppingcart1(){
+    layer.open({
+        type:2
+        ,content:'/page/shopingcart'
+        ,area:[document.documentElement.clientWidth+'px',document.documentElement.clientHeight+'px']
+        ,maxmin:true
+    });
+}
+
+function logout(){
+    $.ajax({
+        type:'post',
+        url:'/user/logout',
+        success:function(res){
+            document.getElementById("out1").style.display='none';
+            document.getElementById("register-span1").style.display='block';
+            window.location.reload();
+            $('#login-username-span').text("请登录");
+        }
+    });
+}
 
 layui.use(['layer'], function () {
 

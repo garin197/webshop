@@ -13,6 +13,8 @@ spring:
   datasource:
 #    url: jdbc:mysql://192.168.137.105:3306/db_webshop?useSSL=true&characterEncoding=UTF-8
     url: jdbc:mysql://192.168.13.105:3306/db_webshop?useSSL=false&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/db_webshop?useSSL=false&characterEncoding=UTF-8
+
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
