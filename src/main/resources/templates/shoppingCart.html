@@ -20,11 +20,11 @@
 <div class="boughtDiv" id="cartlist">
     <div class="orderType">
         <div class="selectedOrderType"><a orderStatus="all" href="#nowhere">所有订单</a></div>
-        <div><a orderStatus="waitPay" href="#nowhere">待付款</a></div>
-        <div><a orderStatus="waitDelivery" href="#nowhere">待发货</a></div>
-        <div><a orderStatus="waitConfirm" href="#nowhere">待收货</a></div>
-        <div><a orderStatus="waitReview" href="#nowhere" class="noRightborder">待评价</a></div>
-        <div class="orderTypeLastOne"><a class="noRightborder">&nbsp;</a></div>
+        <!--<div><a orderStatus="waitPay" href="#nowhere">待付款</a></div>-->
+        <!--<div><a orderStatus="waitDelivery" href="#nowhere">待发货</a></div>-->
+        <!--<div><a orderStatus="waitConfirm" href="#nowhere">待收货</a></div>-->
+        <!--<div><a orderStatus="waitReview" href="#nowhere" class="noRightborder">待评价</a></div>-->
+        <!--<div class="orderTypeLastOne"><a class="noRightborder">&nbsp;</a></div>-->
     </div>
 
     <div class="orderListTitle">
@@ -93,13 +93,13 @@
                 </td>
                 <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
 
-                    <a href="forereview?oid=9733">
+                    <a href="forereview?oid=9733"  style="display: none">
                         <button  class="orderListItemReview">评价</button>
                     </a>
                     <a href="forealipay?oid=7383&total=448.2">
-                        <button class="orderListItemConfirm">付款</button>
+                        <button class="orderListItemConfirm" >付款</button>
                     </a>
-                    <a href="foreconfirmPay?oid=6845">
+                    <a href="foreconfirmPay?oid=6845" style="display: none">
                         <button class="orderListItemConfirm">确认收货</button>
                     </a>
 
@@ -113,6 +113,11 @@
 
     </div>
 </div>
+    <div align="center" style="background: #edb5a2">
+        <span>Copyright © <a th:href="@{https://github.com/garin197}" target="_blank">github@garin197&nbsp;</a>
+            <a th:href="@{http://www.wyu.edu.cn/}" target="_blank">五邑大学</a>
+        </span>
+    </div>
 </body>
 </html>
 

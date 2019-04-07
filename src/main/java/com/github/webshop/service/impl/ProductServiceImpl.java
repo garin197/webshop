@@ -39,6 +39,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * 更新库存信息
+     *
+     * @param pid
+     * @param number
+     * @return
+     */
+    @Override
+    public int update_stock(Integer pid, Integer number) {
+        Integer currentStockNumber = productMapper.getStock(pid);
+        Integer flag=-1;
+        if (currentStockNumber >= number) {
+            flag = productMapper.updateStock(pid, number);
+        }
+        return flag;
+    }
+
+    /**
      * 添加商品、图片、指定封面type=1
      *
      * @param productId
@@ -146,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
         Integer limit = new Integer(request.getParameter("limit"));
         Row row = new Row(page, limit);
 
-        return  productMapper.get_index_product(row.getStart(),row.getLimit(), categoryName);
+        return productMapper.get_index_product(row.getStart(), row.getLimit(), categoryName);
     }
 
     @Override
@@ -155,11 +172,12 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.findById(new Integer(productId));
     }
 
-        /**
-         * 存货排序
-         * @param request
-         * @return
-         */
+    /**
+     * 存货排序
+     *
+     * @param request
+     * @return
+     */
     @Override
     public List<Product> sort_stock(HttpServletRequest request) {
         String field = request.getParameter("field");//排序字段
@@ -188,6 +206,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 通过pid查找商品
+     *
      * @param request
      * @return
      */
@@ -198,6 +217,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据商品id获取商品的名称
+     *
      * @param request
      * @return
      */

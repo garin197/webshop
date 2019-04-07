@@ -36,12 +36,22 @@ public class AdminController {
         return result;
     }
 
+    /**
+     * 管理员退出
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().removeAttribute("currentAdmin");
+        return "success";
+    }
+
     @RequestMapping("")
     public String t(HttpSession session) {
         logger.info("访问后台管理-页面");
-//        session.setAttribute("currentAdmin","jkfjd");
         return "backstage/bs-index";
-//        return "product-detail";
     }
 
     //响应没登录，先模拟登录-后面加登录

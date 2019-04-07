@@ -395,10 +395,10 @@ function logout(){
 }
 
 function showshoppingcart(){
-    var width=window.
     layer.open({
         type:2
         ,content:'/page/shopingcart'
+        ,title:'购物车'
         ,area:[document.documentElement.clientWidth+"px",document.documentElement.clientHeight+'px']
         ,maxmin:true
     });

@@ -107,6 +107,17 @@
     </select>
 
     <select id="findNameById" resultType="string" parameterType="integer">
-        select productName from t_product where productId=#{productId}
+        select productName from t_product where productId=#{pid}
+    </select>
+    <update id="updateStock">
+        update t_product
+        <set>
+            stock=#{number}
+        </set>
+        where stock=#{number}
+    </update>
+
+    <select id="getStock">
+        select stock from t_product where productId=#{pid}
     </select>
 </mapper>

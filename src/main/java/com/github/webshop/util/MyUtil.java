@@ -25,7 +25,7 @@ public class MyUtil {
      * @return
      */
     public static String getDateId() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSSSSS");
         return simpleDateFormat.format(new Date());
     }
 

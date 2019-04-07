@@ -4,15 +4,14 @@ import com.github.webshop.exception.UserInVaildLoginException;
 import com.github.webshop.pojo.User;
 import com.github.webshop.service.MailService;
 import com.github.webshop.service.UserService;
+import com.github.webshop.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -51,7 +50,15 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/forecheckLogin")
-    public String forecheckLogin(HttpSession session) {
+    public String forecheckLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam("uri") String requestURI) {
+        Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
+        if (cookie != null) {
+            cookie.setValue(requestURI);
+        } else {
+            cookie = new Cookie("uri_cookie", requestURI);
+            response.addCookie(cookie);
+        }
+        cookie.setMaxAge(60);
         String currentUserName = (String) session.getAttribute("currentUserName");
         if (currentUserName != null) {
             return "success";
@@ -65,16 +72,26 @@ public class UserController {
 //        return "failed";
 //    }
 
+    /**
+     * 登录
+     * @param request
+     * @param response
+     * @param session
+     * @param user
+     * @return
+     */
     @PostMapping("/login")
-    public String login(HttpServletResponse response, HttpSession session, User user) {
+    public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session, User user) {
 
+        String requestURI = CookieUtil.getCookie(request,"uri_cookie").getValue();
+
+        // TODO: 2019/4/7 正确数据比对
         Map currentUserMap = new HashMap<String, String>();
-        session.setAttribute("currentUserId",user.getUserId());
+        session.setAttribute("currentUserId", user.getUserId());
         session.setAttribute("currentUserName", user.getUserName());
         session.setAttribute("currentUserEmail", user.getEmail());
-//        session.setAttribute("currentUserMap",currentUserMap);
 
-        return "redirect:/";
+        return "redirect:"+requestURI;
     }
 
     @GetMapping("/register")
@@ -121,7 +138,7 @@ public class UserController {
 
         if (!flag) {//失败
             map.put("username", user.getUserName());
-            map.put("email",user.getEmail());
+            map.put("email", user.getEmail());
             map.put("msg", "layer.msg(" + msg + ")");
             return "user-login";
         } else {
@@ -133,14 +150,14 @@ public class UserController {
 
                 //注册成功直接登录
                 Map currentUserMap = new HashMap<String, String>();
-                currentUserMap.put("currentUserId",user.getUserId());
+                currentUserMap.put("currentUserId", user.getUserId());
                 currentUserMap.put("currentUserName", user.getUserName());
                 currentUserMap.put("currentUserEmail", user.getEmail());
-                session.setAttribute("currentUserMap",currentUserMap);
+                session.setAttribute("currentUserMap", currentUserMap);
                 return "index";
             } else {
                 //注册失败
-                msg="与母星失去联系";
+                msg = "与母星失去联系";
                 map.put("username", user.getUserName());
                 map.put("password", user.getPassword());
                 map.put("msg", "layer.msg(" + msg + ")");

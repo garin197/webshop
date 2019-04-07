@@ -663,7 +663,6 @@ $.ajax({
                 });
 
 
-
                 // 图片上传前端模块--结束
 
             });
@@ -746,6 +745,30 @@ function hideAll() {
     document.getElementById("option2").style.display = "none";
     document.getElementById("option3").style.display = "none";
     document.getElementById("option1").style.display = "none";
+}
+
+/**
+ * 管理员退出登录
+ */
+function adminlogout() {
+    layer.confirm('yes?', {
+        offset: 'rt'
+        , icon: 3
+        , title: '提示'
+        , btn: ['走了', '再想想']
+    }, function (index) {
+        $.ajax({
+            type: 'post'
+            , datatype: 'json'
+            , url: '/admin/logout'
+            , success: function (res) {
+                layer.close(index);
+                window.location.reload();
+            }
+        });
+    }, function (index) {
+
+    });
 }
 
 //普通图片上传

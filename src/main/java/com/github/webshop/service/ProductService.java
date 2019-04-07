@@ -38,4 +38,6 @@ public interface ProductService {
     Product get_product_detail(HttpServletRequest request);
 
     String getProductNameById(HttpServletRequest request);
+
+    int update_stock(Integer pid,Integer number);
 }

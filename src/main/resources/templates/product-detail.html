@@ -21,7 +21,8 @@
         <a id="login-username1"
            href="/user/login#tologin">请登录</a>
         <a id="register-span1" href="/user/register#toregister">免费注册</a></span>
-    <span style="padding: 5px 10px 5px 10px;float: right"><a href="#" onclick="showshoppingcart1()">我的购物车</a>&LT;&gt;</span>
+    <span style="padding: 5px 10px 5px 10px;float: right"><a href="#"
+                                                             onclick="showshoppingcart1()">我的购物车</a>&LT;&gt;</span>
     <span style="padding: 5px 10px 5px 10px;float: right"><a href="">我的订单</a></span>
     <span style="padding: 5px 10px 5px 10px;float: right"><a id="out1" style="display:none " href="" onclick="logout()">退出</a></span>
 
@@ -66,6 +67,7 @@
                 $.ajax({
                         type: 'get',
                         url: page,
+                        data: {uri: window.location.href},//获取 完整的uri
                         success: function (result) {
                             if ("success" == result) {
                                 var pid = $('#hidden_input_productId').val();
@@ -77,7 +79,8 @@
                                         "num": num,
                                         "pname": $(".productTitle").text(),
                                         "money": $(".promotionPrice").text(),
-                                        "imgUrl": $("#img-detail-0")[0].src
+                                        "imgUrl": $("#img-detail-0")[0].src,
+                                        'uri': window.location.href
                                     },
                                     function (result) {
 
@@ -105,47 +108,33 @@
                 return false;
             });
             $(".buyLink").click(function () {
-                var page = "forecheckLogin";
-                $.get(
-                    page,
-                    function (result) {
-                        if ("success" == result) {
-                            var num = $(".productNumberSetting").val();
-                            location.href = $(".buyLink").attr("href") + "&num=" + num;
+                var page = "/user/forecheckLogin";
+                $.ajax({
+                    type: 'get'
+                    , url: page
+                    , datatype: 'json'
+                    , data: {'uri': window.location.href}
+                    , success: function (result) {
+                        if ("success" == result) {//填写个人信息
+
+                            // var num = $(".productNumberSetting").val();
+                            // location.href = $(".buyLink").attr("href") + "&num=" + num;
+                            layer.open({
+                                type: 1
+                                , title: '输入收货地址'
+                                , area: ['600px', '400px']
+                                , content: $('#buyonescript').html()
+                                ,success:function(layero, index){
+
+                                }
+                            });
                         } else {
-                            $("#loginModal").modal('show');
+                            window.location.href = "/user/login"
                         }
                     }
-                );
+                });
                 return false;
             });
-
-            // $("button.loginSubmitButton").click(function () {
-            //     var name = $("#name").val();
-            //     var password = $("#password").val();
-            //
-            //     if (0 == name.length || 0 == password.length) {
-            //         $("span.errorMessage").html("请输入账号密码");
-            //         $("div.loginErrorMessageDiv").show();
-            //         return false;
-            //     }
-            //
-            //     var page = "foreloginAjax";
-            //     $.get(
-            //         page,
-            //         {"name": name, "password": password},
-            //         function (result) {
-            //             if ("success" == result) {
-            //                 location.reload();
-            //             } else {
-            //                 $("span.errorMessage").html("账号密码错误");
-            //                 $("div.loginErrorMessageDiv").show();
-            //             }
-            //         }
-            //     );
-            //
-            //     return true;
-            // });
 
             $("img.smallImage").mouseenter(function () {
                 var bigImageURL = $(this).attr("bigImageURL");
@@ -170,6 +159,39 @@
 
     </script>
 
+    <script type="text/html" id="buyonescript">
+        <div class="address" >
+            <!--<div class="addressTip">输入收货地址</div>-->
+            <div>
+                <form type="post" action="/product/">
+                <table class="addressTable">
+                    <tr>
+                        <td class="firstColumn">详细地址<span class="redStar">*</span></td>
+                        <td><textarea name="address" placeholder="建议您如实填写详细收货地址，例如接到名称，门牌号，楼层和房间号等信息" required></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>邮政编码</td>
+                        <td><input  name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>收货人姓名<span class="redStar">*</span></td>
+                        <td><input  name="receiver"  placeholder="长度不超过25个字符" type="text" required></td>
+                    </tr>
+                    <tr>
+                        <td>手机号码 <span class="redStar">*</span></td>
+                        <td><input name="mobile"  placeholder="请输入11位手机号码" type="text" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="ok">
+                        </td>
+                    </tr>
+                </table>
+
+                </form>
+            </div>
+        </div>
+    </script>
 
     <div class="imgAndInfo">
 
@@ -286,9 +308,58 @@
 
     </div>
 </div>
+
 </body>
 </html>
 <style type="text/css">
+    div.address {
+        margin: 20px 5px;
+        text-align: left;
+    }
+
+    div.addressTip, div.productListTip {
+        color: #333333;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+        margin-bottom: 30px;
+    }
+
+    table.addressTable {
+        margin: 20px 20px;
+        width: 600px;
+    }
+
+    table.addressTable td.firstColumn {
+        width: 100px;
+    }
+
+    table.addressTable td {
+        color: #333333;
+        text-align: right;
+        vertical-align: top;
+        padding-right: 5px;
+        text-align: left;
+        height: 30px;
+        font-size: 12px;
+    }
+
+    span.redStar {
+        color: red;
+        font-size: 8px;
+    }
+
+    table.addressTable td input {
+        border: 1px solid #AFAFAF;
+        width: 200px;
+    }
+
+    table.addressTable td textarea {
+        border: 1px solid #AFAFAF;
+        margin-bottom: 10px;
+        width: 400px;
+    }
+
     body {
         font-size: 12px;
         font-family: Arial;

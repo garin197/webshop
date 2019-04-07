@@ -21,6 +21,7 @@ import java.util.List;
 public class CookieUtil {
     /**
      * 返回名为regex的cookie
+     *
      * @param request
      * @param regex
      * @return
@@ -29,8 +30,8 @@ public class CookieUtil {
         Cookie[] cookies = request.getCookies();
         Cookie cookie = null;
         for (Cookie c : cookies) {
-            if (regex.equals(c.getName())){
-                cookie=c;
+            if (regex.equals(c.getName())) {
+                cookie = c;
             }
         }
         return cookie;
@@ -50,7 +51,7 @@ public class CookieUtil {
         List<CartVo> items = new ArrayList<CartVo>();
         String value_1st = "";
         // 购物cookie
-        Cookie cart_cookie = getCookie(request,"cart");
+        Cookie cart_cookie = getCookie(request, "cart");
         // 判断cookie是否为空
         if (cart_cookie != null) {
             // 获取cookie中String类型的value
@@ -58,15 +59,18 @@ public class CookieUtil {
             // 判断value是否为空或者""字符串
             if (value_1st != null && !"".equals(value_1st)) {
                 // 解析字符串中的数据为对象并封装至list中返回给上一级
-                String[] arr_1st = value_1st.split("==");
+                String[] arr_1st = value_1st.split("=_===");//分开商品
                 for (String value_2st : arr_1st) {
-                    String[] arr_2st = value_2st.split("=");
+                    String[] arr_2st = value_2st.split("=_=");//分开属性字段
                     CartVo item = new CartVo();
                     item.setProductId(Integer.parseInt(arr_2st[0])); //商品id
                     item.setProductName(arr_2st[1]); //商品名
                     item.setMoney(Float.parseFloat(arr_2st[2]));
                     item.setImgUrl(arr_2st[3]);
                     item.setNum(Integer.parseInt(arr_2st[4]));//加入购物车数量
+                    item.setOrderCartCode(arr_2st[5]);
+                    item.setAddDate(arr_2st[6]);
+                    item.setProductUri(arr_2st[7]);
                     items.add(item);
                 }
             }
@@ -74,7 +78,6 @@ public class CookieUtil {
         return items;
 
     }
-
 
 
     /**
@@ -86,8 +89,8 @@ public class CookieUtil {
     public static String makeCookieValue(List<CartVo> cartVos) {
         StringBuffer buffer_2st = new StringBuffer();
         for (CartVo item : cartVos) {
-            buffer_2st.append(item.getProductId() + "=" + item.getProductName() + "="
-                    + item.getMoney() + "=" +item.getImgUrl() + "=" + item.getNum() + "==");
+            buffer_2st.append(item.getProductId() + "=_=" + item.getProductName() + "=_="
+                    + item.getMoney() + "=_=" + item.getImgUrl() + "=_=" + item.getNum() + "=_=" + item.getOrderCartCode() + "=_=" + item.getAddDate() + "=_=" + item.getProductUri() + "=_===");
         }
         return buffer_2st.toString().substring(0, buffer_2st.toString().length() - 2);
     }

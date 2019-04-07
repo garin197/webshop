@@ -5,6 +5,9 @@
  * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
+/**
+ * 设置用户登录状态下的header栏显示
+ */
 function ff() {
     if ($('#login-username-span1').text() != '') {
         document.getElementById("out1").style.display='block';
@@ -13,6 +16,9 @@ function ff() {
     }
 }
 
+/**
+ * 展示购物车弹出层
+ */
 function showshoppingcart1(){
     layer.open({
         type:2
@@ -22,6 +28,9 @@ function showshoppingcart1(){
     });
 }
 
+/**
+ *
+ */
 function logout(){
     $.ajax({
         type:'post',

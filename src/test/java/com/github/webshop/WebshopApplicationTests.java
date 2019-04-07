@@ -1,5 +1,6 @@
 package com.github.webshop;
 
+import com.github.webshop.util.MyUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,12 @@ public class WebshopApplicationTests {
     public void contextLoads() {
         String s= "1213";
         System.out.println(s.replace(".","8"));
+    }
+
+    @Test
+    public void dateSetTest(){
+        String dateset= MyUtil.getDateId();
+        System.out.println(dateset);
     }
 
 }

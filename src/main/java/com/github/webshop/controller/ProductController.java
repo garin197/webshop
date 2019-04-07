@@ -34,11 +34,25 @@ import java.util.Map;
 @RequestMapping("/product")
 public class ProductController {
 
+    private static Logger logger = Logger.getLogger(ProductController.class);
     @Autowired
     private ProductService productService;
-    private static Logger logger = Logger.getLogger(ProductController.class);
+    //配置的实际上传路径
     @Value("${file.uploadFolder}")
-    private String uploadFolder;//配置的实际上传路径
+    private String uploadFolder;
+
+    /**
+     * 立即购买
+     *
+     * @param request
+     * @param session
+     * @return
+     */
+    @PostMapping("/buy")
+    public String buy(HttpServletRequest request, HttpSession session) {
+
+        return "";
+    }
 
     /**
      * 获取购物车列表
@@ -95,17 +109,10 @@ public class ProductController {
         // 如果购物车列表为空
         if (cartVos.size() <= 0) {
             // 根据商品ID获取商品信息
-            CartVo cartVo = new CartVo(); // 测试用，实际应当根据id获取
-//                String productId=request.getParameter("pid");
-            String productName = request.getParameter("pname");
-            String money = request.getParameter("money");
-            String num = request.getParameter("num");
-            String imgUrl = request.getParameter("imgUrl");
-            cartVo.setImgUrl(imgUrl);
-            cartVo.setMoney(new Float(money));
-            cartVo.setProductId(productId);
-            cartVo.setProductName(productName);
-            cartVo.setNum(new Integer(num));
+            CartVo cartVo = requset_function_for_add_cart(request, productId);
+
+//            CartVo cartVo = new CartVo(); // 测试用，实际应当根据id获取
+
             // 将当前传来的商品添加到购物车列表
             cartVos.add(cartVo);
             if (CookieUtil.getCookie(request, "cart") == null) {
@@ -127,7 +134,7 @@ public class ProductController {
             int bj = 0;
             for (CartVo cart : cartVos) {
                 // 如果购物车中存在该商品则数量+1
-                if (cart.getProductId() == productId) {
+                if (cart.getProductId().equals(productId)) {
                     cart.setNum(cart.getNum() + 1);
                     bj = 1;
                     break;
@@ -137,16 +144,8 @@ public class ProductController {
             }
             if (bj == 0) {
                 // 根据商品ID获取商品信息
-                CartVo cartVo = new CartVo(); // 测试用，实际应当根据id获取
-                String productName = request.getParameter("pname");
-                String money = request.getParameter("money");
-                String num = request.getParameter("num");
-                String imgUrl = request.getParameter("imgUrl");
-                cartVo.setImgUrl(imgUrl);
-                cartVo.setMoney(new Float(money));
-                cartVo.setProductId(productId);
-                cartVo.setProductName(productName);
-                cartVo.setNum(new Integer(num));
+                CartVo cartVo = requset_function_for_add_cart(request, productId);
+
                 // 将当前传来的商品添加到购物车列表
                 cartVos.add(cartVo);
             }
@@ -161,11 +160,48 @@ public class ProductController {
         return "failed";
     }
 
+    private CartVo requset_function_for_add_cart(HttpServletRequest request, Integer productId) {
+        CartVo cartVo = new CartVo(); // 测试用，实际应当根据id获取
+        //String productId=request.getParameter("pid");
+        String productName = request.getParameter("pname");
+        String money = request.getParameter("money");
+        String num = request.getParameter("num");
+        String imgUrl = request.getParameter("imgUrl");
+        String orderCartCode = MyUtil.getDateId();
+        String addDate = MyUtil.getFormatDate();
+        String uri = request.getParameter("uri");
+        cartVo.setImgUrl(imgUrl);
+        cartVo.setMoney(new Float(money));
+        cartVo.setProductId(productId);
+        cartVo.setProductName(productName);
+        cartVo.setNum(new Integer(num));
+        cartVo.setAddDate(addDate);
+        cartVo.setOrderCartCode(orderCartCode);
+        cartVo.setProductUri(uri);
+        return cartVo;
+    }
+
+    /**
+     * 无用
+     *
+     * @param session
+     * @return
+     */
     @ResponseBody
     @GetMapping("/forecheckLogin")
     public String islogin(HttpSession session) {
 
         return "false";
+    }
+
+    /**
+     * 更新数据库的库存
+     *
+     * @param pid
+     * @param number
+     */
+    public synchronized void update_stock(Integer pid, Integer number) {
+        productService.update_stock(pid, number);
     }
 
     /**
