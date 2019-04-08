@@ -18,4 +18,5 @@ public interface UserMapper {
     User findByEmail(String email);
     User findByNamePsw(@Param("name") String name, @Param("psw") String psw);
     int add(User user);
+    User findOne(@Param("username") String username,@Param("password") String password);
 }

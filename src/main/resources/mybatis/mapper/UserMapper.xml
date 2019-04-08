@@ -26,4 +26,7 @@
         insert into t_user(name,password,email) values(#{userName} , #{password} , #{email} )
     </insert>
 
+    <select id="findOne">
+        select * from t_user where name=#{username} and password=#{password}
+    </select>
 </mapper>

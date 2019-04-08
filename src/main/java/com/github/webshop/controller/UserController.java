@@ -74,24 +74,32 @@ public class UserController {
 
     /**
      * 登录
+     *
      * @param request
      * @param response
      * @param session
-     * @param user
      * @return
      */
     @PostMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session, User user) {
+    public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
-        String requestURI = CookieUtil.getCookie(request,"uri_cookie").getValue();
+        Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
+        String requestURI = "";
+        if (cookie != null)
+            requestURI = cookie.getValue();
+
 
         // TODO: 2019/4/7 正确数据比对
-        Map currentUserMap = new HashMap<String, String>();
-        session.setAttribute("currentUserId", user.getUserId());
-        session.setAttribute("currentUserName", user.getUserName());
-        session.setAttribute("currentUserEmail", user.getEmail());
+        User user = userService.find_user(request);
+        if (user != null) {
+            Map currentUserMap = new HashMap<String, String>();
+            session.setAttribute("currentUserId", user.getUserId());
+            session.setAttribute("currentUserName", user.getUserName());
+            session.setAttribute("currentUserEmail", user.getEmail());
+            return "redirect:" + requestURI;
 
-        return "redirect:"+requestURI;
+        }
+        return "";
     }
 
     @GetMapping("/register")

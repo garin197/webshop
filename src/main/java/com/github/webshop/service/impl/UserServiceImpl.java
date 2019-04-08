@@ -56,6 +56,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User find_user(HttpServletRequest request) {
+        String username=request.getParameter("userName");
+        String password=request.getParameter("password");
+
+        return userMapper.findOne(username,password);
+    }
+
+    @Override
     public boolean check_vaild(HttpSession session, HttpServletRequest request) {
         String vaild = request.getParameter("vaild");
         String sessionvaild = (String) session.getAttribute("vaild");
