@@ -1,7 +1,9 @@
 package com.github.webshop.service.impl;
 
 import com.github.webshop.dao.ImageMapper;
+import com.github.webshop.dao.OrderMapper;
 import com.github.webshop.dao.ProductMapper;
+import com.github.webshop.pojo.Order;
 import com.github.webshop.pojo.PrdtImage;
 import com.github.webshop.pojo.Product;
 import com.github.webshop.pojo.Row;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -21,6 +24,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
     @Autowired
     private ImageMapper imageMapper;
+    @Autowired
+    private OrderMapper orderMapper;
 
     @Override
     public List<Product> getProductListWithLimit(HttpServletRequest request) {
@@ -85,6 +90,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int delOneImage(HttpServletRequest request) {
+        return 0;
+    }
+
+    /**
+     * 立即购买service
+     * @param request
+     * @param session
+     * @return
+     */
+    @Override
+    public int buy_one(HttpServletRequest request, HttpSession session) {
+        String address=request.getParameter("address");
+        String post=request.getParameter("post");
+        String receiver=request.getParameter("receiver");
+        String mobile=request.getParameter("mobile");
+        String comment=request.getParameter("comment");
+        String orderCode=MyUtil.getDateId();//订单号
+        String userId= (String) session.getAttribute("currentUserId");
+        String createDate=MyUtil.getFormatDate();//创建日期
+//        String payDate=MyUtil.getFormatDate();//支付日期
+        String status="未付款";
+        Order order=new Order();
+        order.setAddress(address);
+        order.setCreateDate(createDate);
+        order.setPhone(mobile);
+        order.setPost(post);
+        order.setReceiver(receiver);
+        order.setStatus(status);
+        order.setUserMessage(comment);
+        order.setUid(new Integer(userId));
+        order.setOrderCode(orderCode);
+        Integer orderId=orderMapper.insert(order);//请求新增订单，并返回订单id
+
         return 0;
     }
 

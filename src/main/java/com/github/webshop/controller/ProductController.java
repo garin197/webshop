@@ -49,7 +49,13 @@ public class ProductController {
      * @return
      */
     @PostMapping("/buy")
-    public String buy(HttpServletRequest request, HttpSession session) {
+    public String buy(HttpServletRequest request, HttpSession session) throws Exception {
+        Cookie cookie=CookieUtil.getCookie(request,"uri_cookie");
+        if (cookie==null){
+            throw new Exception("uri_cookie is null");
+        }
+        String sub_uri_arr[] =cookie.getValue().split("pid=");
+        String uri=sub_uri_arr[1];
 
         return "";
     }

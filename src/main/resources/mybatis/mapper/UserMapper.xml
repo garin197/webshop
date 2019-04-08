@@ -26,7 +26,10 @@
         insert into t_user(name,password,email) values(#{userName} , #{password} , #{email} )
     </insert>
 
-    <select id="findOne">
-        select * from t_user where name=#{username} and password=#{password}
+    <select id="findOne" resultType="user">
+        select * from t_user where userName=#{username} and password=#{password}
+    </select>
+    <select id="find_by_id" resultType="com.github.webshop.pojo.User">
+        select * from t_user where userId=#{id}
     </select>
 </mapper>

@@ -10,34 +10,34 @@
  */
 function ff() {
     if ($('#login-username-span1').text() != '') {
-        document.getElementById("out1").style.display='block';
-        document.getElementById("register-span1").style.display='none';
-        document.getElementById("login-username1").style.display='none';
+        document.getElementById("out1").style.display = 'block';
+        document.getElementById("register-span1").style.display = 'none';
+        document.getElementById("login-username1").style.display = 'none';
     }
 }
 
 /**
  * 展示购物车弹出层
  */
-function showshoppingcart1(){
+function showshoppingcart1() {
     layer.open({
-        type:2
-        ,content:'/page/shopingcart'
-        ,area:[document.documentElement.clientWidth+'px',document.documentElement.clientHeight+'px']
-        ,maxmin:true
+        type: 2
+        , content: '/page/shopingcart'
+        , area: [document.documentElement.clientWidth + 'px', document.documentElement.clientHeight + 'px']
+        , maxmin: true
     });
 }
 
 /**
  *
  */
-function logout(){
+function logout() {
     $.ajax({
-        type:'post',
-        url:'/user/logout',
-        success:function(res){
-            document.getElementById("out1").style.display='none';
-            document.getElementById("register-span1").style.display='block';
+        type: 'post',
+        url: '/user/logout',
+        success: function (res) {
+            document.getElementById("out1").style.display = 'none';
+            document.getElementById("register-span1").style.display = 'block';
             window.location.reload();
             $('#login-username-span').text("请登录");
         }
@@ -48,12 +48,12 @@ layui.use(['layer'], function () {
 
     //判断并且设置可购买状态--开始
     var stock = parseInt($('#Stock').text());
-    if (stock<=0){
-        $('#suddenlyBuy').attr("disabled","disabled");
-        $('#addToBuyCar').attr("disabled","disabled");
-    }else{
-        $('#suddenlyBuy').attr("disabled",false);
-        $('#addToBuyCar').attr("disabled",false);
+    if (stock <= 0) {
+        $('#suddenlyBuy').attr("disabled", "disabled");
+        $('#addToBuyCar').attr("disabled", "disabled");
+    } else {
+        $('#suddenlyBuy').attr("disabled", false);
+        $('#addToBuyCar').attr("disabled", false);
     }
     //判断并且设置可购买状态--结束
 
@@ -88,4 +88,27 @@ layui.use(['layer'], function () {
 //放大图片到指定区域
 function Magnify_img(url) {
     $('#img-detail-max').attr('src', '/' + url);
+}
+
+//提交用户信息表单
+function submit_user_info() {
+    $.ajax({
+        type: 'post'
+        , datatype: 'json'
+        , url: '/product/buy'
+        , data: {
+            "address": $("#address").val(),
+            "post": $("#post").val(),
+            "receiver": $("#receiver").val(),
+            "mobile": $("#mobile").val(),
+            "comment": $("#comment").val(),
+            "num": $('.productNumberSetting',parent.document).val(),
+            "pname": $(".productTitle",parent.document).text(),
+            "money": $(".promotionPrice",parent.document).text(),
+            "imgUrl": $("#img-detail-0",parent.document)[0].src
+        }
+        , success: function (res) {
+            alert()
+        }
+    });
 }

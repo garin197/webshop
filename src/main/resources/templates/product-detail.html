@@ -163,27 +163,31 @@
         <div class="address" >
             <!--<div class="addressTip">输入收货地址</div>-->
             <div>
-                <form type="post" action="/product/">
+                <form action="#" method="post">
                 <table class="addressTable">
                     <tr>
                         <td class="firstColumn">详细地址<span class="redStar">*</span></td>
-                        <td><textarea name="address" placeholder="建议您如实填写详细收货地址，例如接到名称，门牌号，楼层和房间号等信息" required></textarea></td>
+                        <td><textarea id="address" name="address" placeholder="建议您如实填写详细收货地址，例如接到名称，门牌号，楼层和房间号等信息" required></textarea></td>
                     </tr>
                     <tr>
                         <td>邮政编码</td>
-                        <td><input  name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="text"></td>
+                        <td><input id="post"  name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="text"></td>
                     </tr>
                     <tr>
                         <td>收货人姓名<span class="redStar">*</span></td>
-                        <td><input  name="receiver"  placeholder="长度不超过25个字符" type="text" required></td>
+                        <td><input id="receiver" name="receiver"  placeholder="长度不超过25个字符" type="text" required></td>
                     </tr>
                     <tr>
                         <td>手机号码 <span class="redStar">*</span></td>
-                        <td><input name="mobile"  placeholder="请输入11位手机号码" type="text" required></td>
+                        <td><input id="mobile" name="mobile"  placeholder="请输入11位手机号码" type="number" required></td>
+                    </tr>
+                    <tr>
+                        <td class="firstColumn">买家备注</td>
+                        <td><textarea id="comment" name="comment" placeholder="备注信息" required></textarea></td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" value="ok">
+                            <input type="button" class="layui-btn-warm" value="ok" onclick="submit_user_info()">
                         </td>
                     </tr>
                 </table>
@@ -295,7 +299,7 @@
             </div>
 
             <div class="buyDiv">
-                <a class="buyLink" href="forebuyone?pid=150">
+                <a class="buyLink" href="#">
                     <button id="suddenlyBuy" class="buyButton">立即购买</button>
                 </a>
                 <a href="#nowhere" class="addCartLink">

@@ -4,6 +4,7 @@ import com.github.webshop.pojo.PrdtImage;
 import com.github.webshop.pojo.Product;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface ProductService {
@@ -40,4 +41,6 @@ public interface ProductService {
     String getProductNameById(HttpServletRequest request);
 
     int update_stock(Integer pid,Integer number);
+
+    int buy_one(HttpServletRequest request, HttpSession session);
 }

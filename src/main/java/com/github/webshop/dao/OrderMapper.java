@@ -8,16 +8,20 @@
 
 package com.github.webshop.dao;
 
-import com.github.webshop.pojo.User;
+import com.github.webshop.pojo.Order;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
-public interface UserMapper {
-    User findByName(String name);
-    User findByEmail(String email);
-    User findByNamePsw(@Param("name") String name, @Param("psw") String psw);
-    int add(User user);
-    User findOne(@Param("username") String username,@Param("password") String password);
-    User find_by_id(Integer id);
+public interface OrderMapper {
+    int insert(Order order);
+
+    int update(Order order);
+
+    List find_all();
+
+    Order find_by_orderId(Integer orderId);
+
+    int delete_by_orderId(Integer orderId);
 }

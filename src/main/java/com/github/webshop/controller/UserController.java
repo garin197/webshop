@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @GetMapping("/forecheckLogin")
+    @RequestMapping("/forecheckLogin")
     public String forecheckLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam("uri") String requestURI) {
         Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
         if (cookie != null) {
@@ -84,12 +84,12 @@ public class UserController {
     public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
         Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
-        String requestURI = "";
+        String requestURI;
         if (cookie != null)
             requestURI = cookie.getValue();
+        else
+            requestURI="/";
 
-
-        // TODO: 2019/4/7 正确数据比对
         User user = userService.find_user(request);
         if (user != null) {
             Map currentUserMap = new HashMap<String, String>();
