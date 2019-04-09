@@ -102,13 +102,50 @@ function submit_user_info() {
             "receiver": $("#receiver").val(),
             "mobile": $("#mobile").val(),
             "comment": $("#comment").val(),
-            "num": $('.productNumberSetting',parent.document).val(),
-            "pname": $(".productTitle",parent.document).text(),
-            "money": $(".promotionPrice",parent.document).text(),
-            "imgUrl": $("#img-detail-0",parent.document)[0].src
+            "num": $('.productNumberSetting', parent.document).val(),
+            "pname": $(".productTitle", parent.document).text(),
+            "money": $(".promotionPrice", parent.document).text(),
+            "imgUrl": $("#img-detail-0", parent.document)[0].src,
+            "productId": $('#hidden_input_productId', parent.document).val()
         }
         , success: function (res) {
-            alert()
+            if (res == "success") {
+                layer.closeAll();
+                $.ajax({
+                    type: 'post',
+                    url: '/page/myorders'
+                })
+            } else {
+
+            }
         }
+    });
+}
+
+//响应我的订单按钮
+function MyOrder1() {
+    var page = "/user/forecheckLogin";
+    $.ajax({
+        type: 'post'
+        , url: page
+        , datatype: 'json'
+        , data: {'uri': window.location.href}
+        , success: function (result) {
+            if (result == "success")
+                layer.open({
+                        title: '我的订单',
+                        area: [document.documentElement.clientWidth + 'px', document.documentElement.clientHeight + 'px'],
+                        type: 2,
+                        content: '/page/myorders'
+                    }
+                );
+            else {
+
+                // 提示登录
+                layer.closeAll();
+                window.location.href = '/user/login';
+            }
+        }
+
     });
 }

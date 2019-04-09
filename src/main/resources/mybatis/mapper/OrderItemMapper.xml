@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.webshop.dao.OrderItemMapper">
+    <insert id="add_orderItem" parameterType="orderitem">
+        insert into t_orderitem(productId,userId,number,oid) values (#{productId} ,#{userId} ,#{number} ,#{orderId} )
+    </insert>
+
+    <resultMap id="orderitemresultlist" type="orderitem">
+        <id property="orderItemId" column="orderItemId"></id>
+        <result property="productId" column="productId"></result>
+        <result property="userId" column="userId"></result>
+        <result property="orderId" column="oid"></result>
+        <result property="number" column="number"></result>
+        <association property="user" javaType="user" column="userId" select="com.github.webshop.dao.UserMapper.find_by_id"></association>
+        <association property="order" javaType="order" column="oid" select="com.github.webshop.dao.OrderMapper.find_one_by_id"></association>
+        <association property="product" javaType="product" column="productId" select="com.github.webshop.dao.ProductMapper.findById"></association>
+    </resultMap>
+
+    <select id="find_all_by_userId" resultMap="orderitemresultlist">
+        select * from t_orderitem where userId=#{userId}
+    </select>
+
+</mapper>

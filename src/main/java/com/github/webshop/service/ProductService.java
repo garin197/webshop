@@ -1,5 +1,6 @@
 package com.github.webshop.service;
 
+import com.github.webshop.pojo.Order;
 import com.github.webshop.pojo.PrdtImage;
 import com.github.webshop.pojo.Product;
 
@@ -20,7 +21,7 @@ public interface ProductService {
 
     List<Product> getProductListByStatement(HttpServletRequest request);
 
-    int addImage(Integer productId,Integer type,String imgUrl);
+    int addImage(Integer productId, Integer type, String imgUrl);
 
     Integer getRowCount();
 
@@ -40,7 +41,15 @@ public interface ProductService {
 
     String getProductNameById(HttpServletRequest request);
 
-    int update_stock(Integer pid,Integer number);
+    int update_stock(Integer pid, Integer number);
 
     int buy_one(HttpServletRequest request, HttpSession session);
+
+    //Order
+    List getOrdersList(HttpSession session, HttpServletRequest request);
+
+    Order getOrderByOrderId_UserId(HttpServletRequest request);
+
+    List getOrderItemList(HttpSession session, HttpServletRequest request);
+    //Order
 }

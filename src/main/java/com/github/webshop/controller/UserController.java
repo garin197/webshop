@@ -81,7 +81,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception{
 
         Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
         String requestURI;
@@ -92,14 +92,14 @@ public class UserController {
 
         User user = userService.find_user(request);
         if (user != null) {
-            Map currentUserMap = new HashMap<String, String>();
+//            Map currentUserMap = new HashMap<String, String>();
             session.setAttribute("currentUserId", user.getUserId());
             session.setAttribute("currentUserName", user.getUserName());
             session.setAttribute("currentUserEmail", user.getEmail());
             return "redirect:" + requestURI;
 
         }
-        return "";
+        return "/";
     }
 
     @GetMapping("/register")

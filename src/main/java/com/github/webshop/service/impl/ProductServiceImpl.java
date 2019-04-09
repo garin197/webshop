@@ -1,12 +1,10 @@
 package com.github.webshop.service.impl;
 
 import com.github.webshop.dao.ImageMapper;
+import com.github.webshop.dao.OrderItemMapper;
 import com.github.webshop.dao.OrderMapper;
 import com.github.webshop.dao.ProductMapper;
-import com.github.webshop.pojo.Order;
-import com.github.webshop.pojo.PrdtImage;
-import com.github.webshop.pojo.Product;
-import com.github.webshop.pojo.Row;
+import com.github.webshop.pojo.*;
 import com.github.webshop.service.ProductService;
 import com.github.webshop.util.MyUtil;
 import com.github.webshop.util.RowUtil;
@@ -26,6 +24,8 @@ public class ProductServiceImpl implements ProductService {
     private ImageMapper imageMapper;
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private OrderItemMapper orderItemMapper;
 
     @Override
     public List<Product> getProductListWithLimit(HttpServletRequest request) {
@@ -93,6 +93,41 @@ public class ProductServiceImpl implements ProductService {
         return 0;
     }
 
+    List get_orders(HttpSession session, HttpServletRequest request) {
+        return null;
+    }
+
+    /**
+     * 请求获取当前用户所有订单
+     * @param session
+     * @param request
+     * @return
+     */
+    @Override
+    public List getOrdersList(HttpSession session, HttpServletRequest request) {
+        Integer userId= (Integer) session.getAttribute("currentUserId");
+        return orderMapper.find_all_by_user_id(userId);
+    }
+
+    @Override
+    public List getOrderItemList(HttpSession session, HttpServletRequest request) {
+        Integer userId= (Integer) session.getAttribute("currentUserId");
+        return orderItemMapper.find_all_by_userId(userId);
+    }
+
+    /**
+     * 请求获取某个订单信息
+     * @param request
+     * @return
+     */
+    @Override
+    public Order getOrderByOrderId_UserId(HttpServletRequest request) {
+        String orderId=request.getParameter("orderId");
+        String userId=request.getParameter("userId");
+
+        return orderMapper.find_one_by_orderId_and_userId(new Integer(orderId),new Integer(userId));
+    }
+
     /**
      * 立即购买service
      * @param request
@@ -107,9 +142,8 @@ public class ProductServiceImpl implements ProductService {
         String mobile=request.getParameter("mobile");
         String comment=request.getParameter("comment");
         String orderCode=MyUtil.getDateId();//订单号
-        String userId= (String) session.getAttribute("currentUserId");
+        Integer userId= (Integer) session.getAttribute("currentUserId");
         String createDate=MyUtil.getFormatDate();//创建日期
-//        String payDate=MyUtil.getFormatDate();//支付日期
         String status="未付款";
         Order order=new Order();
         order.setAddress(address);
@@ -122,8 +156,14 @@ public class ProductServiceImpl implements ProductService {
         order.setUid(new Integer(userId));
         order.setOrderCode(orderCode);
         Integer orderId=orderMapper.insert(order);//请求新增订单，并返回订单id
-
-        return 0;
+        OrderItem orderItem=new OrderItem();
+        String productId=request.getParameter("productId");
+        String num=request.getParameter("num");
+        orderItem.setNumber(new Integer(num));
+        orderItem.setProductId(new Integer(productId));
+        orderItem.setUserId(userId);
+        orderItem.setOrderId(orderId);
+        return orderItemMapper.add_orderItem(orderItem);
     }
 
     @Override

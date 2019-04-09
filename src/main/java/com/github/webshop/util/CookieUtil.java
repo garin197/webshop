@@ -28,6 +28,9 @@ public class CookieUtil {
      */
     public static Cookie getCookie(HttpServletRequest request, String regex) {
         Cookie[] cookies = request.getCookies();
+        if (cookies==null){
+            return null;
+        }
         Cookie cookie = null;
         for (Cookie c : cookies) {
             if (regex.equals(c.getName())) {

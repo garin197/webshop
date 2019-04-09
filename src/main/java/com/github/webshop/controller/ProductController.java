@@ -42,22 +42,35 @@ public class ProductController {
     private String uploadFolder;
 
     /**
+     * post请求我的订单信息
+     * @param request
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/myorders")
+    public Map<String ,Object> myorders(HttpServletRequest request,HttpSession session){
+        Map result=HashMapUtil.getFormatMap();
+        result.put("data",productService.getOrderItemList(session,request));
+        return result;
+    }
+
+
+    /**
      * 立即购买
      *
      * @param request
      * @param session
      * @return
      */
+    @ResponseBody
     @PostMapping("/buy")
     public String buy(HttpServletRequest request, HttpSession session) throws Exception {
-        Cookie cookie=CookieUtil.getCookie(request,"uri_cookie");
-        if (cookie==null){
-            throw new Exception("uri_cookie is null");
+        int n=productService.buy_one(request,session);
+        if (n>0){
+            return "success";
         }
-        String sub_uri_arr[] =cookie.getValue().split("pid=");
-        String uri=sub_uri_arr[1];
-
-        return "";
+        return "falied";
     }
 
     /**

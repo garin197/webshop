@@ -14,7 +14,8 @@
 <mapper namespace="com.github.webshop.dao.OrderMapper">
     <insert id="insert" parameterType="order">
         insert into t_order(orderCode,address,post,receiver,phone,userMessage,createDate,uid,status)
-        values(#{orderCode} ,#{address} ,#{post} ,#{receiver} ,#{phone} ,#{userMessage} ,#{createDate} ,#{uid} ,#{status} )
+        values(#{orderCode} ,#{address} ,#{post} ,#{receiver} ,#{phone} ,#{userMessage} ,#{createDate} ,#{uid}
+        ,#{status} )
         <selectKey order="AFTER" keyProperty="orderId" resultType="java.lang.Integer" statementType="PREPARED">
             select LAST_INSERT_ID()
         </selectKey>
@@ -40,7 +41,8 @@
         <result property="confirmDate" column="confirm_date"></result>
         <result property="uid" column="uid"></result>
         <result property="status" column="status"></result>
-        <association property="user" select="com.github.webshop.dao.UserMapper.find_by_id" column="uid" javaType="user" ></association>
+        <association property="user" select="com.github.webshop.dao.UserMapper.find_by_id" column="uid"
+                     javaType="user"></association>
     </resultMap>
 
     <select id="find_by_orderId" parameterType="integer" resultMap="orderResultList">
@@ -49,5 +51,14 @@
 
     <select id="find_all" resultMap="orderResultList">
         select * from t_order
+    </select>
+    <select id="find_all_by_user_id" resultType="order">
+        select * from t_order where uid=#{uid}
+    </select>
+    <select id="find_one_by_orderId_and_userId" resultType="com.github.webshop.pojo.Order">
+        select * from t_order where orderId=#{orderId} and uid=#{userId}
+    </select>
+    <select id="find_one_by_id" resultType="com.github.webshop.pojo.Order">
+      select * from t_order where orderId=#{orderId}
     </select>
 </mapper>

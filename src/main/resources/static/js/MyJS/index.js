@@ -2,9 +2,9 @@
 
 function f() {
     if ($('#login-username-span').text() != '') {
-        document.getElementById("out").style.display='block';
-        document.getElementById("register-span").style.display='none';
-        document.getElementById("login-username").style.display='none';
+        document.getElementById("out").style.display = 'block';
+        document.getElementById("register-span").style.display = 'none';
+        document.getElementById("login-username").style.display = 'none';
     }
 }
 
@@ -379,27 +379,56 @@ layui.use(['carousel', 'layer'], function () {
 
 
 });
+
 //加载layui组件--结束
 
-function logout(){
+function logout() {
     $.ajax({
-        type:'post',
-        url:'/user/logout',
-        success:function(res){
-            document.getElementById("out").style.display='none';
-            document.getElementById("register-span").style.display='block';
+        type: 'post',
+        url: '/user/logout',
+        success: function (res) {
+            document.getElementById("out").style.display = 'none';
+            document.getElementById("register-span").style.display = 'block';
             window.location.reload();
             $('#login-username-span').text("请登录");
         }
     });
 }
 
-function showshoppingcart(){
+function showshoppingcart() {
     layer.open({
-        type:2
-        ,content:'/page/shopingcart'
-        ,title:"购物车"
-        ,area:[document.documentElement.clientWidth+"px",document.documentElement.clientHeight+'px']
-        ,maxmin:true
+        type: 2
+        , content: '/page/shopingcart'
+        , title: "购物车"
+        , area: [document.documentElement.clientWidth + "px", document.documentElement.clientHeight + 'px']
+        , maxmin: true
+    });
+}
+
+//响应我的订单按钮
+function MyOrder() {
+    var page = "/user/forecheckLogin";
+    $.ajax({
+        type: 'post'
+        , url: page
+        , datatype: 'json'
+        , data: {'uri': window.location.href}
+        , success: function (result) {
+            if (result == "success")
+                layer.open({
+                        title: '我的订单',
+                        area: [document.documentElement.clientWidth + 'px', document.documentElement.clientHeight + 'px'],
+                        type: 2,
+                        content: '/page/myorders'
+                    }
+                );
+            else{
+
+                // 提示登录
+                layer.closeAll();
+                window.location.href = '/user/login';
+            }
+        }
+
     });
 }

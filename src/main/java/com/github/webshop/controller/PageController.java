@@ -17,6 +17,16 @@ public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
 
+    /**
+     * 我的订单
+     * @return
+     */
+    @GetMapping("/myorders")
+    public String myorders(){
+
+        return "myorders";
+    }
+
     @GetMapping("/shopingcart")
     public String shopingcart(HttpServletRequest request){
 

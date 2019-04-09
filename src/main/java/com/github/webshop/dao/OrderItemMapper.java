@@ -8,27 +8,13 @@
 
 package com.github.webshop.dao;
 
-import com.github.webshop.pojo.Order;
+import com.github.webshop.pojo.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
-public interface OrderMapper {
-    int insert(Order order);
-
-    int update(Order order);
-
-    List find_all();
-
-    Order find_by_orderId(Integer orderId);
-
-    int delete_by_orderId(Integer orderId);
-
-    List find_all_by_user_id(Integer uid);
-
-    Order find_one_by_orderId_and_userId(@Param("orderId") Integer orderId,@Param("userId") Integer userId);
-
-    Order find_one_by_id(Integer orderId);
+public interface OrderItemMapper {
+    int add_orderItem(OrderItem orderItem);
+    List find_all_by_userId(Integer userId);
 }
