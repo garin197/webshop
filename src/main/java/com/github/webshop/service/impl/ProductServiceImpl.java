@@ -128,6 +128,11 @@ public class ProductServiceImpl implements ProductService {
         return orderMapper.find_one_by_orderId_and_userId(new Integer(orderId),new Integer(userId));
     }
 
+    @Override
+    public String get_imgUrl(Integer productId) {
+        return imageMapper.find_imgUrl_by_productId(productId);
+    }
+
     /**
      * 立即购买service
      * @param request
@@ -155,7 +160,8 @@ public class ProductServiceImpl implements ProductService {
         order.setUserMessage(comment);
         order.setUid(new Integer(userId));
         order.setOrderCode(orderCode);
-        Integer orderId=orderMapper.insert(order);//请求新增订单，并返回订单id
+        orderMapper.insert(order);//请求新增订单，并返回订单id
+        Integer orderId=order.getOrderId();
         OrderItem orderItem=new OrderItem();
         String productId=request.getParameter("productId");
         String num=request.getParameter("num");
@@ -163,6 +169,10 @@ public class ProductServiceImpl implements ProductService {
         orderItem.setProductId(new Integer(productId));
         orderItem.setUserId(userId);
         orderItem.setOrderId(orderId);
+        int n=productMapper.updateStock(new Integer(productId),new Integer(num));
+        while(n<=0){
+            n=productMapper.updateStock(new Integer(productId),new Integer(num));
+        }
         return orderItemMapper.add_orderItem(orderItem);
     }
 

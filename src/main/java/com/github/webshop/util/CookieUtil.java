@@ -87,7 +87,7 @@ public class CookieUtil {
      * 制作cookie所需value
      *
      * @param cartVos 购物车列表
-     * @return 解析为字符串的购物车列表，属性间使用"="相隔，对象间使用"=="相隔
+     * @return 解析为字符串的购物车列表，属性间使用"=_="相隔，对象间使用"=_==="相隔
      */
     public static String makeCookieValue(List<CartVo> cartVos) {
         StringBuffer buffer_2st = new StringBuffer();

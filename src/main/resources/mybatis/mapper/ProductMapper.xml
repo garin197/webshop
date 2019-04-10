@@ -112,9 +112,9 @@
     <update id="updateStock">
         update t_product
         <set>
-            stock=#{number}
+            stock=stock-#{number}
         </set>
-        where stock=#{number}
+        where productId=#{pid}
     </update>
 
     <select id="getStock">

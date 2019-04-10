@@ -42,6 +42,23 @@ public class ProductController {
     private String uploadFolder;
 
     /**
+     * 删除cookie项
+     * @param code
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/delCartItem")
+    public String delCartItem(HttpServletRequest request,@RequestParam("code") String code){
+        Cookie cookie=CookieUtil.getCookie(request,"cart");//获取购物车cookie
+        if (cookie!=null){
+//            cookie.
+
+            return "success";
+        }
+        return "failed";
+    }
+
+    /**
      * post请求我的订单信息
      * @param request
      * @param session
@@ -377,6 +394,12 @@ public class ProductController {
         request.setCharacterEncoding("utf-8");
         Map result = MyUtil.successOrFailed(productService.delProduct(request));
         return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/getImgUrl")
+    public String getImgUrl(@RequestParam("pid") Integer pid){
+        return productService.get_imgUrl(pid);
     }
 
     /**

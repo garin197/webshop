@@ -35,6 +35,9 @@
         select * from t_productimage where pid=#{productId}
     </select>
 
+    <select id="find_imgUrl_by_productId" parameterType="integer" resultType="string">
+        select imgUrl from t_productimage where pid=#{pid} and imgType=1
+    </select>
     <resultMap id="img_product_category_list" type="prdtimage">
         <id property="imgId" column="imgId"></id>
         <result property="productId" column="pid"></result>

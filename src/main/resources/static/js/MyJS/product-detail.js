@@ -92,6 +92,18 @@ function Magnify_img(url) {
 
 //提交用户信息表单
 function submit_user_info() {
+    if ($("#address").val() == "") {
+        $("#address").val().focus();
+        return false;
+    }
+    if ($("#receiver").val() == "") {
+        $("#receiver").val().focus();
+        return false;
+    }
+    if ($("#mobile").val() == "") {
+        $("#mobile").val().focus();
+        return false;
+    }
     $.ajax({
         type: 'post'
         , datatype: 'json'

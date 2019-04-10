@@ -29,6 +29,8 @@ public interface ProductService {
 
     List<PrdtImage> get_img_product_category_list(HttpServletRequest request);
 
+    String get_imgUrl(Integer productId);
+
     int delOneImage(HttpServletRequest request);
 
     int delAllImage(HttpServletRequest request);

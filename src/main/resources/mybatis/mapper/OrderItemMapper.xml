@@ -13,7 +13,7 @@
 
 <mapper namespace="com.github.webshop.dao.OrderItemMapper">
     <insert id="add_orderItem" parameterType="orderitem">
-        insert into t_orderitem(productId,userId,number,oid) values (#{productId} ,#{userId} ,#{number} ,#{orderId} )
+        insert into t_orderitem(productId,userId,number,oId) values (#{productId} ,#{userId} ,#{number} ,#{orderId} )
     </insert>
 
     <resultMap id="orderitemresultlist" type="orderitem">

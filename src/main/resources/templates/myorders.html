@@ -1,9 +1,5 @@
 <!--
-  ~ Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  ~ Copyright © github@garin197 五邑大学
   -->
 
 <!DOCTYPE html>
@@ -17,7 +13,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<div class="boughtDiv" id="cartlist">
+<div class="boughtDiv" id="myorderlist">
     <div class="orderType">
         <div class="selectedOrderType"><a orderStatus="all" href="#nowhere">所有订单</a></div>
         <!--<div><a orderStatus="waitPay" href="#nowhere">待付款</a></div>-->
@@ -40,84 +36,89 @@
 
     </div>
 
-    <div class="orderListItem">
-        <table class="orderListItemTable" orderStatus="waitReview" oid="9733">
-            <tr class="orderListItemFirstTR">
-                <td colspan="2">
-                    <b>2019-02-28 14:11:11</b>
-                    <span>订单号: 201902281411116043057
-					</span>
-                </td>
-                <td  colspan="2"><img width="13px" src=""></td>
-                <td colspan="1">
-                    <a class="wangwanglink" href="#nowhere">
-                        <div class="orderItemWangWangGif"></div>
-                    </a>
+    <!--<div class="orderListItem">-->
+        <!--<table class="orderListItemTable" orderStatus="waitReview" oid="9733">-->
+            <!--<tr class="orderListItemFirstTR">-->
+                <!--<td colspan="2">-->
+                    <!--<b>2019-02-28 14:11:11</b>-->
+                    <!--<span>订单号: 201902281411116043057-->
+					<!--</span>-->
+                <!--</td>-->
+                <!--<td colspan="2"><img width="13px" src=""></td>-->
+                <!--<td colspan="1">-->
+                    <!--<a class="wangwanglink" href="#nowhere">-->
+                        <!--<div class="orderItemWangWangGif"></div>-->
+                    <!--</a>-->
 
-                </td>
-                <td class="orderItemDeleteTD">
-                    <a class="deleteOrderLink" oid="9733" href="#nowhere">
-                        <span  >删除</span>
-                    </a>
+                <!--</td>-->
+                <!--<td class="orderItemDeleteTD">-->
+                    <!--<a class="deleteOrderLink" oid="9733" href="#nowhere">-->
+                        <!--<span>删除</span>-->
+                    <!--</a>-->
 
-                </td>
-            </tr>
+                <!--</td>-->
+            <!--</tr>-->
 
-            <tr class="orderItemProductInfoPartTR" >
-                <td class="orderItemProductInfoPartTD"><img width="80" height="80" src="img/productSingle_middle/3533.jpg"></td>
-                <td class="orderItemProductInfoPartTD">
-                    <div class="orderListItemProductLinkOutDiv">
-                        <a href="foreproduct?pid=353">科沃斯地宝扫地机器人家用智能擦窗机器人玻璃双星拍档朵朵&amp;窗宝</a>
-                        <div class="orderListItemProductLinkInnerDiv">
-                            <img src="/static/images/creditcard.png" title="支持信用卡支付">
-                            <img src="/static/images/7day.png" title="消费者保障服务,承诺7天退货">
-                            <img src="/static/images/promise.png" title="消费者保障服务,承诺如实描述">
-                        </div>
-                    </div>
-                </td>
-                <td  class="orderItemProductInfoPartTD" width="100px">
+            <!--<tr class="orderItemProductInfoPartTR">-->
+                <!--<td class="orderItemProductInfoPartTD"><img width="80" height="80"-->
+                                                            <!--src="img/productSingle_middle/3533.jpg"></td>-->
+                <!--<td class="orderItemProductInfoPartTD">-->
+                    <!--<div class="orderListItemProductLinkOutDiv">-->
+                        <!--<a href="foreproduct?pid=353">科沃斯地宝扫地机器人家用智能擦窗机器人玻璃双星拍档朵朵&amp;窗宝</a>-->
+                        <!--<div class="orderListItemProductLinkInnerDiv">-->
+                            <!--<img src="/static/images/creditcard.png" title="支持信用卡支付">-->
+                            <!--<img src="/static/images/7day.png" title="消费者保障服务,承诺7天退货">-->
+                            <!--<img src="/static/images/promise.png" title="消费者保障服务,承诺如实描述">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</td>-->
+                <!--<td class="orderItemProductInfoPartTD" width="100px">-->
 
-                    <div class="orderListItemProductOriginalPrice">￥10,660.00</div>
-                    <div class="orderListItemProductPrice">￥9,061.00</div>
-
-
-                </td>
+                    <!--<div class="orderListItemProductOriginalPrice">￥10,660.00</div>-->
+                    <!--<div class="orderListItemProductPrice">￥9,061.00</div>-->
 
 
-                <td valign="top" rowspan="1" class="orderListItemNumberTD orderItemOrderInfoPartTD" width="100px">
-                    <span class="orderListItemNumber">1</span>
-                </td>
-                <td valign="top" rowspan="1" width="120px" class="orderListItemProductRealPriceTD orderItemOrderInfoPartTD">
-                    <div class="orderListItemProductRealPrice">￥9,061.00</div>
-                    <div class="orderListItemPriceWithTransport">(含运费：￥0.00)</div>
-                </td>
-                <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
-
-                    <a href="forereview?oid=9733"  style="display: none">
-                        <button  class="orderListItemReview">评价</button>
-                    </a>
-                    <a href="forealipay?oid=7383&total=448.2">
-                        <button class="orderListItemConfirm" >付款</button>
-                    </a>
-                    <a href="foreconfirmPay?oid=6845" style="display: none">
-                        <button class="orderListItemConfirm">确认收货</button>
-                    </a>
+                <!--</td>-->
 
 
-                </td>
+                <!--<td valign="top" rowspan="1" class="orderListItemNumberTD orderItemOrderInfoPartTD" width="100px">-->
+                    <!--<span class="orderListItemNumber">1</span>-->
+                <!--</td>-->
+                <!--<td valign="top" rowspan="1" width="120px"-->
+                    <!--class="orderListItemProductRealPriceTD orderItemOrderInfoPartTD">-->
+                    <!--<div class="orderListItemProductRealPrice">￥9,061.00</div>-->
+                    <!--<div class="orderListItemPriceWithTransport">(含运费：￥0.00)</div>-->
+                <!--</td>-->
+                <!--<td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">-->
 
-            </tr>
+                    <!--<a href="forereview?oid=9733" style="display: none">-->
+                        <!--<button class="orderListItemReview">评价</button>-->
+                    <!--</a>-->
+                    <!--<a href="forealipay?oid=7383&total=448.2">-->
+                        <!--<button class="orderListItemConfirm">付款</button>-->
+                    <!--</a>-->
+                    <!--<a href="foreconfirmPay?oid=6845" style="display: none">-->
+                        <!--<button class="orderListItemConfirm">确认收货</button>-->
+                    <!--</a>-->
 
 
-        </table>
+                <!--</td>-->
 
-    </div>
+            <!--</tr>-->
+
+
+
+
+
+        <!--</table>-->
+
+    <!--</div>-->
 </div>
-    <div align="center" style="background: #edb5a2">
+<div align="center" style="background: #edb5a2">
         <span>Copyright © <a th:href="@{https://github.com/garin197}" target="_blank">github@garin197&nbsp;</a>
             <a th:href="@{http://www.wyu.edu.cn/}" target="_blank">五邑大学</a>
         </span>
-    </div>
+</div>
 </body>
 </html>
 
