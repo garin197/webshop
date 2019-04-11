@@ -21,9 +21,9 @@ $(function () {
 
                 $('#cartlist').append('<div class="orderListItem" id="cartList-div">\n' +
                     '        <table class="orderListItemTable" orderStatus="waitReview" pid="' + res[i].productId + '">\n' +
-                    '<input type="hidden" id="pid'+i+'" value="' + res[i].productId + '">' +
-                    '<input type="hidden" id="num'+i+'" value="' + res[i].num + '">' +
-                    '<input type="hidden" id="code'+i+'" value="' + res[i].orderCartCode + '">' +
+                    '<input type="hidden" id="pid' + i + '" value="' + res[i].productId + '">' +
+                    '<input type="hidden" id="num' + i + '" value="' + res[i].num + '">' +
+                    '<input type="hidden" id="code' + i + '" value="' + res[i].orderCartCode + '">' +
                     '            <tr class="orderListItemFirstTR">\n' +
                     '                <td colspan="2">\n' +
                     '                    <b>' + res[i].addDate + '</b>\n' +
@@ -38,7 +38,7 @@ $(function () {
                     '\n' +
                     '                </td>\n' +
                     '                <td class="orderItemDeleteTD">\n' +
-                    '                    <a class="deleteOrderLink" pid="' + res[i].productId + '" href="#nowhere">\n' +
+                    '                    <a class="deleteOrderLink" pid="' + res[i].productId + '" href="#" onclick="delCartItem(' + res[i].productId + ')">\n' +
                     '                        <span  >删除</span>\n' +
                     '                    </a>\n' +
                     '\n' +
@@ -79,8 +79,8 @@ $(function () {
                     '                        <button  class="orderListItemReview">评价</button>\n' +
                     '                    </a>\n' +
                     // forealipay?pid=' + res[i].productId + '&total=' + res[i].money * res[i].num + '
-                    '                    <a href="#" id="alipay" onclick="alipay('+i+')">\n' +
-                    '                        <button class="orderListItemConfirm">付款</button>\n' +
+                    '                    <a href="#" id="alipay" onclick="alipay(' + i + ')">\n' +
+                    '                        <button class="orderListItemConfirm">立即购买</button>\n' +
                     '                    </a>\n' +
                     '                    <a href="foreconfirmPay?pid=' + res[0].productId + '" id="firmPay" style="display: none">\n' +
                     '                        <button class="orderListItemConfirm">确认收货</button>\n' +
@@ -102,7 +102,7 @@ $(function () {
 })
 
 function alipay(i) {
-    item=i;
+    item = i;
     layer.open({
         type: 1
         , title: '输入收货地址'
@@ -116,6 +116,7 @@ function alipay(i) {
 }
 
 var item;
+
 //提交用户信息表单
 function submit_user_info() {
     if ($("#address").val() == "") {
@@ -141,9 +142,9 @@ function submit_user_info() {
             "receiver": $("#receiver").val(),
             "mobile": $("#mobile").val(),
             "comment": $("#comment").val(),
-            "num":$('#num'+item).val(),
-            "code": $('#code'+item).val(),
-            "productId":$('#pid'+item).val(),
+            "num": $('#num' + item).val(),
+            "code": $('#code' + item).val(),
+            "productId": $('#pid' + item).val(),
 
             // "pname": $(".productTitle", parent.document).text(),
             // "money": $(".promotionPrice", parent.document).text(),
@@ -167,8 +168,8 @@ function submit_user_info() {
                     type: 'post',
                     url: '/product/delCartItem',
                     data: {
-                        "code": $('#code', parent.document).val(),
-                        "productId":$('#pid',parent.document).val()
+                        "orderCartCode": $('#code', parent.document).val(),
+                        "productId": $('#pid', parent.document).val()
                     }
                 })
 
@@ -183,4 +184,16 @@ function submit_user_info() {
 function productDetail(pid) {
     layer.closeAll();
     parent.location.href = "/product/index_product_detail?pid=" + pid;
+}
+
+function delCartItem(pid) {
+    //删除购物车记录 res[i].orderCartCode
+    $.ajax({
+        type: 'post',
+        url: '/product/delCartItem',
+        data: {
+            // "orderCartCode": $('#code', parent.document).val(),
+            "pid": pid
+        }
+    });
 }

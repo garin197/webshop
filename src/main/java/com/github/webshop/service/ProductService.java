@@ -52,6 +52,8 @@ public interface ProductService {
 
     Order getOrderByOrderId_UserId(HttpServletRequest request);
 
+    int delOrder(Integer orderId,Integer orderItemId) throws Exception;
+
     List getOrderItemList(HttpSession session, HttpServletRequest request);
     //Order
 }

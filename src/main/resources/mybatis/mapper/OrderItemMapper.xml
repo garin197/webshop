@@ -22,13 +22,19 @@
         <result property="userId" column="userId"></result>
         <result property="orderId" column="oid"></result>
         <result property="number" column="number"></result>
-        <association property="user" javaType="user" column="userId" select="com.github.webshop.dao.UserMapper.find_by_id"></association>
-        <association property="order" javaType="order" column="oid" select="com.github.webshop.dao.OrderMapper.find_one_by_id"></association>
-        <association property="product" javaType="product" column="productId" select="com.github.webshop.dao.ProductMapper.findById"></association>
+        <association property="user" javaType="user" column="userId"
+                     select="com.github.webshop.dao.UserMapper.find_by_id"></association>
+        <association property="order" javaType="order" column="oid"
+                     select="com.github.webshop.dao.OrderMapper.find_one_by_id"></association>
+        <association property="product" javaType="product" column="productId"
+                     select="com.github.webshop.dao.ProductMapper.findById"></association>
     </resultMap>
 
     <select id="find_all_by_userId" resultMap="orderitemresultlist">
         select * from t_orderitem where userId=#{userId}
     </select>
+    <delete id="delete_one_by_id" parameterType="integer">
+        delete from t_orderitem where orderitemId=#{orderItemId}
+    </delete>
 
 </mapper>

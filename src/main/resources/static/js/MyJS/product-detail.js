@@ -25,6 +25,7 @@ function showshoppingcart1() {
         , content: '/page/shopingcart'
         , area: [document.documentElement.clientWidth + 'px', document.documentElement.clientHeight + 'px']
         , maxmin: true
+        ,title:"购物车"
     });
 }
 
@@ -123,10 +124,14 @@ function submit_user_info() {
         , success: function (res) {
             if (res == "success") {
                 layer.closeAll();
-                $.ajax({
-                    type: 'post',
-                    url: '/page/myorders'
-                })
+                layer.open({
+                        title: '我的订单',
+                        area: [document.documentElement.clientWidth + 'px', document.documentElement.clientHeight + 'px'],
+                        type: 2,
+                        content: '/page/myorders'
+                    }
+                );
+                // parent.location.href="/page/myorders";
             } else {
 
             }

@@ -6,6 +6,11 @@ import com.github.webshop.service.ProductService;
 import com.github.webshop.util.CookieUtil;
 import com.github.webshop.util.HashMapUtil;
 import com.github.webshop.util.MyUtil;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -41,18 +47,99 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
+    //测试方法
+    @ResponseBody
+    @PostMapping("/test")
+    public String t() {
+//        String s = request.getRequestURI();
+//        String ss = request.getRequestURL().toString();
+//        String postUrl = ss.replace(s, "");
+        String t="";
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://localhost:8888/product/getCart");
+        httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0");
+        httpPost.setHeader("Content-Type", "text/html; charset=UTF-8");
+        CloseableHttpResponse response = null;
+        try {
+            response = httpclient.execute(httpPost);
+              t = EntityUtils.toString(response.getEntity(), "utf-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return t;
+    }
+
+    @ResponseBody
+    @PostMapping("/delOrderItem")
+    public String delOrderItem(@RequestParam("orderId") Integer orderId, @RequestParam("orderItemId") Integer orderItemId) {
+        try {
+            productService.delOrder(orderId, orderItemId);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            return "failed";
+        }
+        return "success";
+    }
+
+
+    // TODO: 2019/4/11  删除cookie项
+
     /**
      * 删除cookie项
-     * @param code
+     *
+     * @param
      * @return
      */
     @ResponseBody
-    @GetMapping("/delCartItem")
-    public String delCartItem(HttpServletRequest request,@RequestParam("code") String code){
-        Cookie cookie=CookieUtil.getCookie(request,"cart");//获取购物车cookie
-        if (cookie!=null){
-//            cookie.
+    @PostMapping("/delCartItem")
+    public String delCartItem(HttpServletResponse response, HttpServletRequest request, @RequestParam("pid") Integer pid) throws Exception {
+//        Cookie cookie = CookieUtil.getCookie(request, "cart");//获取购物车cookie
+//        jsoup
+        String[] cookies = CookieUtil.getCurrentCookies(response, request);
+        String uri = request.getRequestURI();
+        String url = request.getRequestURL().toString();
+        String postUrl = url.replace(uri, "");
+//        Connection jsoupCon = null;
 
+        if (cookies != null) {
+            //清空购物车
+
+//            jsoupCon = Jsoup.connect(postUrl + "/product/deleteAllCookie");
+//            String string
+//                    = jsoupCon.header("Accept", "*/*")
+//                    .header("Accept-Encoding", "gzip, deflate")
+//                    .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
+//                    .header("Content-Type", "application/json;charset=UTF-8")
+//                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
+//                    .timeout(10000).ignoreContentType(true).ignoreHttpErrors(true)
+//                    .post().toString();
+
+            // 创建Httpclient对象
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost(postUrl + "/product/deleteAllCookie");
+            httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0");
+            httpPost.setHeader("Content-Type", "html/text;charset=UTF-8");
+
+            Cookie c=request.getCookies()[0];
+            String jsessionid=c.getValue();
+
+            httpPost.setHeader("Cookie",jsessionid);
+            CloseableHttpResponse response1 = httpclient.execute(httpPost);
+            String t = EntityUtils.toString(response1.getEntity(), "utf-8");
+
+            //新建购物车
+//            for (String cookieString : cookies) {
+//                if (!cookieString.contains(pid + "=_=")) {
+//                    String[] splitString = cookieString.split("=_=");
+////                    创建httppost请求对象
+//                    httpPost = new HttpPost(postUrl + "/product/add_cart/" + splitString[0]);
+////                    浏览器头
+//                    httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0");
+//                    CloseableHttpResponse curr_response = httpclient.execute(httpPost);
+//                    String result = EntityUtils.toString(curr_response.getEntity(), "utf-8");
+//                }
+//            }
             return "success";
         }
         return "failed";
@@ -60,15 +147,16 @@ public class ProductController {
 
     /**
      * post请求我的订单信息
+     *
      * @param request
      * @param session
      * @return
      */
     @ResponseBody
     @PostMapping("/myorders")
-    public Map<String ,Object> myorders(HttpServletRequest request,HttpSession session){
-        Map result=HashMapUtil.getFormatMap();
-        result.put("data",productService.getOrderItemList(session,request));
+    public Map<String, Object> myorders(HttpServletRequest request, HttpSession session) {
+        Map result = HashMapUtil.getFormatMap();
+        result.put("data", productService.getOrderItemList(session, request));
         return result;
     }
 
@@ -83,8 +171,8 @@ public class ProductController {
     @ResponseBody
     @PostMapping("/buy")
     public String buy(HttpServletRequest request, HttpSession session) throws Exception {
-        int n=productService.buy_one(request,session);
-        if (n>0){
+        int n = productService.buy_one(request, session);
+        if (n > 0) {
             return "success";
         }
         return "falied";
@@ -398,7 +486,7 @@ public class ProductController {
 
     @ResponseBody
     @PostMapping("/getImgUrl")
-    public String getImgUrl(@RequestParam("pid") Integer pid){
+    public String getImgUrl(@RequestParam("pid") Integer pid) {
         return productService.get_imgUrl(pid);
     }
 

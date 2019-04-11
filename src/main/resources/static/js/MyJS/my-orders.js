@@ -8,10 +8,7 @@
 
 // 请求订单信息
 $(function () {
-    layui.use(['layer'],function(){
-
-    });
-
+    layui.use(['layer'],function(){});
     $.ajax({
         type: 'post'
         , datatype: 'json'
@@ -19,7 +16,7 @@ $(function () {
         , success: function (res) {
             for (var i = 0; i < res.data.length; i++) {
 
-                $('#myorderlist').append('<div class="orderListItem" id="cartList-div">\n' +
+                $('#myorderlist').append('<div class="orderListItem" id="cartList-div'+i+'">\n' +
                     '<table class="orderListItemTable" orderStatus="waitReview" pid="' +res.data[i].productId + '">\n' +
                     '                <input type="hidden" id="orderId" name="orderId" value="'+res.data[i].orderId+'">\n' +
                     '                <input type="hidden" id="orderitemId" name="orderitemId" value="'+res.data[i].orderItemId+'">\n' +
@@ -37,7 +34,7 @@ $(function () {
                     '\n' +
                     '                    </td>\n' +
                     '                    <td class="orderItemDeleteTD">\n' +
-                    '                        <a class="deleteOrderLink" pid="' + res.data[i].productId +'" oid="'+res.data[i].orderId+'" oiid="'+res.data[i].orderItemId+'"  href="#nowhere">\n' +
+                    '                        <a class="deleteOrderLink" onclick="delOrderItem('+res.data[i].orderId+","+res.data[i].orderItemId+","+i+')" pid="' + res.data[i].productId +'" oid="'+res.data[i].orderId+'" oiid="'+res.data[i].orderItemId+'"  href="#">\n' +
                     '                            <span>删除</span>\n' +
                     '                        </a>\n' +
                     '\n' +
@@ -45,7 +42,7 @@ $(function () {
                     '                </tr>\n' +
                     '\n' +
                     '                <tr class="orderItemProductInfoPartTR">\n' +
-                    '                    <td class="orderItemProductInfoPartTD"><img width="80" height="80" id="productimg" src=""></td>\n' +
+                    '                    <td class="orderItemProductInfoPartTD"><img width="80" height="80" id="productimg'+i+'" src=""></td>\n' +
                     '                    <td class="orderItemProductInfoPartTD">\n' +
                     '                        <div class="orderListItemProductLinkOutDiv">\n' +
                     '                            <a href="#" onclick="productDetail('+res.data[i].productId+')">' + res.data[i].product.productName + '</a>\n' +
@@ -91,26 +88,45 @@ $(function () {
                     '</table>'+
                     '            </div>');
 
-                //加载图片
+                //加载订单项图片
                 $.ajax({
                     type:'post',
                     datatype:'json',
                     url:'/product/getImgUrl',
+                    async:false,
                     data:{"pid":res.data[i].productId},
                     success:function (res) {
                         if (res!=null){
-                            $('#productimg').attr("src" ,"/"+res);
+                            $('#productimg'+i).attr("src" ,"/"+ res);
                         }
                     }
-                })
+                });
 
             }
         }
     });
 })
 
-
+// 父页面重定向到指定商品详情页面
 function productDetail(pid){
     layer.closeAll();
     parent.location.href="/product/index_product_detail?pid="+ pid;
+}
+
+//删除订单项
+function delOrderItem(orderId,orderItemId,index) {
+    $.ajax({
+        type:'post',
+        datatype:'json',
+        url:'/product/delOrderItem',
+        data:{
+            "orderId":orderId,
+            "orderItemId":orderItemId
+        },
+        success:function (res) {
+            if (res=="success"){
+                $('#cartList-div'+index).remove();
+            }
+        }
+    })
 }

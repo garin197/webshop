@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int update_stock(Integer pid, Integer number) {
         Integer currentStockNumber = productMapper.getStock(pid);
-        Integer flag=-1;
+        Integer flag = -1;
         if (currentStockNumber >= number) {
             flag = productMapper.updateStock(pid, number);
         }
@@ -99,33 +99,34 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 请求获取当前用户所有订单
+     *
      * @param session
      * @param request
      * @return
      */
     @Override
     public List getOrdersList(HttpSession session, HttpServletRequest request) {
-        Integer userId= (Integer) session.getAttribute("currentUserId");
+        Integer userId = (Integer) session.getAttribute("currentUserId");
         return orderMapper.find_all_by_user_id(userId);
     }
 
     @Override
     public List getOrderItemList(HttpSession session, HttpServletRequest request) {
-        Integer userId= (Integer) session.getAttribute("currentUserId");
+        Integer userId = (Integer) session.getAttribute("currentUserId");
         return orderItemMapper.find_all_by_userId(userId);
     }
 
     /**
      * 请求获取某个订单信息
+     *
      * @param request
      * @return
      */
     @Override
     public Order getOrderByOrderId_UserId(HttpServletRequest request) {
-        String orderId=request.getParameter("orderId");
-        String userId=request.getParameter("userId");
-
-        return orderMapper.find_one_by_orderId_and_userId(new Integer(orderId),new Integer(userId));
+        String orderId = request.getParameter("orderId");
+        String userId = request.getParameter("userId");
+        return orderMapper.find_one_by_orderId_and_userId(new Integer(orderId), new Integer(userId));
     }
 
     @Override
@@ -134,23 +135,42 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * 删除一个订单项
+     *
+     * @param orderId
+     * @param orderItemId
+     * @return
+     */
+    @Override
+    public int delOrder(Integer orderId, Integer orderItemId) throws Exception{
+        if (orderMapper.delete_by_orderId(orderId) <= 0) {//code值：1
+            throw new Exception("删除订单表失败");
+        }
+//        if (orderItemMapper.delete_one_by_id(orderItemId) <= 0) {//code值：2
+//            throw new Exception("删除订单项表失败");
+//        }
+        return 1;
+    }
+
+    /**
      * 立即购买service
+     *
      * @param request
      * @param session
      * @return
      */
     @Override
     public int buy_one(HttpServletRequest request, HttpSession session) {
-        String address=request.getParameter("address");
-        String post=request.getParameter("post");
-        String receiver=request.getParameter("receiver");
-        String mobile=request.getParameter("mobile");
-        String comment=request.getParameter("comment");
-        String orderCode=MyUtil.getDateId();//订单号
-        Integer userId= (Integer) session.getAttribute("currentUserId");
-        String createDate=MyUtil.getFormatDate();//创建日期
-        String status="未付款";
-        Order order=new Order();
+        String address = request.getParameter("address");
+        String post = request.getParameter("post");
+        String receiver = request.getParameter("receiver");
+        String mobile = request.getParameter("mobile");
+        String comment = request.getParameter("comment");
+        String orderCode = MyUtil.getDateId();//订单号
+        Integer userId = (Integer) session.getAttribute("currentUserId");
+        String createDate = MyUtil.getFormatDate();//创建日期
+        String status = "未付款";
+        Order order = new Order();
         order.setAddress(address);
         order.setCreateDate(createDate);
         order.setPhone(mobile);
@@ -161,18 +181,20 @@ public class ProductServiceImpl implements ProductService {
         order.setUid(new Integer(userId));
         order.setOrderCode(orderCode);
         orderMapper.insert(order);//请求新增订单，并返回订单id
-        Integer orderId=order.getOrderId();
-        OrderItem orderItem=new OrderItem();
-        String productId=request.getParameter("productId");
-        String num=request.getParameter("num");
+        Integer orderId = order.getOrderId();
+        OrderItem orderItem = new OrderItem();
+        String productId = request.getParameter("productId");
+        String num = request.getParameter("num");
         orderItem.setNumber(new Integer(num));
         orderItem.setProductId(new Integer(productId));
         orderItem.setUserId(userId);
         orderItem.setOrderId(orderId);
-        int n=productMapper.updateStock(new Integer(productId),new Integer(num));
-        while(n<=0){
-            n=productMapper.updateStock(new Integer(productId),new Integer(num));
-        }
+        // TODO: 2019/4/11 等人付完款再同步 
+        // TODO: 2019/4/11 搜索
+//        int n=productMapper.updateStock(new Integer(productId),new Integer(num));
+//        while(n<=0){
+//            n=productMapper.updateStock(new Integer(productId),new Integer(num));
+//        }
         return orderItemMapper.add_orderItem(orderItem);
     }
 

@@ -17,4 +17,5 @@ import java.util.List;
 public interface OrderItemMapper {
     int add_orderItem(OrderItem orderItem);
     List find_all_by_userId(Integer userId);
+    int delete_one_by_id(Integer orderItemId);
 }

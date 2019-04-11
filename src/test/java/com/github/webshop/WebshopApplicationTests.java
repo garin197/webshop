@@ -1,6 +1,8 @@
 package com.github.webshop;
 
 import com.github.webshop.util.MyUtil;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,12 @@ public class WebshopApplicationTests {
     public void dateSetTest(){
         String dateset= MyUtil.getDateId();
         System.out.println(dateset);
+    }
+
+    @Test
+    public void jsoup(){
+        Connection connection=Jsoup.connect("http://localhost:8888");
+//        connection.
     }
 
 }

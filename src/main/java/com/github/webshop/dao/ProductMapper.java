@@ -36,6 +36,4 @@ public interface ProductMapper {
 
     Integer getStock(@Param("pid") Integer pid);
 
-//    List get_product_detail(@Param("productId") Integer productId);
-
 }

@@ -28,7 +28,7 @@ public class CookieUtil {
      */
     public static Cookie getCookie(HttpServletRequest request, String regex) {
         Cookie[] cookies = request.getCookies();
-        if (cookies==null){
+        if (cookies == null) {
             return null;
         }
         Cookie cookie = null;
@@ -98,4 +98,22 @@ public class CookieUtil {
         return buffer_2st.toString().substring(0, buffer_2st.toString().length() - 2);
     }
 
+    public static String[] getCurrentCookies(HttpServletResponse response, HttpServletRequest request) throws
+            UnsupportedEncodingException {
+        String value_1st = "";
+        String[] arr_1st=null;
+        // 购物cookie
+        Cookie cart_cookie = getCookie(request, "cart");
+        // 判断cookie是否为空
+        if (cart_cookie != null) {
+            // 获取cookie中String类型的value
+            value_1st = URLDecoder.decode(cart_cookie.getValue(), "utf-8");//从cookie获取购物车
+            // 判断value是否为空或者""字符串
+            if (value_1st != null && !"".equals(value_1st)) {
+                // 解析字符串中的数据为对象并封装至list中返回给上一级
+                arr_1st = value_1st.split("=_===");//分开商品
+            }
+        }
+        return arr_1st;
+    }
 }
