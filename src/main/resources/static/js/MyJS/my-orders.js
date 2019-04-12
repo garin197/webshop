@@ -1,14 +1,7 @@
-/*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
 // 请求订单信息
 $(function () {
-    layui.use(['layer'],function(){});
+    layui.use(['layer'], function () {
+    });
     $.ajax({
         type: 'post'
         , datatype: 'json'
@@ -16,10 +9,10 @@ $(function () {
         , success: function (res) {
             for (var i = 0; i < res.data.length; i++) {
 
-                $('#myorderlist').append('<div class="orderListItem" id="cartList-div'+i+'">\n' +
-                    '<table class="orderListItemTable" orderStatus="waitReview" pid="' +res.data[i].productId + '">\n' +
-                    '                <input type="hidden" id="orderId" name="orderId" value="'+res.data[i].orderId+'">\n' +
-                    '                <input type="hidden" id="orderitemId" name="orderitemId" value="'+res.data[i].orderItemId+'">\n' +
+                $('#myorderlist').append('<div class="orderListItem" id="cartList-div' + i + '">\n' +
+                    '<table class="orderListItemTable" orderStatus="waitReview" pid="' + res.data[i].productId + '">\n' +
+                    '                <input type="hidden" id="orderId" name="orderId" value="' + res.data[i].orderId + '">\n' +
+                    '                <input type="hidden" id="orderitemId" name="orderitemId" value="' + res.data[i].orderItemId + '">\n' +
                     '                <tr class="orderListItemFirstTR">\n' +
                     '                    <td colspan="2">\n' +
                     '                        <b>' + res.data[i].order.createDate + '</b>\n' +
@@ -34,7 +27,7 @@ $(function () {
                     '\n' +
                     '                    </td>\n' +
                     '                    <td class="orderItemDeleteTD">\n' +
-                    '                        <a class="deleteOrderLink" onclick="delOrderItem('+res.data[i].orderId+","+res.data[i].orderItemId+","+i+')" pid="' + res.data[i].productId +'" oid="'+res.data[i].orderId+'" oiid="'+res.data[i].orderItemId+'"  href="#">\n' +
+                    '                        <a id="deleteOrder' + i + '" class="deleteOrderLink" onclick="delOrderItem(' + res.data[i].orderId + "," + res.data[i].orderItemId + "," + i + ')" pid="' + res.data[i].productId + '" oid="' + res.data[i].orderId + '" oiid="' + res.data[i].orderItemId + '"  href="#">\n' +
                     '                            <span>删除</span>\n' +
                     '                        </a>\n' +
                     '\n' +
@@ -42,10 +35,10 @@ $(function () {
                     '                </tr>\n' +
                     '\n' +
                     '                <tr class="orderItemProductInfoPartTR">\n' +
-                    '                    <td class="orderItemProductInfoPartTD"><img width="80" height="80" id="productimg'+i+'" src=""></td>\n' +
+                    '                    <td class="orderItemProductInfoPartTD"><img width="80" height="80" id="productimg' + i + '" src=""></td>\n' +
                     '                    <td class="orderItemProductInfoPartTD">\n' +
                     '                        <div class="orderListItemProductLinkOutDiv">\n' +
-                    '                            <a href="#" onclick="productDetail('+res.data[i].productId+')">' + res.data[i].product.productName + '</a>\n' +
+                    '                            <a href="#" onclick="productDetail(' + res.data[i].productId + ')">' + res.data[i].product.productName + '</a>\n' +
                     '                            <div class="orderListItemProductLinkInnerDiv">\n' +
                     '                                <img src="/static/images/creditcard.png" title="支持信用卡支付">\n' +
                     '                                <img src="/static/images/7day.png" title="消费者保障服务,承诺7天退货">\n' +
@@ -71,36 +64,63 @@ $(function () {
                     '                    </td>\n' +
                     '                    <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">\n' +
                     '\n' +
-                    '                        <a href=forereview?pid=' + res.data[i].productId + '" style="display: none">\n' +
+                    '                        <a id="review' + i + '" href=forereview?pid=' + res.data[i].productId + '">\n' +
                     '                        <button class="orderListItemReview">评价</button>\n' +
                     '                        </a>\n' +
-                    '                        <a href=forereview?pid=' + res.data[i].productId + '">\n' +
+                    '                        <a id="pay' + i + '" onclick="onPay(' + res.data[i].orderId + "," + res.data[i].product.promotePrice * res.data[i].number +
+                    "," + "'" + res.data[i].user.userName + "'" + "," + "'" + res.data[i].order.address + "'" + "," + res.data[i].order.phone + "," + res.data[i].productId + "," + res.data[i].number + ')" href="#" >\n' +
                     '                        <button class="orderListItemConfirm">付款</button>\n' +
                     '                        </a>\n' +
-                    '                        <a href=forereview?pid=' + res.data[i].productId + '" style="display: none">\n' +
+                    '                        <a id="delivered' + i + '" href=forereview?pid=' + res.data[i].productId + '" >\n' +
                     '                        <button class="orderListItemConfirm">确认收货</button>\n' +
+                    '                        </a>\n' +
+                    '                        <a id="tip' + i + '" href="#">\n' +
+                    '                        <span>未发货</span>\n' +
                     '                        </a>\n' +
                     '\n' +
                     '\n' +
                     '                    </td>\n' +
                     '\n' +
                     '                </tr>\n' +
-                    '</table>'+
+                    '</table>' +
                     '            </div>');
 
                 //加载订单项图片
                 $.ajax({
-                    type:'post',
-                    datatype:'json',
-                    url:'/product/getImgUrl',
-                    async:false,
-                    data:{"pid":res.data[i].productId},
-                    success:function (res) {
-                        if (res!=null){
-                            $('#productimg'+i).attr("src" ,"/"+ res);
+                    type: 'post',
+                    datatype: 'json',
+                    url: '/product/getImgUrl',
+                    async: false,
+                    data: {"pid": res.data[i].productId},
+                    success: function (res) {
+                        if (res != null) {
+                            $('#productimg' + i).attr("src", "/" + res);
                         }
                     }
                 });
+
+                // 改显示的显示，改隐藏的隐藏
+                if (res.data[i].order.status.toString() == '未付款') {
+                    $('#delivered' + i).hide();
+                    $('#tip' + i).hide();
+                    $('#review' + i).hide();
+                } else {
+                    if (res.data[i].order.deliver == "已发货") {
+                        $('#pay' + i).hide();
+                        $('#review' + i).hide();
+                        $('#deleteOrder' + i).hide();
+
+                    } else if (res.data[i].order.deliver == "已收货") {
+                        $('#delivered' + i).hide();
+                        $('#pay' + i).hide();
+                    } else {
+                        $('#pay' + i).hide();
+                        $('#delivered' + i).hide();
+                        $('#review' + i).hide();
+                        $('#deleteOrder' + i).hide();
+
+                    }
+                }
 
             }
         }
@@ -108,25 +128,63 @@ $(function () {
 })
 
 // 父页面重定向到指定商品详情页面
-function productDetail(pid){
+function productDetail(pid) {
     layer.closeAll();
-    parent.location.href="/product/index_product_detail?pid="+ pid;
+    parent.location.href = "/product/index_product_detail?pid=" + pid;
 }
 
 //删除订单项
-function delOrderItem(orderId,orderItemId,index) {
+function delOrderItem(orderId, orderItemId, index) {
     $.ajax({
-        type:'post',
-        datatype:'json',
-        url:'/product/delOrderItem',
-        data:{
-            "orderId":orderId,
-            "orderItemId":orderItemId
+        type: 'post',
+        datatype: 'json',
+        url: '/product/delOrderItem',
+        data: {
+            "orderId": orderId,
+            "orderItemId": orderItemId
         },
-        success:function (res) {
-            if (res=="success"){
-                $('#cartList-div'+index).remove();
+        success: function (res) {
+            if (res == "success") {
+                $('#cartList-div' + index).remove();
             }
         }
     })
+}
+
+//付款
+function onPay(orderId, momey, userName, address, phone, pid, number) {
+    layer.open({
+        type: 1,
+        content: $('#pay-script').html()
+        , area: ['400px', '450px'],
+        title: "pay",
+        shadeClose: true,
+        success: function () {
+            $('#pay-money').val("合计:￥" + momey);
+            $('#pay-userName').val("收货人:" + userName);
+            $('#pay-address').val("收货地:" + address);
+            $('#pay-phone').val("手机号:" + phone);
+
+            $('#pay-comfirm-btn').click(function () {
+                $.ajax({
+                    type: 'post',
+                    datatype: 'json',
+                    url: '/product/onPay',
+                    data: {
+                        "orderId": orderId,
+                        "pid": pid,
+                        "num":number
+                    },
+                    success: function (res) {
+                        if (res == "success") {
+                            layer.closeAll();
+                            window.location.reload();
+                        }
+                    }
+                })
+            });
+        }
+    });
+
+
 }

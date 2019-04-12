@@ -69,12 +69,12 @@ public class AdminController {
      */
     @ResponseBody
     @PostMapping("/islogin")
-    public boolean islogin(HttpSession session){
+    public String islogin(HttpSession session){
         String currentAdmin= (String) session.getAttribute("currentAdmin");
         if (currentAdmin==null) {
-            return false;
+            return "false";
         }
-        return true;
+        return "true";
     }
 
     /**

@@ -6,11 +6,6 @@ import com.github.webshop.service.ProductService;
 import com.github.webshop.util.CookieUtil;
 import com.github.webshop.util.HashMapUtil;
 import com.github.webshop.util.MyUtil;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,27 +42,18 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
-    //测试方法
+    //付款
     @ResponseBody
-    @PostMapping("/test")
-    public String t() {
-//        String s = request.getRequestURI();
-//        String ss = request.getRequestURL().toString();
-//        String postUrl = ss.replace(s, "");
-        String t="";
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://localhost:8888/product/getCart");
-        httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0");
-        httpPost.setHeader("Content-Type", "text/html; charset=UTF-8");
-        CloseableHttpResponse response = null;
-        try {
-            response = httpclient.execute(httpPost);
-              t = EntityUtils.toString(response.getEntity(), "utf-8");
-        } catch (IOException e) {
-            e.printStackTrace();
+    @PostMapping("/onPay")
+    public String onPay(@RequestParam("pid") Integer pid, @RequestParam("num") Integer number, @RequestParam("orderId") Integer orderId) {
+        int order_flag = productService.setOrderStatus(orderId, "已付款");
+        if (order_flag > 0) {
+            int product_flag = productService.update_stock(pid, number);
+            if (product_flag > 0) {
+                return "success";
+            }
         }
-
-        return t;
+        return "failed";
     }
 
     @ResponseBody
@@ -95,51 +81,46 @@ public class ProductController {
     @PostMapping("/delCartItem")
     public String delCartItem(HttpServletResponse response, HttpServletRequest request, @RequestParam("pid") Integer pid) throws Exception {
 //        Cookie cookie = CookieUtil.getCookie(request, "cart");//获取购物车cookie
-//        jsoup
         String[] cookies = CookieUtil.getCurrentCookies(response, request);
         String uri = request.getRequestURI();
         String url = request.getRequestURL().toString();
         String postUrl = url.replace(uri, "");
-//        Connection jsoupCon = null;
-
+        List items = new ArrayList<CartVo>();
+        Cookie cookie = null;
         if (cookies != null) {
             //清空购物车
+            if (cookies.length == 1) {
+                try {
+                    CookieUtil.deleteCookie(request, response, "cart");
+                    return "success";
+                } catch (Exception e) {
+                    return "success";
+                }
 
-//            jsoupCon = Jsoup.connect(postUrl + "/product/deleteAllCookie");
-//            String string
-//                    = jsoupCon.header("Accept", "*/*")
-//                    .header("Accept-Encoding", "gzip, deflate")
-//                    .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
-//                    .header("Content-Type", "application/json;charset=UTF-8")
-//                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
-//                    .timeout(10000).ignoreContentType(true).ignoreHttpErrors(true)
-//                    .post().toString();
+            }
 
-            // 创建Httpclient对象
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost(postUrl + "/product/deleteAllCookie");
-            httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0");
-            httpPost.setHeader("Content-Type", "html/text;charset=UTF-8");
-
-            Cookie c=request.getCookies()[0];
-            String jsessionid=c.getValue();
-
-            httpPost.setHeader("Cookie",jsessionid);
-            CloseableHttpResponse response1 = httpclient.execute(httpPost);
-            String t = EntityUtils.toString(response1.getEntity(), "utf-8");
+            CookieUtil.deleteCookie(request, response, "cart");
 
             //新建购物车
-//            for (String cookieString : cookies) {
-//                if (!cookieString.contains(pid + "=_=")) {
-//                    String[] splitString = cookieString.split("=_=");
-////                    创建httppost请求对象
-//                    httpPost = new HttpPost(postUrl + "/product/add_cart/" + splitString[0]);
-////                    浏览器头
-//                    httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0");
-//                    CloseableHttpResponse curr_response = httpclient.execute(httpPost);
-//                    String result = EntityUtils.toString(curr_response.getEntity(), "utf-8");
-//                }
-//            }
+            for (String cookieString : cookies) {
+                if (!cookieString.contains(pid + "=_=")) {
+                    String[] splitString = cookieString.split("=_=");
+                    CartVo item = new CartVo();
+                    item.setProductId(Integer.parseInt(splitString[0])); //商品id
+                    item.setProductName(splitString[1]); //商品名
+                    item.setMoney(Float.parseFloat(splitString[2]));
+                    item.setImgUrl(splitString[3]);
+                    item.setNum(Integer.parseInt(splitString[4]));//加入购物车数量
+                    item.setOrderCartCode(splitString[5]);
+                    item.setAddDate(splitString[6]);
+                    item.setProductUri(splitString[7]);
+                    items.add(item);
+                }
+            }
+            cookie = new Cookie("cart", URLEncoder.encode(CookieUtil.makeCookieValue(items), "utf-8"));
+            cookie.setPath("/");//设置在该项目下都可以访问该cookie
+            cookie.setMaxAge(60 * 30);
+            response.addCookie(cookie);
             return "success";
         }
         return "failed";
@@ -203,16 +184,17 @@ public class ProductController {
     @ResponseBody
     @PostMapping("/deleteAllCookie")
     public String deleteCookie(HttpServletResponse response, HttpServletRequest request) {
-        // 获取名为"cart"的cookie
-        Cookie cookie = CookieUtil.getCookie(request, "cart");
-        // 设置寿命为0秒
-        cookie.setMaxAge(0);
-        // 设置路径
-        cookie.setPath("/");
-        // 设置cookie的value为null
-        cookie.setValue(null);
-        // 更新cookie
-        response.addCookie(cookie);
+//        // 获取名为"cart"的cookie
+//        Cookie cookie = CookieUtil.getCookie(request, "cart");
+//        // 设置寿命为0秒
+//        cookie.setMaxAge(0);
+//        // 设置路径
+//        cookie.setPath("/");
+//        // 设置cookie的value为null
+//        cookie.setValue(null);
+//        // 更新cookie
+//        response.addCookie(cookie);
+        CookieUtil.deleteCookie(request, response, "cart");
         return "success";
     }
 

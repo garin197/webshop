@@ -13,9 +13,9 @@
 
 <mapper namespace="com.github.webshop.dao.OrderMapper">
     <insert id="insert" parameterType="order" useGeneratedKeys="true">
-        insert into t_order(orderCode,address,post,receiver,phone,userMessage,createDate,uid,status)
+        insert into t_order(orderCode,address,post,receiver,phone,userMessage,createDate,uid,status,deliver)
         values(#{orderCode} ,#{address} ,#{post} ,#{receiver} ,#{phone} ,#{userMessage} ,#{createDate} ,#{uid}
-        ,#{status} )
+        ,#{status} ,#{deliver} )
         <selectKey order="AFTER" resultType="java.lang.Integer" keyProperty="orderId">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -61,4 +61,11 @@
     <select id="find_one_by_id" resultType="com.github.webshop.pojo.Order">
       select * from t_order where orderId=#{orderId}
     </select>
+    <update id="update_status" parameterType="integer">
+      update t_order
+      <set>
+          status=#{statusValue}
+      </set>
+       where orderId=#{orderId}
+    </update>
 </mapper>

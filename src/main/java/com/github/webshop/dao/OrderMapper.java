@@ -32,4 +32,6 @@ public interface OrderMapper {
 
     Order find_one_by_id(Integer orderId);
 
+    int update_status(@Param("orderId") Integer orderId,@Param("statusValue") String statusValue);
+
 }

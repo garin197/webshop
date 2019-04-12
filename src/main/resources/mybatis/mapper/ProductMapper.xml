@@ -117,7 +117,7 @@
         where productId=#{pid}
     </update>
 
-    <select id="getStock">
+    <select id="getStock" parameterType="integer">
         select stock from t_product where productId=#{pid}
     </select>
 </mapper>

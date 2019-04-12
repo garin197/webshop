@@ -35,8 +35,18 @@ public class Order {
     private Integer uid;
     //用户
     private User user;
-    //订单状态：
+    //订单状态：未付款，已付款，
     private String status;
+    //发货状态：未发货，已发货，已收货
+    private String deliver;
+
+    public String getDeliver() {
+        return deliver;
+    }
+
+    public void setDeliver(String deliver) {
+        this.deliver = deliver;
+    }
 
     public String getConfirmDate() {
         return confirmDate;

@@ -194,6 +194,11 @@ function delCartItem(pid) {
         data: {
             // "orderCartCode": $('#code', parent.document).val(),
             "pid": pid
+        },
+        success:function (res) {
+            if (res=="success"){
+                window.location.reload();
+            }
         }
     });
 }

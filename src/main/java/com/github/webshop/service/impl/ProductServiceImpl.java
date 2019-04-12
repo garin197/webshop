@@ -142,7 +142,7 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
-    public int delOrder(Integer orderId, Integer orderItemId) throws Exception{
+    public int delOrder(Integer orderId, Integer orderItemId) throws Exception {
         if (orderMapper.delete_by_orderId(orderId) <= 0) {//code值：1
             throw new Exception("删除订单表失败");
         }
@@ -150,6 +150,18 @@ public class ProductServiceImpl implements ProductService {
 //            throw new Exception("删除订单项表失败");
 //        }
         return 1;
+    }
+
+    /**
+     * 更新订单的状态
+     * 并且更新库存
+     * @param orderId
+     * @return
+     */
+    @Override
+    public int setOrderStatus(Integer orderId, String value) {
+
+        return orderMapper.update_status(orderId, value);
     }
 
     /**
@@ -170,6 +182,7 @@ public class ProductServiceImpl implements ProductService {
         Integer userId = (Integer) session.getAttribute("currentUserId");
         String createDate = MyUtil.getFormatDate();//创建日期
         String status = "未付款";
+        String deliver = "未发货";
         Order order = new Order();
         order.setAddress(address);
         order.setCreateDate(createDate);
@@ -180,6 +193,7 @@ public class ProductServiceImpl implements ProductService {
         order.setUserMessage(comment);
         order.setUid(new Integer(userId));
         order.setOrderCode(orderCode);
+        order.setDeliver(deliver);
         orderMapper.insert(order);//请求新增订单，并返回订单id
         Integer orderId = order.getOrderId();
         OrderItem orderItem = new OrderItem();

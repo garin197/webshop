@@ -116,4 +116,17 @@ public class CookieUtil {
         }
         return arr_1st;
     }
+
+    public static void deleteCookie(HttpServletRequest request,HttpServletResponse response,String cookieName){
+        // 获取名为"cart"的cookie
+        Cookie cookie = CookieUtil.getCookie(request, cookieName);
+        // 设置寿命为0秒
+        cookie.setMaxAge(0);
+        // 设置路径
+        cookie.setPath("/");
+        // 设置cookie的value为null
+        cookie.setValue(null);
+        // 更新cookie
+        response.addCookie(cookie);
+    }
 }

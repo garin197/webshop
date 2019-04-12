@@ -55,5 +55,7 @@ public interface ProductService {
     int delOrder(Integer orderId,Integer orderItemId) throws Exception;
 
     List getOrderItemList(HttpSession session, HttpServletRequest request);
+
+    int setOrderStatus(Integer orderId,String value);
     //Order
 }

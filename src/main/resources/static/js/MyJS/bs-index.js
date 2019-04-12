@@ -19,7 +19,7 @@ $.ajax({
     url: '/admin/islogin',
     success: function (res) {
         //res是否登录的boolean值
-        if (!res) {//进行提示登录
+        if (res=="false") {//进行提示登录
 
             layui.use('layer', function () {
                 layer.open({
