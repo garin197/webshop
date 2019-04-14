@@ -15,6 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,5 +42,19 @@ public class MailController {
         }
         request.getSession().setAttribute("vaild", num);
         return true;
+    }
+
+    //发送发货通知--后台
+    @ResponseBody
+    @PostMapping("/deliver/send")
+    public String t(@RequestParam("email")String email,@RequestParam("productName")String productName){
+        try {
+            mailService.sendValidMessage(sender, email,
+                    "一点购物平台 商品状态变更 发货通知",
+                    "尊敬的用户：您订购的  '"+productName+"  '的商品已经发货，由xx快递进行运送，快递单号为：'1234567890123456789',请认真验货查收！");
+        } catch (Exception e) {
+            return "failed";
+        }
+        return "success";
     }
 }

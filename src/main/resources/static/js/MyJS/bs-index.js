@@ -498,6 +498,18 @@ $.ajax({
                                     if (res == "success") {
                                         layer.msg("已修改货物状态");
                                         table.reload('datagrid4');
+                                        //通知用户
+                                        $.post(
+                                            '/mail/deliver/send',
+                                            {"email":obj.data.email,"productName":obj.data.productName},
+                                            function (res) {
+                                                if (res=="success"){
+                                                    layer.msg("发货通知已经发送到用户邮箱");
+                                                } else{
+                                                    layer.msg("发货通知失败，请手动通知");
+                                                }
+                                            }
+                                        );
                                     }
                                 }
                             );

@@ -64,7 +64,7 @@ $(function () {
                     '                    </td>\n' +
                     '                    <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">\n' +
                     '\n' +
-                    '                        <a id="review' + i + '" href="#" onclick="review('+res.data[i].userId+","++')">\n' +
+                    '                        <a id="review' + i + '" href="#" onclick="review('+res.data[i].userId+","+""+')">\n' +
                     '                        <button class="orderListItemReview">评价</button>\n' +
                     '                        </a>\n' +
                     '                        <a id="pay' + i + '" onclick="onPay(' + res.data[i].orderId + "," + res.data[i].product.promotePrice * res.data[i].number +
