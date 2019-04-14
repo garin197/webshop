@@ -42,7 +42,118 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
-    //付款
+    //确认收货--前台
+    @ResponseBody
+    @PostMapping("/delivered/{oid}")
+    public String delivered(@PathVariable("oid") Integer orderId) {
+        if (productService.setOrderStatus(orderId, "已收货") > 0) {
+            return "success";
+        }
+
+        return "failed";
+    }
+
+    //发货--后台
+    @ResponseBody
+    @PostMapping("/deliver/{orderId}")
+    public String deliver(@PathVariable("orderId") Integer orderId) {
+        if (productService.setOrderDeliver(orderId, "已发货") > 0) {
+            return "success";
+        }
+        return "failed";
+    }
+
+    //获取订单列表--后台模块
+    @ResponseBody
+    //mode是按什么样的模式有查看订单
+    //{|未发货undeliver、已发货deliver|、|默认的all|、|未付款unpay、已付款paid、已收货done|、|已付款未发货paidundeliver、已发货未收货订单delivernotdone|}
+    @RequestMapping("/orderList/{mode}")
+    public Map<String, Object> orderList(
+            @PathVariable("mode") String mode,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "limit", required = false) Integer limit) {
+
+        Map result = null;
+
+        if (mode.equals("all") || mode == "all") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count());
+            result.put("data", productService.get_all_orders());
+
+            ///deliver///admin端
+        } else if (mode.equals("undeliver") || mode == "undeliver") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_deliver("未发货"));
+            result.put("data", productService.get_order_list_by_deliver("未发货", page, limit));
+
+        } else if (mode.equals("deliver") || mode == "deliver") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_deliver("已发货"));
+            result.put("data", productService.get_order_list_by_deliver("已发货", page, limit));
+
+            ///status////user端
+        } else if (mode.equals("unpay") || mode == "unpay") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_status("未付款"));
+            result.put("data", productService.get_order_list_by_status("未付款", page, limit));
+
+        } else if (mode.equals("paid") || mode == "paid") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_status("已付款"));
+            result.put("data", productService.get_order_list_by_status("已付款", page, limit));
+
+        } else if (mode.equals("done") || mode == "done") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_status("已收货"));
+            result.put("data", productService.get_order_list_by_status("已收货", page, limit));
+
+        }else if (mode.equals("paidundeliver") || mode == "paidundeliver") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_status_and_deliver("已付款","未发货"));
+            result.put("data", productService.get_order_list_by_status_deliver("已付款","未发货", page, limit));
+
+        } else if (mode.equals("delivernotdone") || mode == "delivernotdone") {
+
+            result = HashMapUtil.getFormatMap(productService.get_order_rows_count_of_status_and_deliver("已付款","已发货"));
+            result.put("data", productService.get_order_list_by_status_deliver("已付款","已发货", page, limit));
+
+        }
+
+        return result;
+    }
+
+    //模糊搜索商品结果
+    @ResponseBody
+    @GetMapping("/s_by_prdct/{s}")
+    public Map<String, Object> s_prdct(@PathVariable("s") String s, @RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+        Map result = null;
+        result = HashMapUtil.getFormatMap();//获取具体函数 的hashmap对象
+        result.put("data", productService.get_product_list_like_productName(s, page, rows));
+        return result;
+    }
+
+    //根据分类获取所有的商品
+    @ResponseBody
+    @GetMapping("/s_by_cat/{c}")
+    public Map<String, Object> s_by_cat(@PathVariable("c") String regex, @RequestParam("page") Integer page, @RequestParam("rows") Integer rows) {
+
+        Map result = null;
+        if (regex.equals("全部")) {
+            Integer count = productService.getRowCount();//获取总行数
+            count = (count % 5 > 0) ? (count / 5) + 1 : count / 5;//页数处理
+            result = HashMapUtil.getFormatMap(count);//获取具体函数 的hashmap对象
+            result.put("data", productService.get_all_product_list(page, rows));
+        } else {
+            Integer count = productService.getRowCountWithCategoty(regex);//获取总行数
+            count = (count % 5 > 0) ? (count / 5) + 1 : count / 5;//页数处理
+            result = HashMapUtil.getFormatMap(count);//获取具体函数 的hashmap对象
+            result.put("data", productService.get_product_list_by_categoryName_with_pagination(regex, page, rows));
+        }
+
+        return result;
+    }
+
+    //付款--前台
     @ResponseBody
     @PostMapping("/onPay")
     public String onPay(@RequestParam("pid") Integer pid, @RequestParam("num") Integer number, @RequestParam("orderId") Integer orderId) {
@@ -56,6 +167,7 @@ public class ProductController {
         return "failed";
     }
 
+    //删除订单--前台
     @ResponseBody
     @PostMapping("/delOrderItem")
     public String delOrderItem(@RequestParam("orderId") Integer orderId, @RequestParam("orderItemId") Integer orderItemId) {
@@ -68,8 +180,6 @@ public class ProductController {
         return "success";
     }
 
-
-    // TODO: 2019/4/11  删除cookie项
 
     /**
      * 删除cookie项

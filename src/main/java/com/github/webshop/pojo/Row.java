@@ -19,6 +19,10 @@ public class Row {
         return start;
     }
 
+    public void setStart(int start) {
+        this.start = start;
+    }
+
     public int getPage() {
         return page;
     }

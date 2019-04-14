@@ -52,4 +52,14 @@
         select count(*) from t_category where categoryName=#{name}
     </select>
 
+    <select id="select_all_by_categoryName_with_product" resultType="product">
+        select * from t_product where cid
+        =
+        (select categoryId from t_category where categoryName=#{categoryName} )
+    </select>
+
+    <select id="select_all_by_categoryName_with_product_with_pagination" resultType="product" parameterType="row">
+      select * from t_product where cid = ( SELECT categoryId FROM t_category WHERE categoryName = #{categoryName}) limit ${start},${limit}
+    </select>
+
 </mapper>

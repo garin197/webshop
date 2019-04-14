@@ -8,12 +8,12 @@
     <script th:src="@{/static/layui/layui.js}" charset="utf-8"></script>
     <script th:src="@{/static/js/jquery-2.1.1.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/static/js/MyJS/bs-index.js}"></script><!--自定义js函数-->
-    <title>网页后台管理</title>
+    <title>一点购物后台管理</title>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo" th:text="@{'后台管理系统'}">左标题</div>
+        <div class="layui-logo" th:text="@{'一点购物后台管理系统'}">左标题</div>
         <!-- 头部导航菜单 -->
         <ul class="layui-nav layui-layout-left topLevelMenus">
             <li class="layui-nav-item"><a href="javascript:showOp1()">商品管理</a></li>
@@ -40,6 +40,7 @@
             </li>
         </ul>
     </div>
+    <!-- 头部导航菜单 -->
 
     <!-- 内容主体区域 -->
     <div class="" style="padding: 15px;">
@@ -56,13 +57,11 @@
         </div>
         <!--用户管理-->
         <div id="option3" style="display: none">
-
-
+            <table class="layui-hide" id="datagrid3" lay-filter="datagrid3"></table>
         </div>
         <!--订单管理-->
         <div id="option4" style="display: none">
-
-
+            <table class="layui-hide" id="datagrid4" lay-filter="datagrid4"></table>
         </div>
     </div>
     <!---->
@@ -104,6 +103,31 @@
             <!--<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>-->
         </div>
     </script>
+    <script type="text/html" id="toolbar4">
+        <!--<div class="demoTable">-->
+            <!--<div class="layui-inline">-->
+                <!--<input class="layui-input" type="text" name="SearchCategory" id="SearchCategory" autocomplete="off" placeholder="搜索分类" required>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;lay-event 表示该操作事件类型，识别id&ndash;&gt;-->
+            <!--&lt;!&ndash;data-type 表示数据类型 用js获取&ndash;&gt;-->
+            <!--<button class="layui-btn" data-type="SearchCategory" lay-event="searchCategory">搜索</button>-->
+        <!--</div>-->
+        <!--黑色分割线-->
+        <hr class="layui-bg-black">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="all" lay-filter="all">全部订单</button>
+            <button class="layui-btn layui-btn-sm" lay-event="undeliverList" lay-filter="undeliverList">未发货订单</button>
+            <button class="layui-btn layui-btn-sm" lay-event="deliverList" lay-filter="deliverList">已发货订单</button>
+            <button class="layui-btn layui-btn-sm" lay-event="doneList" lay-filter="doneList">已收货订单</button>
+            <button class="layui-btn layui-btn-sm" lay-event="unpayList" lay-filter="unpayList">未付款订单</button>
+            <button class="layui-btn layui-btn-sm" lay-event="paidList" lay-filter="paidList">已付款订单</button>
+        </div>
+        <hr class="layui-bg-black">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="paidundeliverList" lay-filter="paidundeliverList">已付款未发货订单</button>
+            <button class="layui-btn layui-btn-sm" lay-event="delivernotdoneList" lay-filter="delivernotdoneList">已发货未收货订单</button>
+        </div>
+    </script>
 
     <!---->
     <!--数据表格内部按键-->
@@ -115,6 +139,10 @@
     <script type="text/html" id="categoryBar">
         <a class="layui-btn layui-btn-xs" lay-event="manage">属性管理</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del2">删除</a>
+    </script>
+    <script type="text/html" id="orderBar">
+        <a class="layui-btn layui-btn-xs" lay-event="deliver-bar-btn" id="">发货</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del-bar-btn">删除</a>
     </script>
 
 

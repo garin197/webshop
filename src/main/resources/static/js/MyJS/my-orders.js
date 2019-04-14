@@ -64,18 +64,18 @@ $(function () {
                     '                    </td>\n' +
                     '                    <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">\n' +
                     '\n' +
-                    '                        <a id="review' + i + '" href=forereview?pid=' + res.data[i].productId + '">\n' +
+                    '                        <a id="review' + i + '" href="#" onclick="review('+res.data[i].userId+","++')">\n' +
                     '                        <button class="orderListItemReview">评价</button>\n' +
                     '                        </a>\n' +
                     '                        <a id="pay' + i + '" onclick="onPay(' + res.data[i].orderId + "," + res.data[i].product.promotePrice * res.data[i].number +
                     "," + "'" + res.data[i].user.userName + "'" + "," + "'" + res.data[i].order.address + "'" + "," + res.data[i].order.phone + "," + res.data[i].productId + "," + res.data[i].number + ')" href="#" >\n' +
                     '                        <button class="orderListItemConfirm">付款</button>\n' +
                     '                        </a>\n' +
-                    '                        <a id="delivered' + i + '" href=forereview?pid=' + res.data[i].productId + '" >\n' +
+                    '                        <a id="delivered' + i + '" href="#" onclick="delivered(' + res.data[i].orderId + ')">\n' +
                     '                        <button class="orderListItemConfirm">确认收货</button>\n' +
                     '                        </a>\n' +
-                    '                        <a id="tip' + i + '" href="#">\n' +
-                    '                        <span>未发货</span>\n' +
+                    '                        <a id="tip' + i + '" href="#" onclick="tips()">\n' +
+                    '                        <span>催卖家发货</span>\n' +
                     '                        </a>\n' +
                     '\n' +
                     '\n' +
@@ -100,20 +100,22 @@ $(function () {
                 });
 
                 // 改显示的显示，改隐藏的隐藏
-                if (res.data[i].order.status.toString() == '未付款') {
+                if (res.data[i].order.status == '未付款') {//未付款
                     $('#delivered' + i).hide();
                     $('#tip' + i).hide();
                     $('#review' + i).hide();
-                } else {
+                }else if(res.data[i].order.status == "已收货"){//已收货
+                    $('#delivered' + i).hide();
+                    $('#pay' + i).hide();
+                    $('#tip' + i).hide();
+                } else {//已付款
                     if (res.data[i].order.deliver == "已发货") {
                         $('#pay' + i).hide();
                         $('#review' + i).hide();
                         $('#deleteOrder' + i).hide();
+                        $('#tip' + i).hide();
 
-                    } else if (res.data[i].order.deliver == "已收货") {
-                        $('#delivered' + i).hide();
-                        $('#pay' + i).hide();
-                    } else {
+                    } else {//未发货
                         $('#pay' + i).hide();
                         $('#delivered' + i).hide();
                         $('#review' + i).hide();
@@ -173,13 +175,16 @@ function onPay(orderId, momey, userName, address, phone, pid, number) {
                     data: {
                         "orderId": orderId,
                         "pid": pid,
-                        "num":number
+                        "num": number
                     },
                     success: function (res) {
                         if (res == "success") {
                             layer.closeAll();
                             window.location.reload();
+                        } else if (res == "failed") {
+                            layer.msg("库存不足,交易失败");
                         }
+
                     }
                 })
             });
@@ -187,4 +192,20 @@ function onPay(orderId, momey, userName, address, phone, pid, number) {
     });
 
 
+}
+
+function tips() {
+    layer.msg("你想多了", {anim: 1});
+}
+
+//确认收货
+function delivered(oid) {
+    $.post(
+        '/product/delivered/' + oid,
+        function (res) {
+            if (res == "success")
+                window.location.reload();
+        },
+        'json'
+    );
 }

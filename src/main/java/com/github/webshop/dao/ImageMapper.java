@@ -27,7 +27,5 @@ public interface ImageMapper {
 
     String find_imgUrl_by_productId(Integer pid);
 
-
-//    List<PrdtImage> findAllByStatements(PrdtImage prdtImage, @Param("beginDate") String beginDate, @Param("endDate") String endDate);
-//    List<PrdtImage> findAllWithLimit(Row row);
+//    String select_img_cover_byProductId(Integer productId);
 }

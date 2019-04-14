@@ -422,7 +422,7 @@ function MyOrder() {
                         content: '/page/myorders'
                     }
                 );
-            else{
+            else {
 
                 // 提示登录
                 layer.closeAll();
@@ -432,3 +432,23 @@ function MyOrder() {
 
     });
 }
+
+//响应工具栏搜索的按钮
+$(function () {
+
+    $('#search-btn').click(
+        function () {
+            var statement=$('#input-search').val();
+            if (statement!=""){
+                window.location.href='/page/s_by_prdct/'+statement
+            }
+        }
+    );
+    $('#input-search').keydown(
+        function (event) {
+            if (event.keyCode==13){
+                $('#search-btn').click();
+            }
+        }
+    );
+});

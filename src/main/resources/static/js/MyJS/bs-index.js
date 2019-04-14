@@ -19,7 +19,7 @@ $.ajax({
     url: '/admin/islogin',
     success: function (res) {
         //res是否登录的boolean值
-        if (res=="false") {//进行提示登录
+        if (res == "false") {//进行提示登录
 
             layui.use('layer', function () {
                 layer.open({
@@ -142,6 +142,96 @@ $.ajax({
                 });
                 //商品管理表格初始化--结束
 
+                // 订单管理表格初始化化--start
+                table.render({//属性管理表
+                    elem: '#datagrid4'
+                    , url: '/product/orderList/all'//数据请求url
+                    , toolbar: '#toolbar4'
+                    , title: '管理'
+                    , cols: [[
+                        {fixed: 'left', title: '操作', toolbar: '#orderBar', unresize: true, width: 120},
+                        {
+                            field: 'orderCode', title: '订单id', width: 120, sort: true,
+                            templet: function (data) {
+                                return data.orderCode;
+                            }
+                        }
+                        , {field: 'status', title: '付款状态', width: 120}
+                        , {field: 'payDate', title: '付款日期', width: 120}
+                        , {field: 'confirmDate', title: '收货日期', width: 120}
+                        , {field: 'deliver', title: '货物状态', width: 120}
+                        , {field: 'deliveryDate', title: '发货日期', width: 120}
+                        , {field: 'productId', title: '商品id', width: 120}
+                        , {field: 'productName', title: '商品', width: 120}
+                        , {field: 'number', title: '购买数量', width: 120}
+                        , {field: 'userName', title: '收货人', width: 120}
+                        , {field: 'address', title: '收货地址', width: 120}
+                        , {field: 'phone', title: '电话', width: 120}
+                        , {field: 'email', title: '邮箱', width: 120}
+                        , {field: 'userMessage', title: '备注信息', width: 120}
+                        // , {field: 'deliver', title: '发货', width: 120}
+                        // , {field: 'deliver', title: '发货', width: 120}
+                        , {field: 'ordercreateDate', title: '下单日期', width: 120}
+
+                    ]]
+                    , page: true//开启分页
+                    // , height: 530
+                    , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                        return {
+                            "code": res.code, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "count": res.count, //解析数据长度
+                            "data": res.data //解析数据列表
+                        };
+                    }
+                    , done: function (res, curr, count) {
+                        //如果是异步请求数据方式，res即为你接口返回的信息。
+                        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    }
+                });
+                // 订单管理表格初始化化--end
+
+                //用户管理后台表格初始化--start
+                table.render({//属性管理表
+                    elem: '#datagrid3'
+                    , url: '/admin/list/all'//数据请求url
+                    // , toolbar: '#toolbar4'
+                    , title: '管理'
+                    , cols: [[
+                        // {fixed: 'left', title: '操作', toolbar: '#orderBar', unresize: true, width: 120},
+                        // {
+                        //     field: 'orderCode', title: '订单id', width: 120, sort: true,
+                        //     templet: function (data) {
+                        //         return data.orderCode;
+                        //     }
+                        // },
+                        {field: 'userId', title: '用户Id', width: 120}
+                        , {field: 'userName', title: '用户名', width: 120}
+                        , {
+                            field: 'password', title: '密码', width: 120, templet: function (data) {
+                                return "******";
+                            }
+                        }
+                        , {field: 'email', title: '邮箱', width: 420}
+
+                    ]]
+                    , page: true//开启分页
+                    // , height: 530
+                    , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                        return {
+                            "code": res.code, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "count": res.count, //解析数据长度
+                            "data": res.data //解析数据列表
+                        };
+                    }
+                    , done: function (res, curr, count) {
+                        //如果是异步请求数据方式，res即为你接口返回的信息。
+                        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                    }
+                });
+                //用户管理后台表格初始化--start
+
                 //头工具栏事件监听与响应--开始
                 table.on('toolbar', function (obj) {
                     switch (obj.event) {//匹配lay-event
@@ -222,6 +312,70 @@ $.ajax({
                             table.reload('datagrid1', {
                                 url: '/product/list'
                             });
+                            break;
+                        case 'all':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/all'
+                                }
+                            );
+                            break;
+                        case 'undeliverList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/undeliver'
+                                }
+                            );
+                            break;
+                        case 'deliverList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/deliver'
+                                }
+                            );
+                            break;
+                        case 'doneList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/done'
+                                }
+                            );
+                            break;
+                        case 'unpayList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/unpay'
+                                }
+                            );
+                            break;
+                        case 'paidList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/paid'
+                                }
+                            );
+                            break;
+                        case 'paidundeliverList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/paidundeliver'
+                                }
+                            );
+                            break;
+                        case 'delivernotdoneList':
+                            table.reload(
+                                'datagrid4',
+                                {
+                                    url: '/product/orderList/delivernotdone'
+                                }
+                            );
                             break;
                     }
                 });
@@ -331,6 +485,37 @@ $.ajax({
                             content: '/page/iframe-table2-property-manage?id=' + obj.data.categoryId
                         });
                     }
+
+                    //订单管理表格内工具栏响应--开始
+                    if (obj.event == 'deliver-bar-btn') {
+                        //发货--start
+                        if (obj.data.status == "已付款" && obj.data.deliver == "未发货") {
+
+                            //正常发货
+                            $.post(
+                                '/product/deliver/' + obj.data.orderId,
+                                function (res) {
+                                    if (res == "success") {
+                                        layer.msg("已修改货物状态");
+                                        table.reload('datagrid4');
+                                    }
+                                }
+                            );
+                        } else if (obj.data.status == "已付款" && obj.data.deliver == "已发货") {
+                            //防止重复发货
+                            layer.msg("发过了，兄dei", {anim: 6});
+                        } else {
+                            //防止非法发货
+                            layer.msg("你是认真的吗？", {anim: 6});
+                        }
+                        //发货--end
+
+
+                    } else if (obj.event == 'del-bar-btn') {
+
+                    }
+                    //订单管理表格内工具栏响应--开始
+
                 });
                 //监听 表格内工具条 -- 结束
 

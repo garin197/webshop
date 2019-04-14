@@ -49,8 +49,8 @@
         select * from t_order where orderId={orderId}
     </select>
 
-    <select id="find_all" resultMap="orderResultList">
-        select * from t_order
+    <select id="find_all" resultType="map">
+        select * from v_orderdetail order by ordercreateDate desc
     </select>
     <select id="find_all_by_user_id" resultType="order">
         select * from t_order where uid=#{uid}
@@ -62,10 +62,47 @@
       select * from t_order where orderId=#{orderId}
     </select>
     <update id="update_status" parameterType="integer">
-      update t_order
-      <set>
-          status=#{statusValue}
-      </set>
-       where orderId=#{orderId}
+        update t_order
+        <set>
+            status=#{statusValue}
+        </set>
+        where orderId=#{orderId}
     </update>
+    <select id="find_all_by_status_pagination" resultType="map">
+select * from v_orderdetail where status=#{status} limit ${start} ,${limit}
+    </select>
+    <select id="find_all_by_deliver_pagination" resultType="map">
+select * from v_orderdetail where deliver=#{deliver}  limit ${start} ,${limit}
+    </select>
+    <update id="update_paydate">
+update t_order set payDate=#{paydate} where orderId=#{orderId}
+    </update>
+    <update id="update_deliveryDate">
+update t_order set deliveryDate=#{deliveryDate} where orderId=#{orderId}
+    </update>
+    <update id="update_confirmDate">
+update t_order set confirmDate=#{confirmData}  where orderId=#{orderId}
+    </update>
+    <select id="row_count" resultType="java.lang.Integer">
+select count(*) from t_order
+    </select>
+    <select id="row_count_of_status" resultType="java.lang.Integer">
+select count(*) from t_order where status=#{status}
+    </select>
+    <select id="row_count_of_deliver" resultType="java.lang.Integer">
+select count(*) from t_order where deliver=#{deliver}
+    </select>
+    <update id="update_deliver">
+        update t_order
+        <set>
+            deliver=#{deliverValue}
+        </set>
+        where orderId=#{orderId}
+    </update>
+    <select id="find_all_by_status_and_deliver_pagination" resultType="map">
+select * from v_orderdetail where status=#{status} and deliver=#{deliver} limit ${start} ,${limit}
+    </select>
+    <select id="row_count_of_status_deliver" resultType="java.lang.Integer">
+select count(*) from v_orderdetail where status=#{status} and deliver=#{deliver}
+    </select>
 </mapper>

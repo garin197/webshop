@@ -32,4 +32,10 @@
     <select id="find_by_id" resultType="com.github.webshop.pojo.User">
         select * from t_user where userId=#{id}
     </select>
+    <select id="all_pagination" resultType="map">
+select userId,userName,email from t_user limit ${start} ,${limit}
+    </select>
+    <select id="rows_count" resultType="java.lang.Integer">
+select count(*) from t_user
+    </select>
 </mapper>

@@ -50,4 +50,7 @@
     <select id="get_img_product_category_list" resultMap="img_product_category_list" parameterType="row">
         select * from t_productimage where imgType=1 limit #{start},#{limit}
     </select>
+    <!--<select id="select_img_cover_byProductId" resultType="java.lang.String">-->
+        <!--select imgUrl from t_productimage where pid = #{productId} and imgType=1-->
+    <!--</select>-->
 </mapper>

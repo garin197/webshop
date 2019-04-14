@@ -18,6 +18,8 @@ public interface ProductMapper {
 
     Integer getRowCount();
 
+    Integer getRowCountWithCategory(String categotyName);
+
     List<Product> findAllWithLimit(Row row);
 
     List<Product> findAllWithCategoryByProductId(Integer productId);
@@ -36,4 +38,7 @@ public interface ProductMapper {
 
     Integer getStock(@Param("pid") Integer pid);
 
+    List select_all_pagination(@Param("start") Integer start,@Param("limit") Integer limit);
+
+    List select_like_productName(@Param("productName") String productName,@Param("start") Integer start,@Param("limit")Integer limit);
 }

@@ -9,6 +9,7 @@
 package com.github.webshop.service.impl;
 
 import com.github.webshop.dao.UserMapper;
+import com.github.webshop.pojo.Row;
 import com.github.webshop.pojo.User;
 import com.github.webshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +25,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Override
+    public Integer get_rows_count() {
+        return userMapper.rows_count();
+    }
 
     @Override
     public int addUser(HttpServletRequest request) {
@@ -61,6 +67,11 @@ public class UserServiceImpl implements UserService {
         String password=request.getParameter("password");
 
         return userMapper.findOne(username,password);
+    }
+
+    @Override
+    public List get_all_user_list_pagination( Integer page, Integer limit) {
+        return userMapper.all_pagination(new Row(page,limit).getStart(),limit);
     }
 
     @Override

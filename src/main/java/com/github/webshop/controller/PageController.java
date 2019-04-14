@@ -3,6 +3,7 @@ package com.github.webshop.controller;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,30 +11,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-
+/**
+ * 控制页面跳转、页面中转控制器
+ */
 @Controller
 @RequestMapping("/page")
 public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
 
-    /**
-     * 我的订单
-     * @return
-     */
+    //搜索结果页面中转
+    @GetMapping("/s_by_prdct/{s}")
+    public String s_prdct(Map map, @PathVariable("s") String s) {
+        map.put("s", s);
+        return "OnSearchResultPage";
+    }
+
+    //分类结果页面中转
+    @GetMapping("/s_by_cat/{c}")
+    public String s_by_cat(Map map, @PathVariable("c") String regex) {
+        map.put("c", regex);
+        return "OnSearchCategoryResultPage";
+    }
+
+    //我的订单页面中转
     @GetMapping("/myorders")
-    public String myorders(){
+    public String myorders() {
 
         return "myorders";
     }
 
+    //购物车页面中转
     @GetMapping("/shopingcart")
-    public String shopingcart(HttpServletRequest request){
-
-        // TODO: 2019/4/3 登录检查 
+    public String shopingcart(HttpServletRequest request) {
         return "shoppingCart";
     }
 
+    //    主页中转
     @GetMapping("")
     public String index_(HttpSession session) {
         logger.info("访问主页-页面");

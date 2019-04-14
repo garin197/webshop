@@ -2,6 +2,8 @@ package com.github.webshop.controller;
 
 import com.github.webshop.pojo.Admin;
 import com.github.webshop.service.AdminService;
+import com.github.webshop.service.UserService;
+import com.github.webshop.util.HashMapUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,20 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private UserService userService;
     private Logger logger = Logger.getLogger(AdminController.class);
+
+
+    //获取用户列表--后台模块
+    @ResponseBody
+    @RequestMapping("/list/all")
+    public Map<String ,Object> userlist(@RequestParam(value = "page", required = false) Integer page,
+                                        @RequestParam(value = "limit", required = false) Integer limit){
+        Map result= HashMapUtil.getFormatMap(userService.get_rows_count());
+        result.put("data",userService.get_all_user_list_pagination( page, limit));
+        return result;
+    }
 
     @ResponseBody
     @PostMapping("/adlogin")
@@ -86,7 +101,7 @@ public class AdminController {
     public void isLogin(HttpServletResponse response, HttpSession session) throws Exception {
 //        if (session.getAttribute("currentAdmin")==null){
 ////            throw new AdminInVaildLoginException("ADMIN / 请您先登录！(Please login first!)");
-//            response.sendRedirect("/admin/err");
+//            response.sendRedirect("/admin");
 //        }
     }
 }

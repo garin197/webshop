@@ -117,7 +117,16 @@
         where productId=#{pid}
     </update>
 
-    <select id="getStock" parameterType="integer">
+    <select id="getStock" parameterType="integer" resultType="integer">
         select stock from t_product where productId=#{pid}
+    </select>
+    <select id="getRowCountWithCategory" resultType="java.lang.Integer" parameterType="string">
+        select count(*) from t_product where cid in (select categoryId from t_category where categoryName=#{categoryName})
+    </select>
+    <select id="select_all_pagination" resultType="product">
+      select * from t_product limit ${start} ,${limit}
+    </select>
+    <select id="select_like_productName" resultType="product">
+      select * from t_product where productName like #{productName}
     </select>
 </mapper>

@@ -17,6 +17,11 @@ public class WebStaticResourceConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //让拦截器放行
+//        registry.addInterceptor(getBaseInterceptor())
+//                .excludePathPatterns("/")
+//                .excludePathPatterns("/page")
+//                .excludePathPatterns("/admin")
+//                .excludePathPatterns()
     }
 
 //    @Value("${file.virtualPath}")

@@ -25,6 +25,8 @@ public interface ProductService {
 
     Integer getRowCount();
 
+    Integer getRowCountWithCategoty(String categoryName);
+
     List<PrdtImage> getImgList(HttpServletRequest request);
 
     List<PrdtImage> get_img_product_category_list(HttpServletRequest request);
@@ -47,15 +49,41 @@ public interface ProductService {
 
     int buy_one(HttpServletRequest request, HttpSession session);
 
+    List get_product_list_by_categoryName(String categoryName);
+
+    List get_all_product_list(Integer page, Integer rows);
+
+    List get_product_list_by_categoryName_with_pagination(String categoryName, Integer page, Integer rows);
+
+    List get_product_list_like_productName(String productName, Integer page, Integer rows);
+
     //Order
+    List get_all_orders();
+
     List getOrdersList(HttpSession session, HttpServletRequest request);
 
     Order getOrderByOrderId_UserId(HttpServletRequest request);
 
-    int delOrder(Integer orderId,Integer orderItemId) throws Exception;
+    int delOrder(Integer orderId, Integer orderItemId) throws Exception;
 
     List getOrderItemList(HttpSession session, HttpServletRequest request);
 
-    int setOrderStatus(Integer orderId,String value);
+    int setOrderStatus(Integer orderId, String value);
+
+    List get_order_list_by_deliver(String deliver, Integer page, Integer limit);
+
+    List get_order_list_by_status_deliver(String status, String deliver, Integer page, Integer limit);
+
+    List get_order_list_by_status(String status, Integer page, Integer limit);
+
+    int setOrderDeliver(Integer orderId, String value);
+
+    Integer get_order_rows_count();
+
+    Integer get_order_rows_count_of_status(String status);
+
+    Integer get_order_rows_count_of_deliver(String deliver);
+
+    Integer get_order_rows_count_of_status_and_deliver(String status,String deliver);
     //Order
 }

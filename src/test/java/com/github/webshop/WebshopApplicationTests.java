@@ -29,5 +29,9 @@ public class WebshopApplicationTests {
         Connection connection=Jsoup.connect("http://localhost:8888");
 //        connection.
     }
+    @Test
+    public void ff(){
+        System.out.println(63%5);
+    }
 
 }

@@ -1,13 +1,8 @@
 <!--
-  ~ Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  ~ Copyright © github@garin197 五邑大学
   -->
-
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,7 +12,7 @@
     <script type="text/javascript" th:src="@{/static/js/jquery-2.1.1.js}" charset="UTF-8"></script>
     <script type="text/javascript" th:src="@{/static/layui/layui.js}" charset="UTF-8"></script>
     <script th:src="@{/static/js/jquery-3.3.1.min.js}" type="text/javascript" charset="UTF-8"></script>
-    <script type="text/javascript" th:src="@{/static/js/MyJS/index.js}" charset="UTF-8"></script>
+    <script type="text/javascript" th:src="@{/static/js/MyJS/searchCategoryResult.js}" charset="UTF-8"></script>
 </head>
 <body onload="f()">
 <nav class="">
@@ -35,8 +30,6 @@
     <span style="padding: 5px 10px 5px 10px;float: right"><a id="out" style="display:none " href="" onclick="logout()">退出</a></span>
 
 </nav>
-<!--<div>-->
-
 <div class="header-wrap">
     <div class="navwrap">
         <div id="nav">
@@ -80,181 +73,18 @@
                                 <span><em><a href="/page/s_by_cat/其他">其他</a> </em></span>
                             </div>
                         </li>
-                        <!--<li class="hotareas nochild last">-->
-                        <!--<h2>热门搜索</h2>-->
-                        <!--<br />-->
-                        <!--<a class="mhs" href="#">美食</a>-->
-                        <!--<a class="mhs" href="#">游泳</a>-->
-                        <!--<a class="mhs" href="#">蛋糕</a>-->
-                        <!--<a class="mhs" href="#">电影</a>-->
-                        <!--<a class="mhs" href="#">眼镜</a>-->
-                        <!--<a class="mhs" href="#">自助餐</a>-->
-                        <!--<a class="mhs" href="#">酒吧</a>-->
-                        <!--<a class="mhs" href="#">美甲</a>-->
-                        <!--<a class="mhs" href="#">酒店</a>-->
-                        <!--<a class="mhs" href="#">粽子</a>-->
-                        <!--</li>-->
+
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!--style="width: 100%;height: 600px"-->
-    <div>
-        <div class="layui-carousel" id="carousel" style="width: 100%;height:500px">
-            <div carousel-item>
-                <div>
-                    <a id="a-carousel-img-1">
-                        <img id="carousel-img-1"
-                             src="/static/images/view_3.jpg"
-                             style="width: 100%;height:500px">
-                    </a>
-                </div>
-
-                <div>
-                    <a id="a-carousel-img-2">
-                        <img id="carousel-img-2"
-                             src="/static/images/view_1.jpg"
-                             style="width: 100%;height:500px">
-                    </a>
-                </div>
-
-                <div>
-                    <a id="a-carousel-img-3">
-                        <img id="carousel-img-3"
-                             src="/static/images/view_2.jpg"
-                             style="width: 100%;height:500px">
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="htmleaf-container" id="container">
     </div>
 </div>
-<div class="htmleaf-container">
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 电器</span>
-        </div>
-
-        <div id="dianqi">
-
-        </div>
-    </div>
-    <!--//////-->
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 服装</span>
-        </div>
-
-        <div id="fuzhuang">
-
-        </div>
-
-    </div>
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 食品饮料</span>
-        </div>
-
-        <div id="shipinyinliao">
-
-        </div>
-    </div>
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 鞋靴</span>
-        </div>
-        <div id="xiexue">
-
-
-        </div>
-    </div>
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 手机数码</span>
-        </div>
-
-        <div id="shoujishuma">
-
-
-        </div>
-    </div>
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 生活家居</span>
-        </div>
-        <div id="shenghuojiaju">
-
-
-        </div>
-    </div>
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 手表</span>
-        </div>
-        <div id="shoubiao">
-
-
-        </div>
-    </div>
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 化妆品</span>
-        </div>
-        <div id="huazhuangpin">
-
-
-        </div>
-    </div>
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 箱包</span>
-        </div>
-        <div id="xiangbao">
-
-
-        </div>
-    </div>
-
-    <div class="eachHomepageCategoryProducts layui-row layui-col-space1">
-
-        <div style="padding: 10px 0 0 0">
-            <span class="categoryTitle">
-            <i class="layui-icon layui-icon-more-vertical" style="font-size: 10px; color: #1E9FFF;"></i> 饰品</span>
-        </div>
-
-        <div id="shipin">
-
-        </div>
-
-    </div>
-
-</div>
-<!--copyright-->
-<div align="center" style="background: #edb5a2">
-        <span>Copyright © <a th:href="@{https://github.com/garin197}" target="_blank">github@garin197&nbsp;</a>
-            <a th:href="@{http://www.wyu.edu.cn/}" target="_blank">五邑大学</a>
-        </span>
-</div>
-<!--</div>-->
-
+<!---->
+<input type="hidden" id="c" th:value="${c}">
+</body>
 <script type="text/javascript">
     // 匿名js函数
     (function () {
@@ -1253,5 +1083,4 @@
         padding-right: 22px
     }
 </style>
-</body>
 </html>

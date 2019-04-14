@@ -1,9 +1,6 @@
 package com.github.webshop.service.impl;
 
-import com.github.webshop.dao.ImageMapper;
-import com.github.webshop.dao.OrderItemMapper;
-import com.github.webshop.dao.OrderMapper;
-import com.github.webshop.dao.ProductMapper;
+import com.github.webshop.dao.*;
 import com.github.webshop.pojo.*;
 import com.github.webshop.service.ProductService;
 import com.github.webshop.util.MyUtil;
@@ -26,6 +23,122 @@ public class ProductServiceImpl implements ProductService {
     private OrderMapper orderMapper;
     @Autowired
     private OrderItemMapper orderItemMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+    /**
+     * 根据参数status和deliver的状态来查找订单
+     * @param status
+     * @param deliver
+     * @return
+     */
+    @Override
+    public Integer get_order_rows_count_of_status_and_deliver(String status, String deliver) {
+        return null;
+    }
+
+    /**
+     * 根据status和deliver的状态查找订单
+     * @param status
+     * @param deliver
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public List get_order_list_by_status_deliver(String status, String deliver, Integer page, Integer limit) {
+        Row row=new Row(page,limit);
+        return orderMapper.find_all_by_status_and_deliver_pagination(status,deliver,row.getStart(),limit);
+    }
+
+    /**
+     * 获取status参数指定的订单列表
+     * @param status
+     * @return
+     */
+    @Override
+    public List get_order_list_by_status(String status, Integer page, Integer limit) {
+        Row row=new Row(page,limit);
+        return orderMapper.find_all_by_status_pagination(status,row.getStart(),limit);
+    }
+
+    @Override
+    public List get_order_list_by_deliver(String deliver, Integer page, Integer limit) {
+        Row row=new Row(page,limit);
+        return orderMapper.find_all_by_deliver_pagination(deliver,row.getStart(),limit);
+    }
+
+    /**
+     * 更新发货状态
+     * 更新发货日期
+     *
+     * @param orderId
+     * @param value
+     * @return
+     */
+    @Override
+    public int setOrderDeliver(Integer orderId, String value) {
+        orderMapper.update_deliveryDate(orderId, MyUtil.getFormatDate());
+        return orderMapper.update_deliver(orderId, value);
+    }
+
+    /**
+     * 获取所有定的详细信息
+     * 日期降序排序
+     *
+     * @return
+     */
+    @Override
+    public List get_all_orders() {
+        return orderMapper.find_all();
+    }
+
+    /**
+     * 获取order表的所有行数
+     *
+     * @return
+     */
+    @Override
+    public Integer get_order_rows_count() {
+        return orderMapper.row_count();
+    }
+
+    /**
+     * 获取参数指定的status值的所有order的行数
+     *
+     * @param status
+     * @return
+     */
+    @Override
+    public Integer get_order_rows_count_of_status(String status) {
+        return orderMapper.row_count_of_status(status);
+    }
+
+    /**
+     * 获取参数指定的deliver值所有的order的行数
+     *
+     * @param deliver
+     * @return
+     */
+    @Override
+    public Integer get_order_rows_count_of_deliver(String deliver) {
+        return orderMapper.row_count_of_deliver(deliver);
+    }
+
+    /**
+     * 模糊搜索商品名匹配的商品
+     *
+     * @param productName
+     * @param page
+     * @param rows
+     * @return
+     */
+    @Override
+    public List get_product_list_like_productName(String productName, Integer page, Integer rows) {
+        Row row = new Row(page, rows);
+        productName = "%" + productName + "%";
+        return productMapper.select_like_productName(productName, row.getStart(), row.getLimit());
+    }
 
     @Override
     public List<Product> getProductListWithLimit(HttpServletRequest request) {
@@ -135,6 +248,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * 获取参数指定的分类的商品的总数量
+     *
+     * @param categoryName
+     * @return
+     */
+    @Override
+    public Integer getRowCountWithCategoty(String categoryName) {
+        return productMapper.getRowCountWithCategory(categoryName);
+    }
+
+
+    /**
+     * 获取所有商品的列表
+     *
+     * @return
+     */
+    @Override
+    public List get_all_product_list(Integer page, Integer rows) {
+        Row row = new Row(page, rows);
+        return productMapper.select_all_pagination(row.getStart(), row.getLimit());
+    }
+
+    /**
      * 删除一个订单项
      *
      * @param orderId
@@ -154,13 +290,21 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 更新订单的状态
+     * 更新支付日期
      * 并且更新库存
+     *
      * @param orderId
      * @return
      */
     @Override
     public int setOrderStatus(Integer orderId, String value) {
+        if (value.equals("已付款") || value == "已付款") {
 
+            orderMapper.update_paydate(orderId, MyUtil.getFormatDate());
+        }else {
+
+            orderMapper.update_confirmDate(orderId,MyUtil.getFormatDate());
+        }
         return orderMapper.update_status(orderId, value);
     }
 
@@ -212,6 +356,40 @@ public class ProductServiceImpl implements ProductService {
         return orderItemMapper.add_orderItem(orderItem);
     }
 
+    /**
+     * 根据分类的名称获取商品列表
+     * 分页获取
+     *
+     * @param categoryName
+     * @return
+     */
+
+    @Override
+    public List get_product_list_by_categoryName_with_pagination(String categoryName, Integer page, Integer rows) {
+        Row row = new Row(page, rows);
+//        categoryName="'"+categoryName+"'";
+        return categoryMapper.select_all_by_categoryName_with_product_with_pagination(categoryName, row.getStart(), row.getLimit());
+    }
+
+    /**
+     * 根据分类的名称获取商品列表
+     *
+     * @param categoryName
+     * @return
+     */
+
+    @Override
+    public List get_product_list_by_categoryName(String categoryName) {
+        return categoryMapper.select_all_by_categoryName_with_product(categoryName);
+    }
+
+    /**
+     * 删除所有图片
+     * 没用
+     *
+     * @param request
+     * @return
+     */
     @Override
     public int delAllImage(HttpServletRequest request) {
         return 0;
@@ -245,14 +423,14 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.update(product);
     }
 
+    /**
+     * 添加一个商品记录
+     *
+     * @param request
+     * @return 商品记录的主键id
+     */
     @Override
     public int addProduct(HttpServletRequest request) {
-        /**
-         * 添加一个商品记录
-         *
-         * @param request
-         * @return 商品记录的主键id
-         */
         String productName = request.getParameter("productName");
         String productSubTitle = request.getParameter("productSubTitle");
         String originalPrice = request.getParameter("originalPrice");
@@ -271,6 +449,11 @@ public class ProductServiceImpl implements ProductService {
         return product.getProductId();
     }
 
+    /**
+     * 获取商品总行数
+     *
+     * @return
+     */
     @Override
     public Integer getRowCount() {
         return productMapper.getRowCount();
@@ -290,6 +473,12 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.get_index_product(row.getStart(), row.getLimit(), categoryName);
     }
 
+    /**
+     * 获取商品的详情
+     *
+     * @param request
+     * @return
+     */
     @Override
     public Product get_product_detail(HttpServletRequest request) {
         String productId = request.getParameter("pid");

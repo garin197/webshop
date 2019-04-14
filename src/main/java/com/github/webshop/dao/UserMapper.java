@@ -12,6 +12,8 @@ import com.github.webshop.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
     User findByName(String name);
@@ -20,4 +22,6 @@ public interface UserMapper {
     int add(User user);
     User findOne(@Param("username") String username,@Param("password") String password);
     User find_by_id(Integer id);
+    List all_pagination(@Param("start")Integer start,@Param("limit")Integer limit);
+    Integer rows_count();
 }
