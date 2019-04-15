@@ -58,6 +58,9 @@ layui.use(['layer'], function () {
     }
     //判断并且设置可购买状态--结束
 
+    //加载评论数--start
+    //todo 2019/04/15
+    //加载评论数--end
 
     // 加载指定的商品--开始
 
@@ -166,3 +169,9 @@ function MyOrder1() {
 
     });
 }
+
+//展示评论--start
+function showReview() {
+
+}
+//展示评论--end

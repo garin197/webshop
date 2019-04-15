@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright © github@garin197 五邑大学
+  -->
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.webshop.dao.ReviewMapper">
+
+
+    <insert id="insert_one" parameterType="review">
+insert into t_review(content,uid,pid,createDate) values (${content} ,${userId} ,${productId} ,${createDate} )
+    </insert>
+    <select id="rows_count_of_productId" resultType="integer">
+select count(*) from t_review where pid =#{productId}
+    </select>
+    <select id="select_all_by_productId" resultType="review">
+select * from t_review where pid =#{productId}
+    </select>
+
+
+</mapper>

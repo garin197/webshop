@@ -42,6 +42,14 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
+    //发表评论--前台
+    @ResponseBody
+    @PostMapping("/review")
+    public String rev(@RequestParam("content")String content){
+
+        return "";
+    }
+
     //确认收货--前台
     @ResponseBody
     @PostMapping("/delivered/{oid}")

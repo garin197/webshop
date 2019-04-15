@@ -8,7 +8,6 @@ $(function () {
         , url: '/product/myorders'
         , success: function (res) {
             for (var i = 0; i < res.data.length; i++) {
-
                 $('#myorderlist').append('<div class="orderListItem" id="cartList-div' + i + '">\n' +
                     '<table class="orderListItemTable" orderStatus="waitReview" pid="' + res.data[i].productId + '">\n' +
                     '                <input type="hidden" id="orderId" name="orderId" value="' + res.data[i].orderId + '">\n' +
@@ -64,7 +63,7 @@ $(function () {
                     '                    </td>\n' +
                     '                    <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">\n' +
                     '\n' +
-                    '                        <a id="review' + i + '" href="#" onclick="review('+res.data[i].userId+","+""+')">\n' +
+                    '                        <a id="review' + i + '" href="#" onclick="review(' + res.data[i].productId + "," + res.data[i].userId + ",'" + res.data[i].order.createdate + "'" + ')">\n' +
                     '                        <button class="orderListItemReview">评价</button>\n' +
                     '                        </a>\n' +
                     '                        <a id="pay' + i + '" onclick="onPay(' + res.data[i].orderId + "," + res.data[i].product.promotePrice * res.data[i].number +
@@ -104,7 +103,7 @@ $(function () {
                     $('#delivered' + i).hide();
                     $('#tip' + i).hide();
                     $('#review' + i).hide();
-                }else if(res.data[i].order.status == "已收货"){//已收货
+                } else if (res.data[i].order.status == "已收货") {//已收货
                     $('#delivered' + i).hide();
                     $('#pay' + i).hide();
                     $('#tip' + i).hide();
@@ -128,6 +127,7 @@ $(function () {
         }
     });
 })
+
 
 // 父页面重定向到指定商品详情页面
 function productDetail(pid) {
@@ -209,3 +209,33 @@ function delivered(oid) {
         'json'
     );
 }
+
+//评论
+function review(pid, uid, createdate) {
+
+    layer.open({
+        type: 1,
+        title: "评论",
+        content: $('#review-script').html(),
+        // data:{'uid':uid,"ordercreatedate":ordercreatedate,"productName":productName},
+        area: ['400px', '400px']
+    });
+}
+
+$('#submit-review').click(
+    function () {
+        var content=$('#content').val();
+        if (content!=''){
+            $.post(
+                '/product/review',
+                {
+                    "content":content,
+
+                },
+                function(res){
+
+                }
+            );
+        }
+    }
+);

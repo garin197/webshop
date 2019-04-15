@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +99,7 @@ public class UserController {
             return "redirect:" + requestURI;
 
         }
-        return "/";
+        return "user-login";
     }
 
     @GetMapping("/register")
@@ -128,18 +127,21 @@ public class UserController {
      * @return
      * @throws Exception
      */
+    @ResponseBody
     @PostMapping("/register")
-    public String register(HttpServletRequest request, HttpSession session, User user, Map map, RedirectAttributes redirectAttributes) throws Exception {
-
+    public Map<String,Object> register(HttpServletRequest request,User user, HttpSession session) throws Exception {
+        Map map=new HashMap<String ,Object>();
         String msg = "";
         boolean flag = true;
         if (userService.check_exsist_username(request) != null) {
             msg = "用户名已存在";
             flag = false;
-        } else if (userService.check_exsist_email(request) != null) {
+        }
+        if (userService.check_exsist_email(request) != null) {
             msg = "邮箱已经被注册";
-//            flag = false;
-        } else if (!userService.check_vaild(session, request)) {
+            flag = false;
+        }
+        if (!userService.check_vaild(session, request)) {
             msg = "验证码错误";
             session.removeAttribute("vaild");
             flag = false;
@@ -148,10 +150,10 @@ public class UserController {
         if (!flag) {//失败
             map.put("username", user.getUserName());
             map.put("email", user.getEmail());
-            map.put("msg", "layer.msg(" + msg + ")");
-            return "user-login";
+            map.put("msg", msg );
+            map.put("flag", flag);
+            return map;
         } else {
-
             //插入数据库
             int succ = userService.addUser(request);
 
@@ -163,14 +165,19 @@ public class UserController {
                 currentUserMap.put("currentUserName", user.getUserName());
                 currentUserMap.put("currentUserEmail", user.getEmail());
                 session.setAttribute("currentUserMap", currentUserMap);
-                return "index";
+                map.put("msg", "成功" );
+                map.put("flag", flag );
+
+                return map;
             } else {
                 //注册失败
                 msg = "与母星失去联系";
                 map.put("username", user.getUserName());
                 map.put("password", user.getPassword());
                 map.put("msg", "layer.msg(" + msg + ")");
-                return "user-login";
+                map.put("flag", flag );
+
+                return map;
             }
         }
     }

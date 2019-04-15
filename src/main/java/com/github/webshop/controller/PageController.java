@@ -20,6 +20,18 @@ public class PageController {
 
     private Logger logger = Logger.getLogger(PageController.class);
 
+//    //买家评论页中转
+//    @GetMapping("/review/{pid}")
+//    public String rev(Map map,
+//                      @PathVariable("pid") Integer pid, @RequestParam("uid") Integer uid,//商品id、用户id
+//                      @RequestParam("ordercreatedate") String ordercreatedate,@RequestParam("productName") String productName) {//订单创建日期、商品名称
+//        map.put("pid",pid);
+//        map.put("uid",uid);
+//        map.put("productName",productName);
+//        map.put("ordercreatedate",ordercreatedate);
+//        return "product-review.html";
+//    }
+
     //搜索结果页面中转
     @GetMapping("/s_by_prdct/{s}")
     public String s_prdct(Map map, @PathVariable("s") String s) {
@@ -47,7 +59,7 @@ public class PageController {
         return "shoppingCart";
     }
 
-    //    主页中转
+    // 主页中转
     @GetMapping("")
     public String index_(HttpSession session) {
         logger.info("访问主页-页面");
@@ -55,18 +67,19 @@ public class PageController {
         return "index";
     }
 
-
     @GetMapping("/imgDetail")
     public String imgDetail(Map map, @RequestParam(value = "productId", required = false) Integer productId) {
         map.put("productId", productId);
         return "backstage/bs-index-imgDetail";
     }
 
+    //后台登录中转
     @GetMapping("/bglogin")
     public String bg_login() {
         return "backstage/bs-login";
     }
 
+    //前台登录跳转
     @GetMapping("/login")
     public String passport() {
         return "user-login";
@@ -91,12 +104,14 @@ public class PageController {
         return "backstage/bs-index-iframe-table2-property-manage";
     }
 
+    //前台主页中转
     @GetMapping("/index")
     public String index() {
         logger.info("访问主页-页面");
         return "index";
     }
 
+    //错误页中转
     @GetMapping("/err")
     public String error() {
         return "404";

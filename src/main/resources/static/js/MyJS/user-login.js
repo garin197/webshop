@@ -76,3 +76,49 @@ function checkusername() {
         });
     }
 }
+
+function submit_register() {
+
+    if ($('#usernamesignup').val() == "") {
+        $('#usernamesignup').focus();
+        return ;
+    }
+    if ($('#emailsignup').val() == "") {
+        $('#emailsignup').focus();
+        return ;
+
+    }
+    if ($('#passwordsignup').val() == "") {
+        $('#passwordsignup').focus();
+        return ;
+
+    }
+    if ($('#passwordsignup_confirm').val() == "") {
+        $('#passwordsignup_confirm').focus();
+        return ;
+
+    }
+    if ($('#vaild').val() == "") {
+        $('#vaild').focus();
+        return ;
+
+    }
+
+
+    $.post(
+        '/user/register',
+        {
+            "username": $('#usernamesignup').val(),
+            "email": $('#emailsignup').val(),
+            "password": $('#passwordsignup').val(),
+            "vaild": $('#vaild').val()
+        },
+        function (res) {
+            if (res.flag=="true") {
+                window.location.href="/login";
+            }else{
+                layer.msg(res.msg);
+            }
+        }
+    );
+}
