@@ -203,14 +203,24 @@ function tips() {
 
 //确认收货
 function delivered(oid) {
-    $.post(
-        '/product/delivered/' + oid,
-        function (res) {
-            if (res == "success")
-                window.location.reload();
+    layer.confirm("确认收到货物了吗，没有可能会钱货2空！",{btn:['yes','no']},
+        function () {
+            $.post(
+                '/product/delivered/' + oid,
+                function (res) {
+                    layer.closeAll();
+                    if (res == "success"){
+                        window.location.reload();
+                    }
+
+                }
+            );
+
         },
-        'json'
-    );
+        function () {
+
+        });
+
 }
 
 //评论
@@ -222,7 +232,7 @@ function review(pid, uid, createdate) {
         content: $('#review-script').html(),
         // data:{'uid':uid,"ordercreatedate":ordercreatedate,"productName":productName},
         area: ['400px', '400px'],
-        shadeClose:true
+        shadeClose: true
     });
 
     $('#submit-review').click(
@@ -233,12 +243,12 @@ function review(pid, uid, createdate) {
                     '/product/review/add',
                     {
                         "content": content,
-                        "productId":$('#productId').val(),
-                        "userId":$('#userId').val(),
-                        "ordercreateDate":$('#ordercreateDate').val()
+                        "productId": $('#productId').val(),
+                        "userId": $('#userId').val(),
+                        "ordercreateDate": $('#ordercreateDate').val()
                     },
                     function (res) {
-                        if (res=="success"){
+                        if (res == "success") {
                             layer.closeAll();
                             layer.msg("评论成功");
                         }
