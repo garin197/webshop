@@ -86,4 +86,10 @@ public interface ProductService {
 
     Integer get_order_rows_count_of_status_and_deliver(String status,String deliver);
     //Order
+
+    //review
+    int add_review(String ordercreateDate,String content,Integer productId,Integer userId);
+    List get_review(Integer pid);
+    Integer get_review_rows_count_by_productId(Integer pid);
+    //review
 }

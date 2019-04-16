@@ -25,6 +25,44 @@ public class ProductServiceImpl implements ProductService {
     private OrderItemMapper orderItemMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private ReviewMapper reviewMapper;
+
+    /**
+     * 获取评论数
+     */
+    @Override
+    public Integer get_review_rows_count_by_productId(Integer pid) {
+        return reviewMapper.rows_count_of_productId(pid);
+    }
+
+    /**
+     * 获取评论
+     * @param pid
+     * @return
+     */
+    @Override
+    public List get_review(Integer pid) {
+        return reviewMapper.select_all_by_productId(pid);
+    }
+
+    /**
+     * 添加评论
+     * @param ordercreateDate
+     * @param content
+     * @param productId
+     * @param userId
+     * @return
+     */
+    @Override
+    public int add_review(String ordercreateDate,String content, Integer productId, Integer userId) {
+        Review review=new Review();
+        review.setContent(content);
+        review.setUserId(userId);
+        review.setProductId(productId);
+        review.setCreateDate(ordercreateDate);
+        return reviewMapper.insert_one(review);
+    }
 
     /**
      * 根据参数status和deliver的状态来查找订单

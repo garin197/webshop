@@ -11,13 +11,13 @@
 
 
     <insert id="insert_one" parameterType="review">
-insert into t_review(content,uid,pid,createDate) values (${content} ,${userId} ,${productId} ,${createDate} )
+insert into t_review(content,uid,pid,createDate) values (#{content} ,#{userId} ,#{productId} ,#{createDate}  )
     </insert>
     <select id="rows_count_of_productId" resultType="integer">
 select count(*) from t_review where pid =#{productId}
     </select>
-    <select id="select_all_by_productId" resultType="review">
-select * from t_review where pid =#{productId}
+    <select id="select_all_by_productId" resultType="map">
+select content,userName,t.createDate createDate  from t_review t,t_user where pid =#{productId} and uid=userId
     </select>
 
 

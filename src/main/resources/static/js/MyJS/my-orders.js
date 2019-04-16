@@ -12,6 +12,9 @@ $(function () {
                     '<table class="orderListItemTable" orderStatus="waitReview" pid="' + res.data[i].productId + '">\n' +
                     '                <input type="hidden" id="orderId" name="orderId" value="' + res.data[i].orderId + '">\n' +
                     '                <input type="hidden" id="orderitemId" name="orderitemId" value="' + res.data[i].orderItemId + '">\n' +
+                    '                <input type="hidden" id="productId" name="productId" value="' + res.data[i].productId + '">\n' +
+                    '                <input type="hidden" id="userId" name="userId" value="' + res.data[i].userId + '">\n' +
+                    '                <input type="hidden" id="ordercreateDate" name="ordercreateDate" value="' + res.data[i].order.createDate + '">\n' +
                     '                <tr class="orderListItemFirstTR">\n' +
                     '                    <td colspan="2">\n' +
                     '                        <b>' + res.data[i].order.createDate + '</b>\n' +
@@ -63,7 +66,7 @@ $(function () {
                     '                    </td>\n' +
                     '                    <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">\n' +
                     '\n' +
-                    '                        <a id="review' + i + '" href="#" onclick="review(' + res.data[i].productId + "," + res.data[i].userId + ",'" + res.data[i].order.createdate + "'" + ')">\n' +
+                    '                        <a id="review' + i + '" href="#" onclick="review(' + res.data[i].productId + "," + res.data[i].userId + ",'" + res.data[i].order.createDate + "'" + ')">\n' +
                     '                        <button class="orderListItemReview">评价</button>\n' +
                     '                        </a>\n' +
                     '                        <a id="pay' + i + '" onclick="onPay(' + res.data[i].orderId + "," + res.data[i].product.promotePrice * res.data[i].number +
@@ -218,24 +221,37 @@ function review(pid, uid, createdate) {
         title: "评论",
         content: $('#review-script').html(),
         // data:{'uid':uid,"ordercreatedate":ordercreatedate,"productName":productName},
-        area: ['400px', '400px']
+        area: ['400px', '400px'],
+        shadeClose:true
     });
+
+    $('#submit-review').click(
+        function () {
+            var content = $('#content').val();
+            if (content != '') {
+                $.post(
+                    '/product/review/add',
+                    {
+                        "content": content,
+                        "productId":$('#productId').val(),
+                        "userId":$('#userId').val(),
+                        "ordercreateDate":$('#ordercreateDate').val()
+                    },
+                    function (res) {
+                        if (res=="success"){
+                            layer.closeAll();
+                            layer.msg("评论成功");
+                        }
+                    }
+                );
+            } else {
+                layer.msg('评论呢', {anim: 6})
+            }
+        }
+    );
 }
 
-$('#submit-review').click(
-    function () {
-        var content=$('#content').val();
-        if (content!=''){
-            $.post(
-                '/product/review',
-                {
-                    "content":content,
+$(function () {
 
-                },
-                function(res){
 
-                }
-            );
-        }
-    }
-);
+});

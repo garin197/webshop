@@ -25,7 +25,7 @@ function showshoppingcart1() {
         , content: '/page/shopingcart'
         , area: [document.documentElement.clientWidth + 'px', document.documentElement.clientHeight + 'px']
         , maxmin: true
-        ,title:"购物车"
+        , title: "购物车"
     });
 }
 
@@ -60,6 +60,14 @@ layui.use(['layer'], function () {
 
     //加载评论数--start
     //todo 2019/04/15
+    var pid = $("#hidden_input_productId").val();
+    $.get(
+        '/product/review/26868',
+        {"pid":pid},
+        function (res) {
+            $("#review-count").text("("+res+")");
+        }
+    );
     //加载评论数--end
 
     // 加载指定的商品--开始
@@ -172,6 +180,31 @@ function MyOrder1() {
 
 //展示评论--start
 function showReview() {
+    layer.open({
+        type: 1,
+        title: "累计评论",
+        content: $('#review-content-script').html(),
+        // data:{'uid':uid,"ordercreatedate":ordercreatedate,"productName":productName},
+        area: ['600px', '400px'],
+        shadeClose: true,
+        scollBar: true
+    });
+
+    var pid = $("#hidden_input_productId").val();
+    $.get(
+        '/product/review/get',
+        {"pid": pid},
+        function (res) {
+            for (var i = 0; i < res.data.length; i++) {
+
+                $('#review-content-div').append(
+                    '<p style="font-family: 楷体;background-color: #ADC8E6">' +"用户:"+res.data[i].userName + "   " + res.data[i].createDate + '  </p>\n' +
+                    '        <p>'+res.data[i].content+'</p>'
+                );
+            }
+        }
+    );
 
 }
+
 //展示评论--end

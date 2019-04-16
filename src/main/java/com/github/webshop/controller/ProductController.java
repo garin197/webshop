@@ -42,12 +42,30 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
+    //获取评论数--前台
+    @ResponseBody
+    @GetMapping("/review/26868")
+    public Integer revgetcount(@RequestParam("pid")Integer pid){
+        return productService.get_review_rows_count_by_productId(pid);
+    }
+
+    //获取评论--前台
+    @ResponseBody
+    @GetMapping("/review/get")
+    public Map revget(@RequestParam("pid")Integer pid){
+        Map result=HashMapUtil.getFormatMap();
+        result.put("data",productService.get_review(pid));
+        return result;
+    }
+
     //发表评论--前台
     @ResponseBody
-    @PostMapping("/review")
-    public String rev(@RequestParam("content")String content){
-
-        return "";
+    @PostMapping("/review/add")
+    public String rev(@RequestParam("ordercreateDate")String ordercreateDate,@RequestParam("content")String content,@RequestParam("productId")Integer productId,@RequestParam("userId")Integer userId){
+        if (productService.add_review(ordercreateDate,content,productId,userId)>0){
+            return "success";
+        }
+        return "failes";
     }
 
     //确认收货--前台
