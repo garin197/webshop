@@ -92,4 +92,8 @@ public interface ProductService {
     List get_review(Integer pid);
     Integer get_review_rows_count_by_productId(Integer pid);
     //review
+
+    //property
+    List get_property_by_pid(Integer pid);
+    //property
 }

@@ -26,4 +26,6 @@ public interface PropertyMapper {
     List<Property> findLikeName(String name);
 
     List<Property> findWithLimit(Row row);
+
+    List select_all_by_propertyId(Integer pid);
 }

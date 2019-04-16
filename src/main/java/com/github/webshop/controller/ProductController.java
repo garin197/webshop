@@ -42,6 +42,15 @@ public class ProductController {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
+    //获取评论--前台
+    @ResponseBody
+    @GetMapping("/property/get")
+    public Map protyget(@RequestParam("pid")Integer pid){
+        Map result=HashMapUtil.getFormatMap();
+        result.put("data",productService.get_property_by_pid(pid));
+        return result;
+    }
+
     //获取评论数--前台
     @ResponseBody
     @GetMapping("/review/26868")

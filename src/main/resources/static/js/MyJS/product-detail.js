@@ -70,6 +70,20 @@ layui.use(['layer'], function () {
     );
     //加载评论数--end
 
+    //加载属性-start
+    $.get(
+        '/product/property/get',
+        {"pid":pid},
+        function (res) {
+            for (var i=0;i<res.data.length;i++){
+                $('#property-div').append(
+                    '<span>'+res.data[i].propertyName+":"+res.data[i].propertyValue+'</span>'
+                );
+            }
+        }
+    );
+    //加载属性-end
+
     // 加载指定的商品--开始
 
     // 加载产品的所有图片--开始

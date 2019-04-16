@@ -59,5 +59,8 @@
     <select id="findByName" resultType="int" parameterType="string">
         select count(*) from t_property where propertyName=#{name}
     </select>
+    <select id="select_all_by_propertyId" resultType="map">
+select propertyName,propertyValue from t_property,t_propertyvalue where ptid=propertyId and pid=#{pid}
+    </select>
 
 </mapper>

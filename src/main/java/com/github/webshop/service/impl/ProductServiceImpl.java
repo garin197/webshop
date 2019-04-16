@@ -27,6 +27,18 @@ public class ProductServiceImpl implements ProductService {
     private CategoryMapper categoryMapper;
     @Autowired
     private ReviewMapper reviewMapper;
+    @Autowired
+    private PropertyMapper propertyMapper;
+
+    /**
+     * 获取属性
+     * @param pid
+     * @return
+     */
+    @Override
+    public List get_property_by_pid(Integer pid) {
+        return propertyMapper.select_all_by_propertyId(pid);
+    }
 
     /**
      * 获取评论数
