@@ -66,7 +66,7 @@ $(function () {
                     '                    </td>\n' +
                     '                    <td valign="top" rowspan="1" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">\n' +
                     '\n' +
-                    '                        <a id="review' + i + '" href="#" onclick="review(' + res.data[i].productId + "," + res.data[i].userId + ",'" + res.data[i].order.createDate + "'" + ')">\n' +
+                    '                        <a id="review' + i + '" href="#" onclick="review(' + res.data[i].productId + "," + res.data[i].userId + ",'" + res.data[i].order.createDate + "'" +')">\n' +
                     '                        <button class="orderListItemReview">评价</button>\n' +
                     '                        </a>\n' +
                     '                        <a id="pay' + i + '" onclick="onPay(' + res.data[i].orderId + "," + res.data[i].product.promotePrice * res.data[i].number +
@@ -203,13 +203,13 @@ function tips() {
 
 //确认收货
 function delivered(oid) {
-    layer.confirm("确认收到货物了吗，没有可能会钱货2空！",{btn:['yes','no']},
+    layer.confirm("确认收到货物了吗，没有可能会钱货2空！", {btn: ['yes', 'no']},
         function () {
             $.post(
                 '/product/delivered/' + oid,
                 function (res) {
                     layer.closeAll();
-                    if (res == "success"){
+                    if (res == "success") {
                         window.location.reload();
                     }
 
@@ -243,9 +243,9 @@ function review(pid, uid, createdate) {
                     '/product/review/add',
                     {
                         "content": content,
-                        "productId": $('#productId').val(),
-                        "userId": $('#userId').val(),
-                        "ordercreateDate": $('#ordercreateDate').val()
+                        "productId": pid,
+                        "userId": uid,
+                        "ordercreateDate": createdate
                     },
                     function (res) {
                         if (res == "success") {
