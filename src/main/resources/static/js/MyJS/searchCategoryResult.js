@@ -112,7 +112,7 @@ function logout() {
 // 登出--end
 
 //展示购物车弹出层--start
-function showshoppingcart() {
+function showshoppingcart_searchCategoryRes() {
     layer.open({
         type: 2
         , content: '/page/shopingcart'
@@ -125,7 +125,7 @@ function showshoppingcart() {
 //展示购物车弹出层--end
 
 //响应我的订单按钮--start
-function MyOrder() {
+function MyOrder_searchCategoryRes() {
     var page = "/user/forecheckLogin";
     $.ajax({
         type: 'post'

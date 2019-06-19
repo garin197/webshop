@@ -8,7 +8,7 @@ function f() {
     }
 }
 
-//加载layui组件--开始
+//加载组件--开始
 layui.use(['carousel', 'layer'], function () {
 
 
@@ -380,7 +380,7 @@ layui.use(['carousel', 'layer'], function () {
 
 });
 
-//加载layui组件--结束
+//加载组件--结束
 
 function logout() {
     $.ajax({
@@ -395,7 +395,7 @@ function logout() {
     });
 }
 
-function showshoppingcart() {
+function showshoppingcart_index() {
     layer.open({
         type: 2
         , content: '/page/shopingcart'
@@ -406,7 +406,7 @@ function showshoppingcart() {
 }
 
 //响应我的订单按钮
-function MyOrder() {
+function MyOrder_index() {
     var page = "/user/forecheckLogin";
     $.ajax({
         type: 'post'

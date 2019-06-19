@@ -2,7 +2,7 @@
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration spring_boot_spring_config_custom_files="file://$MODULE_DIR$/src/main/resources/log4j.properties;file://$MODULE_DIR$/src/main/resources/springboot-main-config.properties;file://$MODULE_DIR$/src/main/resources/upload-config.properties" />
     </facet>
     <facet type="web" name="Web">
       <configuration>

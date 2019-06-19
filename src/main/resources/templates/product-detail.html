@@ -13,21 +13,74 @@
     <title th:text="${product.getProductName()}">一点购物-更多好货尽在一点购物</title>
 </head>
 <body onload="ff()">
-<nav class="">
+<nav class="" style="overflow: hidden;line-height: 36px;max-height: 36px;background-color: #dbe0dc">
     <span style="padding: 5px 10px 5px 0"><a th:href="@{/page}">一点购物首页</a></span>
     <span style="padding: 5px 10px 5px 0">欢迎来到一点购物</span>
-    <span style="padding: 5px 10px 5px 10px"><a id="login-username-span1"
-                                                href="/user/login#tologin" th:text="${session.currentUserName}">请登录</a></span>
     <span style="padding: 5px 10px 5px 10px">
-        <a id="login-username1"
+        <a id="login-username-span" href="/user/login#tologin" th:text="${session.currentUserName}">请登录</a></span>
+    <span style="padding: 5px 10px 5px 10px">
+        <a id="login-username"
            href="/user/login#tologin">请登录</a>
-        <a id="register-span1" href="/user/register#toregister">免费注册</a></span>
-    <span style="padding: 5px 10px 5px 10px;float: right"><a href="#"
-                                                             onclick="showshoppingcart1()">我的购物车</a>&LT;&gt;</span>
-    <span style="padding: 5px 10px 5px 10px;float: right"><a href="#" onclick="MyOrder1()">我的订单</a></span>
-    <span style="padding: 5px 10px 5px 10px;float: right"><a id="out1" style="display:none " href="" onclick="logout()">退出</a></span>
+        <a id="register-span" href="/user/register#toregister">免费注册</a>
+    </span>
 
+    <span style="padding: 0px 10px 5px 10px;float: right">
+        <a href="#" onclick="showshoppingcart_prodDetl()">我的购物车</a>&LT;&gt;
+    </span>
+
+    <span style="padding: 0px 10px 5px 10px;float: right">
+        <a href="#" onclick="MyOrder_prodDetl()">我的订单</a>
+    </span>
+
+    <span style="padding: 0px 10px 5px 10px;float: right"><a id="out" style="display:none " href="" onclick="logout()">退出</a>
+    </span>
 </nav>
+
+<div style="max-height: 80px;min-height: 80px;overflow: hidden;display: flex">
+    <div style="padding: auto">
+        <a href="/">
+            <img src="/static/images/yidianshoppingLogo.jpg"/>
+        </a>
+    </div>
+    <div style="display: inline-flex;padding: 18px 0 10px 30px;overflow: hidden">
+        <input id="input-search" class="" type="text" placeholder="输入商品名称搜索商品" autocomplete="off"
+               style="width: 240px;height:30px">
+        <input id="search-btn" type="button" class="searchbtn" style="font-size: 18px;height:30px" value="搜索"/>
+        <style type="text/css">
+            .searchbtn {
+                line-height: 20px;
+                padding: 7px 16px;
+                cursor: pointer;
+                border: 0px none;
+                color: rgb(255, 255, 255);
+                background: rgb(18, 120, 246) none repeat scroll 0% 0%;
+                border-radius: 0px 3px 3px 0px;
+                outline-style: none;
+                text-align: center;
+
+            }
+        </style>
+    </div>
+</div>
+<!--<nav class="">-->
+    <!--<span style="padding: 5px 10px 5px 0"><a th:href="@{/page}">一点购物首页</a></span>-->
+    <!--<span style="padding: 5px 10px 5px 0">欢迎来到一点购物</span>-->
+    <!--<span style="padding: 5px 10px 5px 10px">-->
+        <!--<a id="login-username-span1" href="/user/login#tologin" th:text="${session.currentUserName}">请登录</a></span>-->
+    <!--<span style="padding: 5px 10px 5px 10px">-->
+        <!--<a id="login-username1"-->
+           <!--href="/user/login#tologin">请登录</a>-->
+        <!--<a id="register-span1" href="/user/register#toregister">免费注册</a></span>-->
+    <!--<span style="padding: 5px 10px 5px 10px;float: right">-->
+        <!--<a href="#" onclick="showshoppingcart1()">我的购物车</a>&LT;&gt;</span>-->
+    <!--<span style="padding: 5px 10px 5px 10px;float: right">-->
+        <!--<a href="#" onclick="MyOrder1()">我的订单</a>-->
+    <!--</span>-->
+    <!--<span style="padding: 5px 10px 5px 10px;float: right">-->
+        <!--<a id="out1" style="display:none " href="" onclick="logout()">退出</a>-->
+    <!--</span>-->
+
+<!--</nav>-->
 <div class="productPageDiv">
 
     <script>

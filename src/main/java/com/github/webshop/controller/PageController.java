@@ -62,8 +62,7 @@ public class PageController {
     // 主页中转
     @GetMapping("")
     public String index_(HttpSession session) {
-        logger.info("访问主页-页面");
-        session.setAttribute("currentAdmin", "jkfjd");
+//        session.setAttribute("currentAdmin", "jkfjd");
         return "index";
     }
 
@@ -107,7 +106,6 @@ public class PageController {
     //前台主页中转
     @GetMapping("/index")
     public String index() {
-        logger.info("访问主页-页面");
         return "index";
     }
 

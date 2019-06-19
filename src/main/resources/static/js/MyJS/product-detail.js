@@ -1,25 +1,20 @@
-/*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
+
 /**
  * 设置用户登录状态下的header栏显示
  */
 function ff() {
-    if ($('#login-username-span1').text() != '') {
-        document.getElementById("out1").style.display = 'block';
-        document.getElementById("register-span1").style.display = 'none';
-        document.getElementById("login-username1").style.display = 'none';
+
+    if ($('#login-username-span').text() != '') {
+        document.getElementById("out").style.display = 'block';
+        document.getElementById("register-span").style.display = 'none';
+        document.getElementById("login-username").style.display = 'none';
     }
 }
 
 /**
  * 展示购物车弹出层
  */
-function showshoppingcart1() {
+function showshoppingcart_prodDetl() {
     layer.open({
         type: 2
         , content: '/page/shopingcart'
@@ -165,7 +160,7 @@ function submit_user_info() {
 }
 
 //响应我的订单按钮
-function MyOrder1() {
+function MyOrder_prodDetl() {
     var page = "/user/forecheckLogin";
     $.ajax({
         type: 'post'
