@@ -30,8 +30,9 @@ public class BaseInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("启动拦截|(BaseInterceptor start)");
+//        logger.info("启动拦截|(BaseInterceptor start)");
         request.setCharacterEncoding("utf-8");
+
 
         return true;
     }

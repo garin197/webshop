@@ -1,6 +1,7 @@
 package com.github.webshop;
 
 import com.github.webshop.util.MyUtil;
+import com.github.webshop.util.SecurityUtil;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.junit.Test;
@@ -14,8 +15,11 @@ public class WebshopApplicationTests {
 
     @Test
     public void contextLoads() {
-        String s= "1213";
-        System.out.println(s.replace(".","8"));
+        System.out.println(SecurityUtil.salt_getDecimal());
+        System.out.println(SecurityUtil.salt_getDecimal());
+        System.out.println(SecurityUtil.salt_getDecimal());
+        System.out.println(SecurityUtil.salt_getDecimal());
+        System.out.println(SecurityUtil.salt_getDecimal());
     }
 
     @Test

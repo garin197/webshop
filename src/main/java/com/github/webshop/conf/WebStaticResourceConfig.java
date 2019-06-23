@@ -10,6 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //@PropertySource("classpath:upload-config.properties")
 public class WebStaticResourceConfig implements WebMvcConfigurer {
 
+    private static BaseInterceptor baseInterceptor=new BaseInterceptor();
+
     /**
      * 指定拦截器给资源放行
      * @param registry
@@ -17,17 +19,11 @@ public class WebStaticResourceConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //让拦截器放行
-//        registry.addInterceptor(getBaseInterceptor())
-//                .excludePathPatterns("/")
-//                .excludePathPatterns("/page")
-//                .excludePathPatterns("/admin")
-//                .excludePathPatterns()
+
+        registry.addInterceptor(baseInterceptor).excludePathPatterns();
     }
 
-//    @Value("${file.virtualPath}")
-//    private String virtualPath;
-//    @Value("${file.uploadFolder}")
-//    private String uploadFolder;
+
     /**
      * 添加静态资源文件，外部可以直接访问地址
      *
