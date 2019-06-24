@@ -12,6 +12,7 @@ import com.github.webshop.dao.UserMapper;
 import com.github.webshop.pojo.Row;
 import com.github.webshop.pojo.User;
 import com.github.webshop.service.UserService;
+import com.github.webshop.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +33,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int addUser(HttpServletRequest request) {
-        String userName = request.getParameter("username");
+        String userName = request.getParameter("userName");
+
         String email = request.getParameter("email");
+
         String password = request.getParameter("password");
+
+        long salt = SecurityUtil.salt_getDecimal();
+
+        String b64_salt = SecurityUtil.base64_changetoBase64String(Long.toString(salt));
+
+        String sercurityPassword = SecurityUtil.md5_mixedSaltEncry(password, Long.toHexString(salt));
+
         User user = new User();
+
         user.setEmail(email);
         user.setUserName(userName);
-        user.setPassword(password);
+        user.setPassword(sercurityPassword);
+        user.setSalt(b64_salt);
         return userMapper.add(user);
     }
 
@@ -51,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User check_exsist_username(HttpServletRequest request) {
         String type = request.getParameter("type");
-        String username = request.getParameter("username");
+        String username = request.getParameter("userName");
         return userMapper.findByName(username);
     }
 
@@ -63,22 +75,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find_user(HttpServletRequest request) {
-        String username=request.getParameter("userName");
-        String password=request.getParameter("password");
+        String username = request.getParameter("userName");
+//        String password = request.getParameter("password");
 
-        return userMapper.findOne(username,password);
+//        return userMapper.findOne(username, password);
+        return userMapper.findOne(username);
     }
 
     @Override
-    public List get_all_user_list_pagination( Integer page, Integer limit) {
-        return userMapper.all_pagination(new Row(page,limit).getStart(),limit);
+    public List get_all_user_list_pagination(Integer page, Integer limit) {
+        return userMapper.all_pagination(new Row(page, limit).getStart(), limit);
     }
 
     @Override
     public boolean check_vaild(HttpSession session, HttpServletRequest request) {
         String vaild = request.getParameter("vaild");
         String sessionvaild = (String) session.getAttribute("vaild");
-        if (vaild.equals(sessionvaild)) {
+        if (SecurityUtil.md5_getString(vaild).equals(sessionvaild)) {
             return true;
         }
         return false;

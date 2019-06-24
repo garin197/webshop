@@ -5,7 +5,7 @@ server:
     session:
       cookie:
 
-        #        session过期
+        # session过期
         max-age: 3600
 
 spring:
@@ -61,3 +61,6 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   # 指定sql映射文件位置
   mapper-locations: classpath:mybatis/mapper/*.xml
+#logging:
+#  config: classpath:log4j.properties
+

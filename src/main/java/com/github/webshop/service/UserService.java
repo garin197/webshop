@@ -16,10 +16,16 @@ import java.util.List;
 
 public interface UserService {
     User check_exsist_username(HttpServletRequest request);
+
     User check_exsist_email(HttpServletRequest request);
-    boolean check_vaild(HttpSession session,HttpServletRequest request);
+
+    boolean check_vaild(HttpSession session, HttpServletRequest request);
+
     int addUser(HttpServletRequest request);
+
     User find_user(HttpServletRequest request);
-    List get_all_user_list_pagination( Integer page, Integer limit);
+
+    List get_all_user_list_pagination(Integer page, Integer limit);
+
     Integer get_rows_count();
 }

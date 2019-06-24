@@ -1,15 +1,3 @@
-/*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
-// layui.use(['layer'],function(){
-//
-// });
-
 function keyenter(event) {
     if (event.keyCode == 13) {
         $('#register-btn').click();
@@ -17,9 +5,14 @@ function keyenter(event) {
 }
 
 function sendvaild() {
+
+
     if ($('#emailsignup').val() == "") {
 
         $('#emailsignup').focus();
+        layui.use(['layer'], function () {
+            layer.tips('邮箱没写哦', "#emailsignup");
+        });
         return false;
     }
 
@@ -52,8 +45,29 @@ function sendvaild() {
 
     });
 
+    timeout = 30
+    window.setTimeout("update_getValid(" + timeout + ")", 1000);
 
 }
+
+var timeout = 30;
+
+function update_getValid(t) {
+    var btn_getvaild = document.getElementById("get-vaild-btn");
+    if (t >= 0) {
+        btn_getvaild.value = "（" + t + "s后）重新获取";
+        btn_getvaild.disabled = true;
+        timeout--;
+        window.setTimeout("update_getValid(" + timeout + ")", 1000);
+    } else {
+        btn_getvaild.value = '重新获取';
+        btn_getvaild.disabled = false;
+        window.clearTimeout();
+    }
+
+
+}
+
 
 function checkusername() {
     if ($('#usernamesignup').val() != "") {
@@ -61,16 +75,24 @@ function checkusername() {
             async: false,
             type: 'post',
             url: '/user/isexist',
-            data: {"username": $('#usernamesignup').val(), "type": "username"}
+            data: {"userName": $('#usernamesignup').val(), "type": "username"}
             , success: function (res) {
                 if (res) {
 
                     layui.use(['layer'], function () {
 
                         layer.tips('用户名已存在', '#usernamesignup', {});
+
                     });
-                    $('#usernamesignup').val("");
+
                     $('#usernamesignup').focus();
+                } else {
+
+                    layui.use(['layer'], function () {
+
+                        layer.tips('该名可以使用', '#usernamesignup');
+
+                    });
                 }
             }
         });
@@ -81,42 +103,44 @@ function submit_register() {
 
     if ($('#usernamesignup').val() == "") {
         $('#usernamesignup').focus();
-        return ;
+        return;
     }
     if ($('#emailsignup').val() == "") {
         $('#emailsignup').focus();
-        return ;
+        return;
 
     }
     if ($('#passwordsignup').val() == "") {
         $('#passwordsignup').focus();
-        return ;
+        return;
 
     }
     if ($('#passwordsignup_confirm').val() == "") {
         $('#passwordsignup_confirm').focus();
-        return ;
+        return;
 
     }
     if ($('#vaild').val() == "") {
         $('#vaild').focus();
-        return ;
+        return;
 
     }
+
 
 
     $.post(
         '/user/register',
         {
-            "username": $('#usernamesignup').val(),
+            "userName": $('#usernamesignup').val(),
             "email": $('#emailsignup').val(),
             "password": $('#passwordsignup').val(),
             "vaild": $('#vaild').val()
         },
         function (res) {
-            if (res.flag=="true") {
-                window.location.href="/login";
-            }else{
+            if (res.flag == true) {
+                layer.msg(res.msg);
+                window.location.href = "/user/login";
+            } else {
                 layer.msg(res.msg);
             }
         }

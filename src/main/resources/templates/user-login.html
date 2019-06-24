@@ -22,9 +22,12 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1><a href="/">一点购物-每点都精彩</a><span>登录&注册</span></h1>
-    </header>
+    <!--<header>-->
+    <!--<h1>-->
+    <!--<a href="/">一点购物-每点都精彩</a>-->
+    <!--<span>登录&注册</span>-->
+    <!--</h1>-->
+    <!--</header>-->
     <section>
         <div id="container_demo">
             <a class="hiddenanchor" id="toregister" style="display: none"></a>
@@ -32,7 +35,10 @@
             <div id="wrapper">
                 <div id="login" class="animate form">
                     <form action="/user/login" autocomplete="on" method="post">
-                        <h1>登录</h1>
+                        <h1>
+                            登录
+                            <a href="/">一点购物-每点都精彩</a>
+                        </h1>
                         <p>
                             <label for="username" class="uname" data-icon="u"> 邮箱 或 用户名 </label>
                             <input id="username" name="userName" required="required" type="text"
@@ -59,34 +65,39 @@
 
                 <div id="register" class="animate form">
                     <form method="POST" action="/user/register" id="register_form">
-                        <h1> 注册 </h1>
+                        <h1> 注册 <a href="/">一点购物-每点都精彩</a></h1>
                         <p>
                             <label for="usernamesignup" class="uname" data-icon="u">用户名</label>
                             <input id="usernamesignup" name="username" required="required" type="text"
-                                   placeholder="mysuperusername690" autofocus="autofocus" onkeypress="keyenter(event)" th:value="${username}"/>
+                                   placeholder="mysuperusername690" autofocus="autofocus" onkeypress="keyenter(event)"
+                                   th:value="${username}"/>
                             <button class="layui-btn-warm" onblur="checkusername()">检查重复</button>
                         </p>
                         <p>
                             <label for="emailsignup" class="youmail" data-icon="e">邮箱</label>
                             <input id="emailsignup" name="email" required="required" type="email"
-                                   th:value="${#request.getAttribute('email')}" placeholder="mysupermail@mail.com" onkeypress="keyenter(event)"/>
+                                   th:value="${#request.getAttribute('email')}" placeholder="mysupermail@mail.com"
+                                   onkeypress="keyenter(event)"/>
                         </p>
                         <p>
                             <label for="passwordsignup" class="youpasswd" data-icon="p">密码 </label>
                             <input id="passwordsignup" name="password" required="required" type="password"
-                                   th:value="${password}" placeholder="eg. X8df!90EO" onkeypress="keyenter(event)"/>
+                                   th:value="${password}" placeholder="eg. X8df!90EO" onkeypress="keyenter(event)"
+                                   autocomplete="off"/>
                         </p>
 
                         <p>
                             <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">确认密码 </label>
                             <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required"
-                                   type="password" placeholder="eg. X8df!90EO" onkeypress="keyenter(event)"/>
+                                   type="password" placeholder="eg. X8df!90EO" onkeypress="keyenter(event)"
+                                   autocomplete="off"/>
                         </p>
                         <p>
                             <label class="" data-icon="p">验证码 </label>
-                            <input id="vaild" name="vaild" required="required" type="text"
+                            <input id="vaild" name="vaild" required="required" type="text" autocomplete="off"
                                    placeholder="验证码 "/>
-                            <input id="get-vaild-btn" class="button signin layui-btn-warm" value="获取验证码" type="button" onclick="sendvaild()">
+                            <input id="get-vaild-btn" class="button signin layui-btn-warm" value="获取验证码" type="button"
+                                   onclick="sendvaild()">
                         </p>
                         <label class="" data-icon="p" th:text="${msg}"></label>
                         <p class="signin button">
@@ -103,8 +114,41 @@
         </div>
     </section>
 </div>
+<div class="login_bottom">
+    <a href="/page/err">关于一点</a>
+    <a href="/page/err">帮助中心</a>
+    <a href="/page/err">开放平台</a>
+    <a href="/page/err">诚聘英才</a>
+    <a href="/page/err">联系我们</a>
+    <a href="/page/err">网站合作</a>
+    <a href="/page/err">法律声明</a>
+    <a href="/page/err">隐私权政策</a>
+    <a href="/page/err">知识产权</a>
+    <a href="/page/err">廉正举报</a>
+    <!--<a href="/page/err">123</a>-->
+    <!--<a href="/page/err">123</a>-->
+
+    <a href="/">一点购物-每点都精彩</a>
+</div>
+<!--copyright-->
+<div align="center" style="background: #edb5a2;position: relative;bottom: 0px">
+        <span>Copyright © <a th:href="@{https://github.com/garin197}" target="_blank">github@garin197&nbsp;</a>
+            <a th:href="@{http://www.wyu.edu.cn/}" target="_blank">五邑大学</a>
+        </span>
+</div>
 </body>
 <style type="text/css">
+
+    .login_bottom {
+        padding: 0px 0px 20px 20px;
+        font-family: "Microsoft YaHei", "宋体", "Segoe UI", "Lucida Grande", Helvetica, Arial, sans-serif, FreeSans, Arimo;
+        font-size: 14px;
+    }
+
+    .login_bottom > a {
+        padding: 0 0 0 12px;
+    }
+
 
     /*style.css*/
     /* remove codrops styles and reset the whole thing */
@@ -124,7 +168,7 @@
     #wrapper {
         width: 60%;
         right: 0px;
-        min-height: 560px;
+        min-height: 460px;
         margin: 0px auto;
         width: 500px;
         position: relative;
@@ -133,13 +177,13 @@
     /**** Styling the form elements **/
 
     /**** general text styling ****/
-    #wrapper a {
+    #wrapper a:hover {
         color: rgb(95, 155, 198);
         text-decoration: underline;
     }
 
     #wrapper h1 {
-        font-size: 48px;
+        font-size: 34px;
         color: rgb(6, 106, 117);
         padding: 2px 0 10px 0;
         font-family: 'FranchiseRegular', 'Arial Narrow', Arial, sans-serif;
@@ -150,15 +194,12 @@
 
     /** For the moment only webkit supports the background-clip:text; */
     #wrapper h1 {
-        background: -webkit-repeating-linear-gradient(-45deg,
-        rgb(18, 83, 93),
-        rgb(18, 83, 93) 20px,
-        rgb(64, 111, 118) 20px,
-        rgb(64, 111, 118) 40px,
-        rgb(18, 83, 93) 40px);
-        -webkit-text-fill-color: transparent;
+        background: -webkit-repeating-linear-gradient(-45deg, blue, red);
+        /*-webkit-animation-direction: inherit;*/
+        /*-webkit-text-fill-color: transparent;*/
         -webkit-background-clip: text;
     }
+
 
     #wrapper h1:after {
         content: ' ';
@@ -175,7 +216,8 @@
     }
 
     #wrapper p {
-        margin-bottom: 15px;
+        margin-bottom: 8px;
+        /*margin-bottom: 15px;*/
     }
 
     #wrapper p:first-child {
@@ -254,7 +296,7 @@
         padding: 8px 5px;
         font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
         color: #fff;
-        font-size: 24px;
+        font-size: 14px;
         border: 1px solid rgb(28, 108, 122);
         margin-bottom: 10px;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
@@ -290,6 +332,7 @@
         -moz-box-shadow: 0px 1px 6px 4px rgba(0, 0, 0, 0.2) inset;
         box-shadow: 0px 1px 6px 4px rgba(0, 0, 0, 0.2) inset;
     }
+
 
     p.login.button,
     p.signin.button {
@@ -553,10 +596,15 @@
     /* General Demo Style */
     body {
         font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
-        background: #fff url(/static/images/bg-of-page-login.jpg) repeat top left;
+        background: #fff url(/static/images/advertise_index/loginBcakground.jpg) no-repeat top;
+        /*background: #fff url(/static/images/bg-of-page-login.jpg) repeat top left;*/
         font-weight: 400;
         font-size: 15px;
         color: #1d3c41;
+        width: 100%;
+        height: 100%;
+        background-size: 100% 80%;
+        overflow-x: hidden;
         overflow-y: scroll;
     }
 
@@ -567,22 +615,27 @@
 
     .container {
         width: 100%;
-        height: 100%;
+        height: 90%;
         position: relative;
         text-align: center;
     }
 
-    .clr {
-        clear: both;
+    .container > section {
+        z-index: 9999;
+        position: absolute;
+        right: 40px;
+        padding-top: 11px;
+        /*overflow: hidden;*/
+        /*overflow-y: hidden;*/
     }
 
     .container > header {
         padding: 20px 30px 10px 30px;
         margin: 0px 20px 10px 20px;
         position: relative;
-        display: block;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-        text-align: center;
+        text-align: right;
+        overflow: hidden;
     }
 
     .container > header h1 {
@@ -594,11 +647,17 @@
         color: rgba(26, 89, 120, 0.9);
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
         padding: 0px 0px 5px 0px;
+        overflow: hidden;
+    }
+
+    .container > header > h1 a {
+        overflow: hidden;
     }
 
     .container > header h1 span {
         color: #7cbcd6;
         text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8);
+        overflow: hidden;
     }
 
     .container > header h2 {

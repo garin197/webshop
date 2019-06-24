@@ -1,10 +1,11 @@
 package com.github.webshop.controller;
 
-import com.github.webshop.exception.UserInVaildLoginException;
+import com.github.webshop.conf.ReleaseUriConfig;
 import com.github.webshop.pojo.User;
 import com.github.webshop.service.MailService;
 import com.github.webshop.service.UserService;
 import com.github.webshop.util.CookieUtil;
+import com.github.webshop.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -51,14 +52,14 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/forecheckLogin")
     public String forecheckLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam("uri") String requestURI) {
-        Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
-        if (cookie != null) {
-            cookie.setValue(requestURI);
-        } else {
-            cookie = new Cookie("uri_cookie", requestURI);
-            response.addCookie(cookie);
-        }
-        cookie.setMaxAge(60);
+//        Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
+//        if (cookie != null) {
+//            cookie.setValue(requestURI);
+//        } else {
+//            cookie = new Cookie("uri_cookie", requestURI);
+//            response.addCookie(cookie);
+//        }
+//        cookie.setMaxAge(60);
         String currentUserName = (String) session.getAttribute("currentUserName");
         if (currentUserName != null) {
             return "success";
@@ -76,29 +77,54 @@ public class UserController {
      * 登录
      *
      * @param request
-     * @param response
      * @param session
      * @return
      */
     @PostMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception{
+    public String login(HttpServletRequest request,
+                        HttpSession session,
+                        HttpServletResponse response,
+                        @RequestParam(value = "loginkeeping", required = false) String loginkeeping) throws Exception {
 
         Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
         String requestURI;
         if (cookie != null)
             requestURI = cookie.getValue();
         else
-            requestURI="/";
+            requestURI = "/";
 
-        User user = userService.find_user(request);
-        if (user != null) {
-//            Map currentUserMap = new HashMap<String, String>();
-            session.setAttribute("currentUserId", user.getUserId());
-            session.setAttribute("currentUserName", user.getUserName());
-            session.setAttribute("currentUserEmail", user.getEmail());
-            return "redirect:" + requestURI;
+        try {
 
+            User user = userService.find_user(request);
+
+            if (user != null) {
+
+                String password = request.getParameter("password");
+                String dbSalt = user.getSalt();
+                String salt = SecurityUtil.base64_changetoNormalString(dbSalt);
+                long saltDecimal = Long.parseLong(salt);
+                String securityPassword = SecurityUtil.md5_mixedSaltEncry(password, Long.toHexString(saltDecimal));
+
+                if (securityPassword.equals(user.getPassword())) {
+
+                    session.setAttribute("currentUserId", user.getUserId());
+                    session.setAttribute("currentUserName", user.getUserName());
+                    session.setAttribute("currentUserEmail", user.getEmail());
+
+                    if (loginkeeping != null) {
+                        //loginkeeping
+                        String cookieValue = user.getUserId() + "=_=" + user.getUserName() + "=_=" + user.getEmail();
+                        CookieUtil.cookie_addOne(response, ReleaseUriConfig.FLAG_KEEPING_LOGIN, cookieValue, Integer.MAX_VALUE, "/");
+                    }
+
+                    return "redirect:" + requestURI;
+                }
+            }
+
+        } catch (Exception e) {
+            return "user-login";
         }
+
         return "user-login";
     }
 
@@ -123,16 +149,16 @@ public class UserController {
      *
      * @param request
      * @param user
-     * @param map
      * @return
      * @throws Exception
      */
     @ResponseBody
     @PostMapping("/register")
-    public Map<String,Object> register(HttpServletRequest request,User user, HttpSession session) throws Exception {
-        Map map=new HashMap<String ,Object>();
+    public Map<String, Object> register(HttpServletRequest request, User user, HttpSession session) throws Exception {
+        Map map = new HashMap<String, Object>();
         String msg = "";
         boolean flag = true;
+
         if (userService.check_exsist_username(request) != null) {
             msg = "用户名已存在";
             flag = false;
@@ -150,7 +176,7 @@ public class UserController {
         if (!flag) {//失败
             map.put("username", user.getUserName());
             map.put("email", user.getEmail());
-            map.put("msg", msg );
+            map.put("msg", msg);
             map.put("flag", flag);
             return map;
         } else {
@@ -165,8 +191,9 @@ public class UserController {
                 currentUserMap.put("currentUserName", user.getUserName());
                 currentUserMap.put("currentUserEmail", user.getEmail());
                 session.setAttribute("currentUserMap", currentUserMap);
-                map.put("msg", "成功" );
-                map.put("flag", flag );
+                session.removeAttribute("vaild");
+                map.put("msg", "成功");
+                map.put("flag", flag);
 
                 return map;
             } else {
@@ -175,24 +202,11 @@ public class UserController {
                 map.put("username", user.getUserName());
                 map.put("password", user.getPassword());
                 map.put("msg", "layer.msg(" + msg + ")");
-                map.put("flag", flag );
+                map.put("flag", flag);
 
                 return map;
             }
         }
     }
 
-    /**
-     * 在方法执行前检查是否登录
-     *
-     * @param session
-     * @throws UserInVaildLoginException
-     */
-//    @ModelAttribute
-//    public void isLogin(HttpServletResponse response, HttpSession session) throws Exception {
-//        if (session.getAttribute("currentUser") == null) {
-////            throw new UserInVaildLoginException("USER / 请您先登录！(Please login first!)");
-//            response.sendRedirect("../passport");
-//        }
-//    }
 }

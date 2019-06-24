@@ -17,11 +17,18 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     User findByName(String name);
+
     User findByEmail(String email);
+
     User findByNamePsw(@Param("name") String name, @Param("psw") String psw);
+
     int add(User user);
-    User findOne(@Param("username") String username,@Param("password") String password);
+
+    User findOne(@Param("username") String username);
+
     User find_by_id(Integer id);
-    List all_pagination(@Param("start")Integer start,@Param("limit")Integer limit);
+
+    List all_pagination(@Param("start") Integer start, @Param("limit") Integer limit);
+
     Integer rows_count();
 }

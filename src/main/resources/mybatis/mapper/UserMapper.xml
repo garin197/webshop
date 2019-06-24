@@ -23,11 +23,11 @@
     </select>
 
     <insert id="add" parameterType="user">
-        insert into t_user(userName,password,email) values(#{userName} , #{password} , #{email} )
+        insert into t_user(userName,password,email,salt) values(#{userName} , #{password} , #{email},#{salt}  )
     </insert>
 
     <select id="findOne" resultType="user">
-        select * from t_user where userName=#{username} and password=#{password}
+        select * from t_user where userName=#{username}
     </select>
     <select id="find_by_id" resultType="com.github.webshop.pojo.User">
         select * from t_user where userId=#{id}

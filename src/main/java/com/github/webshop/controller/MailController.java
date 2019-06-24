@@ -9,6 +9,7 @@
 package com.github.webshop.controller;
 
 import com.github.webshop.service.MailService;
+import com.github.webshop.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -32,26 +33,26 @@ public class MailController {
     @ResponseBody
     @PostMapping("/send")
     public boolean mailvaild(HttpServletRequest request) {
-        String num = "" + (Math.random() * 10000) % 10000;
-        num = num.substring(0, 4).replace(".", "8");
         String email = request.getParameter("email");
+        String num= SecurityUtil.vertify_getDecimalString();
         try {
-            mailService.sendValidMessage(sender, email, "一点购物平台 验证码", "尊敬的用户：你正在操作-一点购物平台-注册账号，操作验证码为：" + num);
+            mailService.sendValidMessage(sender, email, "一点购物平台 验证码", "尊敬的用户：你正在一点购物平台中注册账号，操作验证码为：" + num + "。如果不是本人操作，请勿理会！");
         } catch (Exception e) {
             return false;
         }
-        request.getSession().setAttribute("vaild", num);
+        String sessionnum=SecurityUtil.md5_getString(num);
+        request.getSession().setAttribute("vaild", sessionnum);
         return true;
     }
 
     //发送发货通知--后台
     @ResponseBody
     @PostMapping("/deliver/send")
-    public String t(@RequestParam("email")String email,@RequestParam("productName")String productName){
+    public String t(@RequestParam("email") String email, @RequestParam("productName") String productName) {
         try {
             mailService.sendValidMessage(sender, email,
                     "一点购物平台 商品状态变更 发货通知",
-                    "尊敬的用户：您订购的  '"+productName+"  '的商品已经发货，由xx快递进行运送，快递单号为：'1234567890123456789',请认真验货查收！");
+                    "尊敬的用户：您订购的  '" + productName + "  '的商品已经发货，由xx快递进行运送，快递单号为：'1234567890123456789',请认真验货查收！");
         } catch (Exception e) {
             return "failed";
         }

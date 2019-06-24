@@ -1,8 +1,11 @@
 package com.github.webshop.util;
 
+import com.github.webshop.conf.ReleaseUriConfig;
 import com.github.webshop.pojo.PrdtImage;
 import com.github.webshop.pojo.User;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -117,5 +120,26 @@ public class MyUtil {
      */
     public static ExecutorService getFixedThreadPool(Integer maxThreads) {
         return Executors.newFixedThreadPool(maxThreads);
+    }
+
+    /**
+     * 检查用户是否记住登陆，有则登陆
+     *
+     * @param request
+     * @return
+     */
+    public static boolean loginFromCookie(HttpServletRequest request) {
+
+        Cookie cookie = CookieUtil.cookie_getOne(request, ReleaseUriConfig.FLAG_KEEPING_LOGIN);
+
+        if (cookie != null) {
+            String[] parm_cookie = CookieUtil.cookie_changeToStringArray(cookie);
+            HttpSession session = request.getSession();
+            session.setAttribute("currentUserId", parm_cookie[0]);
+            session.setAttribute("currentUserName", parm_cookie[1]);
+            session.setAttribute("currentUserEmail", parm_cookie[2]);
+            return true;
+        }
+        return false;
     }
 }

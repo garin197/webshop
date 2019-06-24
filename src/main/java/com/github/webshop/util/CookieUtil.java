@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CookieUtil {
+
+    final public static String splitRegex = "=_=";
+
     /**
      * 返回名为regex的cookie
      *
@@ -101,7 +104,7 @@ public class CookieUtil {
     public static String[] getCurrentCookies(HttpServletResponse response, HttpServletRequest request) throws
             UnsupportedEncodingException {
         String value_1st = "";
-        String[] arr_1st=null;
+        String[] arr_1st = null;
         // 购物cookie
         Cookie cart_cookie = getCookie(request, "cart");
         // 判断cookie是否为空
@@ -117,7 +120,7 @@ public class CookieUtil {
         return arr_1st;
     }
 
-    public static void deleteCookie(HttpServletRequest request,HttpServletResponse response,String cookieName){
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
         // 获取名为"cart"的cookie
         Cookie cookie = CookieUtil.getCookie(request, cookieName);
         // 设置寿命为0秒
@@ -128,5 +131,63 @@ public class CookieUtil {
         cookie.setValue(null);
         // 更新cookie
         response.addCookie(cookie);
+    }
+
+
+    public static Cookie cookie_getOne(HttpServletRequest request, String cookieName) {
+        Cookie[] allCookie = request.getCookies();
+
+        for (Cookie c : allCookie) {
+            if (cookieName.equals(c.getName())) {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 添加一个cookie
+     *
+     * @param response
+     * @param cookieName  名
+     * @param cookieValue 值
+     * @param cookieAge   最大存活时间
+     * @param cookiePath  路径
+     */
+    public static void cookie_addOne(HttpServletResponse response, String cookieName, String cookieValue, int cookieAge, String cookiePath) {
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+
+        cookie.setMaxAge(cookieAge);
+
+        cookie.setPath(cookiePath);
+
+        response.addCookie(cookie);
+    }
+
+
+    /**
+     * 删除一个cookie
+     *
+     * @param request
+     * @param response
+     * @param cookieName
+     */
+    public static void cookie_deleteOne(HttpServletRequest request, HttpServletResponse response, String cookieName) {
+        // 获取名为"cart"的cookie
+        Cookie cookie = CookieUtil.getCookie(request, cookieName);
+        // 设置寿命为0秒
+        cookie.setMaxAge(0);
+        // 设置路径
+        cookie.setPath("/");
+        // 设置cookie的value为null
+        cookie.setValue(null);
+        // 更新cookie
+        response.addCookie(cookie);
+    }
+
+    public static String[] cookie_changeToStringArray(Cookie cookie) {
+        String[] arr_value = cookie.getValue().split(splitRegex);
+        return arr_value;
     }
 }

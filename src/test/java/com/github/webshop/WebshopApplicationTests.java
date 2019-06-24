@@ -15,27 +15,30 @@ public class WebshopApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(SecurityUtil.salt_getDecimal());
-        System.out.println(SecurityUtil.salt_getDecimal());
-        System.out.println(SecurityUtil.salt_getDecimal());
-        System.out.println(SecurityUtil.salt_getDecimal());
-        System.out.println(SecurityUtil.salt_getDecimal());
+
+        long l = SecurityUtil.salt_getDecimal();
+        System.out.println(l);
+        System.out.println(SecurityUtil.base64_changetoBase64String(Long.toString(l)));
+        System.out.println(Long.toHexString(l));
+        String s = SecurityUtil.md5_mixedSaltEncry("111", Long.toHexString(l));
+        System.out.println(s);
     }
 
     @Test
-    public void dateSetTest(){
-        String dateset= MyUtil.getDateId();
+    public void dateSetTest() {
+        String dateset = MyUtil.getDateId();
         System.out.println(dateset);
     }
 
     @Test
-    public void jsoup(){
-        Connection connection=Jsoup.connect("http://localhost:8888");
+    public void jsoup() {
+        Connection connection = Jsoup.connect("http://localhost:8888");
 //        connection.
     }
+
     @Test
-    public void ff(){
-        System.out.println(63%5);
+    public void ff() {
+        System.out.println(63 % 5);
     }
 
 }

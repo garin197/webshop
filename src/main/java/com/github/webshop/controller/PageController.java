@@ -1,5 +1,6 @@
 package com.github.webshop.controller;
 
+import com.github.webshop.util.MyUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -60,9 +60,10 @@ public class PageController {
     }
 
     // 主页中转
-    @GetMapping("")
-    public String index_(HttpSession session) {
+    @GetMapping("/")
+    public String index_(HttpServletRequest request) {
 //        session.setAttribute("currentAdmin", "jkfjd");
+        MyUtil.loginFromCookie(request);
         return "index";
     }
 
@@ -105,7 +106,9 @@ public class PageController {
 
     //前台主页中转
     @GetMapping("/index")
-    public String index() {
+    public String index(HttpServletRequest request)
+    {
+        MyUtil.loginFromCookie(request);
         return "index";
     }
 
