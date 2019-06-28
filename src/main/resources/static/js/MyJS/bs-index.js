@@ -21,7 +21,6 @@ $(function () {
         success: function (res) {
             //res是否登录的boolean值
             if (res == "false") {//进行提示登录
-
                 layui.use('layer', function () {
                     layer.open({
                         type: 2,
@@ -31,6 +30,7 @@ $(function () {
                         area: ['500px', '312px'],
                         closeBtn: false
                     });
+
 
                 });
             } else {//登录通过

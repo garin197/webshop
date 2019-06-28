@@ -106,14 +106,18 @@ public class PageController {
 
     //前台主页中转
     @GetMapping("/index")
-    public String index(HttpServletRequest request)
-    {
+    public String index(HttpServletRequest request) {
         MyUtil.loginFromCookie(request);
         return "index";
     }
 
     //错误页中转
     @GetMapping("/err")
+    public String err() {
+        return "404";
+    }
+
+    @GetMapping("/error")
     public String error() {
         return "404";
     }

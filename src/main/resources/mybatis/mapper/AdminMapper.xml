@@ -23,7 +23,7 @@
     </select>
 
     <select id="findByName" parameterType="string" resultType="admin">
-        select * from t_admin where id=#{name}
+        select * from t_admin where adminName=#{name}
     </select>
 
     <insert id="add" parameterType="admin">

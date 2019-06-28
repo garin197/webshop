@@ -4,13 +4,13 @@ import com.github.webshop.pojo.Admin;
 import com.github.webshop.service.AdminService;
 import com.github.webshop.service.UserService;
 import com.github.webshop.util.HashMapUtil;
+import com.github.webshop.util.SecurityUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,36 +29,50 @@ public class AdminController {
     //获取用户列表--后台模块
     @ResponseBody
     @RequestMapping("/list/all")
-    public Map<String ,Object> userlist(@RequestParam(value = "page", required = false) Integer page,
-                                        @RequestParam(value = "limit", required = false) Integer limit){
-        Map result= HashMapUtil.getFormatMap(userService.get_rows_count());
-        result.put("data",userService.get_all_user_list_pagination( page, limit));
+    public Map<String, Object> userlist(@RequestParam(value = "page", required = false) Integer page,
+                                        @RequestParam(value = "limit", required = false) Integer limit) {
+        Map result = HashMapUtil.getFormatMap(userService.get_rows_count());
+        result.put("data", userService.get_all_user_list_pagination(page, limit));
         return result;
     }
 
     @ResponseBody
     @PostMapping("/adlogin")
-    public Map<String,Object> adlogin(HttpSession session, HttpServletRequest request){
-        Map result=new HashMap();
-        Admin currentAdmin=adminService.FindAdmin(request);
+    public Map<String, Object> adlogin(HttpSession session, HttpServletRequest request) {
+        Map result = new HashMap();
+        Admin currentAdmin = adminService.FindAdmin(request);
         if (currentAdmin == null) {
-            result.put("msg","账号或密码错误");
-            result.put("code","0");
-        }else {
-            result.put("code","1");
-            session.setAttribute("currentAdmin",currentAdmin.getAdminName());
+            result.put("msg", "账号或密码错误");
+            result.put("code", "0");
+        } else {
+            String password = request.getParameter("admin-input-password");
+
+            long salt = Long.parseLong(SecurityUtil.base64_changetoNormalString(currentAdmin.getSalt()));
+
+            String securityPassword = SecurityUtil.md5_mixedSaltEncry(password, Long.toHexString(salt));
+
+            if (securityPassword.equals(currentAdmin.getPassword())) {
+
+                result.put("code", "1");
+                session.setAttribute("currentAdmin", currentAdmin.getAdminName());
+            }else {
+                result.put("msg", "账号或密码错误");
+                result.put("code", "0");
+            }
+
         }
         return result;
     }
 
     /**
      * 管理员退出
+     *
      * @param request
      * @return
      */
     @ResponseBody
     @PostMapping("logout")
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("currentAdmin");
         return "success";
     }
@@ -71,7 +85,7 @@ public class AdminController {
 
     //响应没登录，先模拟登录-后面加登录
     @GetMapping("/err")
-    public String adminlogin(HttpSession session){
+    public String adminlogin(HttpSession session) {
 //        session.setAttribute("currentAdmin","haha");
         //加cookie
         return "redirect:/admin";
@@ -79,29 +93,18 @@ public class AdminController {
 
     /**
      * 判断是否登录
+     *
      * @param session
      * @return
      */
     @ResponseBody
     @PostMapping("/islogin")
-    public String islogin(HttpSession session){
-        String currentAdmin= (String) session.getAttribute("currentAdmin");
-        if (currentAdmin==null) {
+    public String islogin(HttpSession session) {
+        String currentAdmin = (String) session.getAttribute("currentAdmin");
+        if (currentAdmin == null) {
             return "false";
         }
         return "true";
     }
 
-    /**
-     * 检查登录
-     * @param response
-     * @param session
-     */
-    @ModelAttribute
-    public void isLogin(HttpServletResponse response, HttpSession session) throws Exception {
-//        if (session.getAttribute("currentAdmin")==null){
-////            throw new AdminInVaildLoginException("ADMIN / 请您先登录！(Please login first!)");
-//            response.sendRedirect("/admin");
-//        }
-    }
 }

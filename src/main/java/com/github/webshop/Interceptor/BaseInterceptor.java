@@ -1,7 +1,6 @@
 package com.github.webshop.Interceptor;
 
 import com.github.webshop.conf.ReleaseUriConfig;
-import com.github.webshop.util.CookieUtil;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -47,19 +45,56 @@ public class BaseInterceptor implements HandlerInterceptor {
 
         String requestUri = request.getRequestURI();
 
-        Cookie currentLoginKeepingCookie = CookieUtil.cookie_getOne(request, ReleaseUriConfig.FLAG_KEEPING_LOGIN);
+        String medthod = request.getMethod();
 
-        if (ReleaseUriConfig.RELEASE_URI_ON_USER.contains(requestUri)) {
-            //拦截用户
-            HttpSession session = request.getSession();
-            String p1 = (String) session.getAttribute("currentUserId");
-            String p2 = (String) session.getAttribute("currentUserName");
-            String p3 = (String) session.getAttribute("currentUserEmail");
-            if (p1 == null || p3 == null || p2 == null) {
-                response.sendRedirect("/user/login");
+        //拦截POST请求
+        if (medthod.equals(ReleaseUriConfig.FLAG_METHOD_POST)) {
+
+            if (ReleaseUriConfig.RELEASE_URI_ON_USER.contains(requestUri)) {
+                //拦截用户
+                HttpSession session = request.getSession();
+                try {
+                    int p1 = (int) session.getAttribute("currentUserId");
+                    String p2 = (String) session.getAttribute("currentUserName");
+                    String p3 = (String) session.getAttribute("currentUserEmail");
+
+                } catch (Exception e) {
+                    response.getWriter().print("<script>window.parent.location.href='/user/login'</script>");
+                    throw new NullPointerException(e.getMessage());
+                }
+            } else {
+                //拦截管理员
+                HttpSession session = request.getSession();
+                try {
+                    String p = (String) session.getAttribute("currentAdmin");
+
+                } catch (Exception e) {
+                    response.getWriter().print("<script>window.parent.location.href='/admin'</script>");
+                    throw new NullPointerException(e.getMessage());
+                }
             }
+
+
         }
 
+
+        //页面地址缓存
+        if (medthod.equals(ReleaseUriConfig.FLAG_METHOD_GET) && !requestUri.contains("undefined")) {
+            // /page/s_by_prdct/1
+            // /product/index_product_detail    ?pid=91
+            // /page/s_by_cat/全部
+
+            if (requestUri.contains("/product/index_product_detail")) {
+                String pid = request.getParameter("pid");
+                request.getSession().setAttribute(ReleaseUriConfig.FLAG_BEFORE_LOGIN, requestUri + "?pid=" + pid);
+            }
+
+            if (requestUri.contains("/page/s_by_prdct/")
+                    || requestUri.contains("/page/s_by_cat/")) {
+
+                request.getSession().setAttribute(ReleaseUriConfig.FLAG_BEFORE_LOGIN, requestUri);
+            }
+        }
 
         return true;
     }
@@ -67,10 +102,19 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
+
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+        request.getSession().removeAttribute(ReleaseUriConfig.FLAG_KEEPING_LOGIN);
+
+        if (ex != null) {
+
+            System.out.println(ex);
+            response.sendRedirect("/user/login");
+        }
 
     }
 
@@ -86,6 +130,7 @@ public class BaseInterceptor implements HandlerInterceptor {
 
             logger.info("->" + throwable.getCause() + "/n" +
                     "->" + throwable.getMessage(), throwable);
+
 
         }
         return pjp;

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,10 +41,11 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.removeAttribute("currentUserId");
         session.removeAttribute("currentUserName");
         session.removeAttribute("currentUserEmail");
+        CookieUtil.cookie_deleteOne(request, response, ReleaseUriConfig.FLAG_KEEPING_LOGIN);
         return "";
     }
 
@@ -86,12 +86,12 @@ public class UserController {
                         HttpServletResponse response,
                         @RequestParam(value = "loginkeeping", required = false) String loginkeeping) throws Exception {
 
-        Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
-        String requestURI;
-        if (cookie != null)
-            requestURI = cookie.getValue();
-        else
-            requestURI = "/";
+//        Cookie cookie = CookieUtil.getCookie(request, "uri_cookie");
+        String requestURI = "/";
+//        if (cookie != null)
+//            requestURI = cookie.getValue();
+//        else
+//            requestURI = "/";
 
         try {
 
@@ -117,7 +117,16 @@ public class UserController {
                         CookieUtil.cookie_addOne(response, ReleaseUriConfig.FLAG_KEEPING_LOGIN, cookieValue, Integer.MAX_VALUE, "/");
                     }
 
-                    return "redirect:" + requestURI;
+                    String beforeLogin = (String) request.getSession().getAttribute(ReleaseUriConfig.FLAG_BEFORE_LOGIN);
+
+                    if (null == beforeLogin) {
+
+                        return "redirect:" + requestURI;
+                    }else {
+
+                        return "redirect:" + beforeLogin;
+                    }
+
                 }
             }
 

@@ -24,13 +24,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin FindAdmin(HttpServletRequest request) {
         String userName = request.getParameter("admin-input-username");
-        String password = request.getParameter("admin-input-password");
+//        String password = request.getParameter("admin-input-password");
+
+
+
         Admin admin = new Admin();
         admin.setAdminName(userName);
-        admin.setPassword(password);
+//        admin.setPassword(password);
+
+
         Admin currentAdmin = null;
         try {
-            currentAdmin = adminMapper.FindByNameAndPassword(admin);
+            currentAdmin = adminMapper.findByName(userName);
         }catch (Exception e){
 
         }

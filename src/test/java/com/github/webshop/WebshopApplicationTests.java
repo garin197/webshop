@@ -20,7 +20,7 @@ public class WebshopApplicationTests {
         System.out.println(l);
         System.out.println(SecurityUtil.base64_changetoBase64String(Long.toString(l)));
         System.out.println(Long.toHexString(l));
-        String s = SecurityUtil.md5_mixedSaltEncry("111", Long.toHexString(l));
+        String s = SecurityUtil.md5_mixedSaltEncry("212", Long.toHexString(l));
         System.out.println(s);
     }
 
