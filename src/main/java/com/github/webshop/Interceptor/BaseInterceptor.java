@@ -108,10 +108,8 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
-        request.getSession().removeAttribute(ReleaseUriConfig.FLAG_KEEPING_LOGIN);
 
         if (ex != null) {
-
             System.out.println(ex);
             response.sendRedirect("/user/login");
         }
@@ -119,7 +117,7 @@ public class BaseInterceptor implements HandlerInterceptor {
     }
 
     @Around("execution(* com.github.webshop.controller.*.*(..))")
-    public Object handleAround(ProceedingJoinPoint pjp) throws Throwable {
+    public Object handleAround(ProceedingJoinPoint pjp) {
         try {
 
             Object object = pjp.proceed();
