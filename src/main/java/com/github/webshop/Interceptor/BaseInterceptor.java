@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 @Component
 public class BaseInterceptor implements HandlerInterceptor {
 
-    //日志对象
+    //日志
     private static Logger logger = Logger.getLogger(BaseInterceptor.class);
 
     /**
@@ -102,7 +102,6 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
-
     }
 
     @Override
@@ -111,6 +110,7 @@ public class BaseInterceptor implements HandlerInterceptor {
 
         if (ex != null) {
             System.out.println(ex);
+            logger.error(ex);
             response.sendRedirect("/user/login");
         }
 

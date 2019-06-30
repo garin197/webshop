@@ -693,6 +693,7 @@ public class ProductController {
             }
 
         }
+
         Map<String, Object> result = MyUtil.successOrFailed(productService.addImage(id, imgType, realFileName));//只存加uuid的文件名.具体路径配置文件中file.uploadFolder配置了
         return result;//返回productIdsy
     }

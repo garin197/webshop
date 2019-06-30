@@ -16,7 +16,7 @@ $(function () {
                 //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
                 $.get(
                     '/product/s_by_cat/' + $('#c').val(),
-                    {"page": page, "rows": 5},
+                    {"page": page, "rows": 10},
                     function (res) {
 
                         // 动态拼接页面元素--start

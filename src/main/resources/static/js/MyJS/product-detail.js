@@ -1,4 +1,3 @@
-
 /**
  * 设置用户登录状态下的header栏显示
  */
@@ -16,15 +15,15 @@ $(function () {
 
     $('#search-btn').click(
         function () {
-            var statement=$('#input-search').val();
-            if (statement!=""){
-                window.location.href='/page/s_by_prdct/'+statement
+            var statement = $('#input-search').val();
+            if (statement != "") {
+                window.location.href = '/page/s_by_prdct/' + statement
             }
         }
     );
     $('#input-search').keydown(
         function (event) {
-            if (event.keyCode==13){
+            if (event.keyCode == 13) {
                 $('#search-btn').click();
             }
         }
@@ -79,9 +78,9 @@ layui.use(['layer'], function () {
     var pid = $("#hidden_input_productId").val();
     $.get(
         '/product/review/26868',
-        {"pid":pid},
+        {"pid": pid},
         function (res) {
-            $("#review-count").text("("+res+")");
+            $("#review-count").text("(" + res + ")");
         }
     );
     //加载评论数--end
@@ -89,11 +88,11 @@ layui.use(['layer'], function () {
     //加载属性-start
     $.get(
         '/product/property/get',
-        {"pid":pid},
+        {"pid": pid},
         function (res) {
-            for (var i=0;i<res.data.length;i++){
+            for (var i = 0; i < res.data.length; i++) {
                 $('#property-div').append(
-                    '<span>'+res.data[i].propertyName+":"+res.data[i].propertyValue+'</span>'
+                    '<span>' + res.data[i].propertyName + ":" + res.data[i].propertyValue + '</span>'
                 );
             }
         }
@@ -228,8 +227,8 @@ function showReview() {
             for (var i = 0; i < res.data.length; i++) {
 
                 $('#review-content-div').append(
-                    '<p style="font-family: 楷体;background-color: #ADC8E6">' +"用户:"+res.data[i].userName + "   " + res.data[i].createDate + '  </p>\n' +
-                    '        <p>'+res.data[i].content+'</p>'
+                    '<p style="font-family: 楷体;background-color: #ADC8E6">' + "用户:" + res.data[i].userName + "   " + res.data[i].createDate + '  </p>\n' +
+                    '        <p>' + res.data[i].content + '</p>'
                 );
             }
         }
@@ -238,3 +237,35 @@ function showReview() {
 }
 
 //展示评论--end
+
+//校验输入--start
+//输入非法字符 phoneNum.length == 0
+function checkPhone() {
+    var phone = document.getElementById("mobile");
+    var phoneNum = phone.value;
+    if (phoneNum.length == 0) {
+            layer.tips('警告: 请输入正确的11位手机号码！', "#tr_phone", {tips: 3});
+    }
+    if (phoneNum.length == 1) {
+        if (phoneNum == '0') {
+            layer.tips('输入非法', "#tr_phone", {tips: 3});
+        }
+    }
+    if (phoneNum.length>11){
+        phone.value=phoneNum.substring(0,11);
+    }
+}
+
+//检查邮政编码
+function checkPost() {
+    var post=document.getElementById("post");
+    var postNumber=post.value;
+    if (postNumber.length==0) {
+        layer.tips('警告: 请输入正确的6位邮政号码！', "#tr_phone", {tips: 3});
+    }
+    if (postNumber.length>6){
+        post.value=postNumber.substring(0,6);
+    }
+}
+
+//校验输入--end
