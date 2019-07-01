@@ -209,7 +209,7 @@
                     <table class="addressTable layui-table" style="">
                         <tr>
                             <td>邮政编码<span class="redStar">*</span></td>
-                            <td><input id="post" style="width: 400px" class="layui-input" name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="number" oninput="checkPost()"></td>
+                            <td id="tr_post"><input id="post" style="width: 400px" class="layui-input" name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="number" oninput="checkPost()"></td>
                         </tr>
                         <tr>
                             <td>收货人姓名<span class="redStar">*</span></td>
@@ -243,6 +243,16 @@
                 </form>
             </div>
         </div>
+
+        <p style="font-family: 楷体;background-color: #ADC8E6">  "用户:"  res.data[i].userName  "   "  res.data[i].createDate    </p>\n 
+                <p>  res.data[i].content  </p>
+
+        <div style="padding: 10px 0 10px 0;font-family: Calibri;font-size: 20px;">
+            <p style="margin: 10px auto;background-color: #0000FF"></p>
+            <p style="margin: 10px auto;"></p>
+
+        </div>
+        
     </script>
 
     <div class="imgAndInfo">

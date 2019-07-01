@@ -7,7 +7,7 @@ $(function () {
         , datatype: 'json'
         , url: '/product/myorders'
         , success: function (res) {
-            for (var i = 0; i < res.data.length; i++) {
+            for (var i = res.data.length-1; i > -1; i--) {
                 $('#myorderlist').append('<div class="orderListItem" id="cartList-div' + i + '">\n' +
                     '<table class="orderListItemTable" orderStatus="waitReview" pid="' + res.data[i].productId + '">\n' +
                     '                <input type="hidden" id="orderId" name="orderId" value="' + res.data[i].orderId + '">\n' +
@@ -161,7 +161,7 @@ function onPay(orderId, momey, userName, address, phone, pid, number) {
     layer.open({
         type: 1,
         content: $('#pay-script').html()
-        , area: ['400px', '450px'],
+        , area: ['800px', '400px'],
         title: "pay",
         shadeClose: true,
         success: function () {

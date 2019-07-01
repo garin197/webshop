@@ -100,7 +100,7 @@ function alipay(i) {
     layer.open({
         type: 1
         , title: '输入收货地址'
-        , area: ['600px', '400px']
+        , area: ['600px', '560px']
         , content: $('#buyonescript').html()
         , success: function (layero, index) {
 
@@ -196,3 +196,38 @@ function delCartItem(pid) {
         }
     });
 }
+
+
+//校验输入--start
+//输入非法字符 phoneNum.length == 0
+function checkPhone() {
+    var phone = document.getElementById("mobile");
+    var phoneNum = phone.value;
+    if (phoneNum.length == 0) {
+        layer.tips('警告: 请输入正确的11位手机号码！', "#tr_phone", {tips: 3});
+        phone.value=phoneNum.substring(0,11);
+    }
+    if (phoneNum.length == 1) {
+        if (phoneNum == '0') {
+            layer.tips('输入非法', "#tr_phone", {tips: 3});
+        }
+    }
+    if (phoneNum.length>11){
+        phone.value=phoneNum.substring(0,11);
+    }
+}
+
+//检查邮政编码
+function checkPost() {
+    var post=document.getElementById("post");
+    var postNumber=post.value;
+    if (postNumber.length==0) {
+        layer.tips('警告: 请输入正确的6位邮政号码！', "#tr_post", {tips: 3});
+        post.value=postNumber.substring(0,6);
+    }
+    if (postNumber.length>6){
+        post.value=postNumber.substring(0,6);
+    }
+}
+
+//校验输入--end

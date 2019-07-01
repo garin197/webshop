@@ -214,7 +214,7 @@ function showReview() {
         title: "累计评论",
         content: $('#review-content-script').html(),
         // data:{'uid':uid,"ordercreatedate":ordercreatedate,"productName":productName},
-        area: ['600px', '400px'],
+        area: ['800px', window.parent.innerHeight+'px'],
         shadeClose: true,
         scollBar: true
     });
@@ -227,10 +227,16 @@ function showReview() {
             for (var i = 0; i < res.data.length; i++) {
 
                 $('#review-content-div').append(
-                    '<p style="font-family: 楷体;background-color: #ADC8E6">' + "用户:" + res.data[i].userName + "   " + res.data[i].createDate + '  </p>\n' +
-                    '        <p>' + res.data[i].content + '</p>'
+                    '<div style="padding: 10px 0 10px 0;font-family: Calibri;font-size: 20px;">' +
+                    '            <p style="margin: 10px auto;background-color: #ADC8E6"> ' + "用户:" + res.data[i].userName + "  |   发表时间：" + res.data[i].createDate + ' </p>' +
+                    '             <p style="margin: 10px auto;"> ' + res.data[i].content + '  </p> ' +
+                    '</div>'
+
+                    // '<p style="font-family: 楷体;background-color: #ADC8E6">' + "用户:" + res.data[i].userName + "   " + res.data[i].createDate + '  </p>\n' +
+                    // '        <p>' + res.data[i].content + '</p>'
                 );
             }
+            $('#review-content-div').append( '<p style="font-family: 楷体;" align=center>' + "没有更多了 ~~~~"+'</p>');
         }
     );
 
@@ -244,27 +250,29 @@ function checkPhone() {
     var phone = document.getElementById("mobile");
     var phoneNum = phone.value;
     if (phoneNum.length == 0) {
-            layer.tips('警告: 请输入正确的11位手机号码！', "#tr_phone", {tips: 3});
+        layer.tips('警告: 请输入正确的11位手机号码！', "#tr_phone", {tips: 3});
+        phone.value = phoneNum.substring(0, 11);
     }
     if (phoneNum.length == 1) {
         if (phoneNum == '0') {
             layer.tips('输入非法', "#tr_phone", {tips: 3});
         }
     }
-    if (phoneNum.length>11){
-        phone.value=phoneNum.substring(0,11);
+    if (phoneNum.length > 11) {
+        phone.value = phoneNum.substring(0, 11);
     }
 }
 
 //检查邮政编码
 function checkPost() {
-    var post=document.getElementById("post");
-    var postNumber=post.value;
-    if (postNumber.length==0) {
-        layer.tips('警告: 请输入正确的6位邮政号码！', "#tr_phone", {tips: 3});
+    var post = document.getElementById("post");
+    var postNumber = post.value;
+    if (postNumber.length == 0) {
+        layer.tips('警告: 请输入正确的6位邮政号码！', "#tr_post", {tips: 3});
+        post.value = postNumber.substring(0, 6);
     }
-    if (postNumber.length>6){
-        post.value=postNumber.substring(0,6);
+    if (postNumber.length > 6) {
+        post.value = postNumber.substring(0, 6);
     }
 }
 

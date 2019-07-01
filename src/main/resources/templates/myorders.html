@@ -117,20 +117,45 @@
         </span>
 </div>
 </body>
+<!--<img style="position: absolute;top: 1px;left: 50px ;width: 195px;height: 256px;"-->
+<!--src="/static/images/alipay.png"/>-->
 <script type="text/html" id="pay-script">
-    <div id="pay-div" class="layui-input-block">
-        <div class="layui-input-inline">
-            <input type="text" value="100" disabled="disabled" id="pay-money">
-            <input type="text" value="名字不见了" disabled="disabled" id="pay-userName">
-            <input type="text" value="火星" disabled="disabled" id="pay-address">
-            <input type="text" value="110" disabled="disabled" id="pay-phone">
-        </div>
-        <span>温馨提示：信息有误请重新下单！</span>
-        <img src="/static/images/alipay.png"/>
+    <div id="pay-div" class=" ">
 
-        <div>
-            <span>温馨提示：只是模拟支付的动作，并不会有真正的支付！</span>
+        <div style="background-image: url(/static/images/alipay.png) ;position: absolute;top: 1px;left: 50px ;width: 195px;height: 256px;"></div>
+
+        <div class=""
+             style="position: absolute;top: 10px;left: 195px;padding:5px auto;font-size: 15px;font-family: Microsoft YaHei, 宋体, Segoe UI, Lucida Grande, Helvetica, Arial, sans-serif, FreeSans, Arimo">
+
+            <div style="padding-top: 15px">
+                <input class="layui-input layui-input-block" type="text" value="100" disabled="disabled" id="pay-money"
+                       style="width: 400px">
+
+            </div>
+            <div style="padding-top: 15px">
+                <input class="layui-input layui-input-block" type="text" value="名字不见了" disabled="disabled"
+                       id="pay-userName" style="width: 400px">
+
+            </div>
+            <div style="padding-top: 15px">
+                <textarea class="layui-input layui-input-block" type="text" value="火星" disabled="disabled"
+                          id="pay-address" style="width: 400px"/>
+            </div>
+            <div style="padding-top: 15px">
+                <input class="layui-input layui-input-block" type="text" value="110" disabled="disabled" id="pay-phone"
+                       style="width: 400px">
+            </div>
+
+            <div style="padding: 15px 0px 15px 100px;color: red" class="">
+                温馨提示：信息有误请重新下单！
+            </div>
+
+        </div>
+
+
+        <div style="position: absolute;right: 20px;bottom: 10px">
             <button class="layui-btn-warm layui-btn" id="pay-comfirm-btn">确认付款</button>
+            <div style="color: darkred">温馨提示：只是模拟支付的动作，并不会有真正的支付！</div>
         </div>
     </div>
 </script>
@@ -138,7 +163,8 @@
 <script type="text/html" id="review-script">
     <div style="margin: 3px 3px 3px 3px">
         <textarea id="content" rows="10" cols="53" placeholder="请输入你的评论"></textarea>
-        <input id="submit-review" class="layui-btn-danger layui-btn" type="button" value="提交" style="float: right;margin: 10px 40px 0 0 ">
+        <input id="submit-review" class="layui-btn-danger layui-btn" type="button" value="提交"
+               style="float: right;margin: 10px 40px 0 0 ">
     </div>
 </script>
 </html>

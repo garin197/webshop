@@ -143,42 +143,85 @@
     </div>
 </body>
 <script type="text/html" id="buyonescript">
-    <div class="address" >
+    <div class="address">
         <!--<div class="addressTip">输入收货地址</div>-->
-        <div>
-            <form action="#" method="post">
-                <table class="addressTable">
+        <div style="overflow: hidden;">
+            <form action="#" method="post" class="layui-form">
+                <table class="addressTable layui-table" style="">
                     <tr>
-                        <td class="firstColumn">详细地址<span class="redStar">*</span></td>
-                        <td><textarea id="address" name="address" placeholder="建议您如实填写详细收货地址，例如接到名称，门牌号，楼层和房间号等信息" required></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>邮政编码</td>
-                        <td><input id="post"  name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="text"></td>
+                        <td>邮政编码<span class="redStar">*</span></td>
+                        <td id="tr_post"><input id="post" style="width: 400px" class="layui-input" name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="number" oninput="checkPost()"></td>
                     </tr>
                     <tr>
                         <td>收货人姓名<span class="redStar">*</span></td>
-                        <td><input id="receiver" name="receiver"  placeholder="长度不超过25个字符" type="text" required></td>
+                        <td><input id="receiver" style="width: 400px" class="layui-input" name="receiver" placeholder="长度不超过25个字符" type="text"
+                                   required="required"></td>
                     </tr>
                     <tr>
                         <td>手机号码 <span class="redStar">*</span></td>
-                        <td><input id="mobile" name="mobile"  placeholder="请输入11位手机号码" type="number" required></td>
+                        <td id="tr_phone"><input id="mobile" style="width: 400px" class="layui-input" name="mobile" placeholder="请输入11位手机号码" type="number" max="19999999999" oninput="checkPhone()"  required="required"></td>
+                    </tr>
+                    <tr>
+                        <td class="firstColumn">详细地址<span class="redStar">*</span></td>
+                        <td><textarea id="address" name="address" placeholder="建议您如实填写详细收货地址，例如接到名称，门牌号，楼层和房间号等信息"
+                                      required="required"></textarea></td>
                     </tr>
                     <tr>
                         <td class="firstColumn">买家备注</td>
-                        <td><textarea id="comment" name="comment" placeholder="备注信息" required></textarea></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <input type="button" class="layui-btn-warm" value="ok" onclick="submit_user_info()">
+                        <td><textarea id="comment" name="comment" placeholder="备注信息" required="required"></textarea>
                         </td>
                     </tr>
+                    <!--<tr>-->
+                    <!--<td colspan="2">-->
+                    <!--<input type="button" class="layui-btn-warm" value="ok" onclick="submit_user_info()">-->
+                    <!--</td>-->
+                    <!--</tr>-->
                 </table>
 
+                <div align="center" id="ddd">
+                    <input type="button" class=" layui-btn-danger layui-btn" value="ok" onclick="submit_user_info()">
+                </div>
             </form>
         </div>
     </div>
 </script>
+<!--<script type="text/html" id="buyonescript">-->
+    <!--<div class="address" >-->
+        <!--&lt;!&ndash;<div class="addressTip">输入收货地址</div>&ndash;&gt;-->
+        <!--<div>-->
+            <!--<form action="#" method="post">-->
+                <!--<table class="addressTable">-->
+                    <!--<tr>-->
+                        <!--<td class="firstColumn">详细地址<span class="redStar">*</span></td>-->
+                        <!--<td><textarea id="address" name="address" placeholder="建议您如实填写详细收货地址，例如接到名称，门牌号，楼层和房间号等信息" required></textarea></td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>邮政编码</td>-->
+                        <!--<td><input id="post"  name="post" placeholder="如果您不清楚邮递区号，请填写000000" type="text"></td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>收货人姓名<span class="redStar">*</span></td>-->
+                        <!--<td><input id="receiver" name="receiver"  placeholder="长度不超过25个字符" type="text" required></td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td>手机号码 <span class="redStar">*</span></td>-->
+                        <!--<td><input id="mobile" name="mobile"  placeholder="请输入11位手机号码" type="number" required></td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td class="firstColumn">买家备注</td>-->
+                        <!--<td><textarea id="comment" name="comment" placeholder="备注信息" required></textarea></td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td colspan="2">-->
+                            <!--<input type="button" class="layui-btn-warm" value="ok" onclick="submit_user_info()">-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+
+            <!--</form>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</script>-->
 </html>
 
 <style type="text/css">
